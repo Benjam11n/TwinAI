@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { Calendar as CalendarIcon, Search } from 'lucide-react';
-import { CalendarView } from '@/components/dashboard/calendar-view';
 import { Separator } from '@/components/ui/separator';
+import { useState } from 'react';
 
 const patients = [
   'John Doe',
@@ -13,6 +13,8 @@ const patients = [
 ];
 
 export default function Sidebar({ searchQuery, setSearchQuery }) {
+  const router = useRouter();
+
   const filteredPatients = patients.filter((patient) =>
     patient.toLowerCase().includes(searchQuery.toLowerCase())
   );
@@ -23,7 +25,6 @@ export default function Sidebar({ searchQuery, setSearchQuery }) {
         <h2 className="text-lg font-semibold">Mental Health Twin</h2>
       </div>
       <div className="flex flex-1 flex-col space-y-4 p-4">
-
         {/* Search Bar */}
         <div className="relative">
           <Search className="absolute left-2 top-1/2 -translate-y-1/2 text-gray-500 dark:text-gray-400 size-5" />
@@ -40,6 +41,8 @@ export default function Sidebar({ searchQuery, setSearchQuery }) {
           {filteredPatients.map((patient, index) => (
             <div
               key={index}
+              onClick={() => router.push(`/dashboard?patient=${encodeURIComponent(patient)}`)}
+
               className="cursor-pointer rounded-lg px-3 py-2 text-gray-900 hover:bg-gray-200 dark:text-gray-100 dark:hover:bg-gray-700"
             >
               {patient}
