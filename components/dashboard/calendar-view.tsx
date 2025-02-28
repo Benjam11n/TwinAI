@@ -1,5 +1,5 @@
+// components/dashboard/calendar-view.tsx
 'use client';
-
 import React, { useState } from 'react';
 import { Calendar } from '@/components/ui/calendar';
 import { Card, CardContent } from '@/components/ui/card';
@@ -60,8 +60,12 @@ export function CalendarView() {
   );
 
   // Function to check if a date has events
-  const hasEvents = (day: Date) =>
-    events.some((event) => event.date.toDateString() === day.toDateString());
+  const hasEvents = (day: Date | null | undefined) => {
+    if (!day) return false;
+    return events.some(
+      (event) => event.date.toDateString() === day.toDateString()
+    );
+  };
 
   return (
     <div className="grid gap-4 md:grid-cols-2">
@@ -72,19 +76,25 @@ export function CalendarView() {
           onSelect={setDate}
           className="rounded-md border"
           components={{
-            Day: ({ day, ...props }) => (
-              <div
-                {...props}
-                className={`${props.className} relative ${
-                  hasEvents(day) ? 'font-bold' : ''
-                }`}
-              >
-                {day.getDate()}
-                {hasEvents(day) && (
-                  <div className="absolute bottom-0 left-1/2 size-1 -translate-x-1/2 rounded-full bg-primary" />
-                )}
-              </div>
-            ),
+            Day: ({ day, ...props }) => {
+              // Check if day is null or undefined
+              if (!day) {
+                return <div {...props} />;
+              }
+              return (
+                <div
+                  {...props}
+                  className={`${props.className} relative ${
+                    hasEvents(day) ? 'font-bold' : ''
+                  }`}
+                >
+                  {day.getDate()}
+                  {hasEvents(day) && (
+                    <div className="absolute bottom-0 left-1/2 size-1 -translate-x-1/2 rounded-full bg-primary" />
+                  )}
+                </div>
+              );
+            },
           }}
         />
       </div>
