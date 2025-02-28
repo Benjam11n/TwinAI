@@ -1,4 +1,6 @@
-import React from 'react';
+"use client";
+
+import React, { useState } from 'react';
 import {
   Card,
   CardContent,
@@ -11,68 +13,22 @@ import { Overview } from '@/components/dashboard/overview';
 import { CalendarView } from '@/components/dashboard/calendar-view';
 import { Separator } from '@/components/ui/separator';
 import {
-  BarChart,
   Activity,
   UserCircle,
   Calendar as CalendarIcon,
-  LayoutDashboard,
-  Settings,
 } from 'lucide-react';
 import { RecentActivity } from '@/components/dashboard/recent-activity';
+import Sidebar from '@/components/Sidebar';
+
+
 
 export default function Dashboard() {
+  const [searchQuery, setSearchQuery] = useState('');
   return (
+
     <div className="flex min-h-screen bg-gray-100 dark:bg-gray-900">
       {/* Sidebar */}
-      <div className="hidden w-64 flex-col border-r bg-white dark:bg-gray-800 md:flex">
-        <div className="flex h-14 items-center border-b px-4">
-          <h2 className="text-lg font-semibold">Mental Health Twin</h2>
-        </div>
-        <div className="flex flex-1 flex-col space-y-1 p-2">
-          <a
-            href="#"
-            className="flex items-center rounded-lg bg-gray-100 px-3 py-2 text-gray-900 dark:bg-gray-700 dark:text-gray-100"
-          >
-            <LayoutDashboard className="mr-2 size-5" />
-            <span>Dashboard</span>
-          </a>
-          <a
-            href="#"
-            className="flex items-center rounded-lg px-3 py-2 text-gray-500 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700"
-          >
-            <CalendarIcon className="mr-2 size-5" />
-            <span>Calendar</span>
-          </a>
-          <a
-            href="#"
-            className="flex items-center rounded-lg px-3 py-2 text-gray-500 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700"
-          >
-            <BarChart className="mr-2 size-5" />
-            <span>Analytics</span>
-          </a>
-          <a
-            href="#"
-            className="flex items-center rounded-lg px-3 py-2 text-gray-500 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700"
-          >
-            <Activity className="mr-2 size-5" />
-            <span>Wellbeing</span>
-          </a>
-          <a
-            href="#"
-            className="flex items-center rounded-lg px-3 py-2 text-gray-500 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700"
-          >
-            <UserCircle className="mr-2 size-5" />
-            <span>Profile</span>
-          </a>
-          <a
-            href="#"
-            className="flex items-center rounded-lg px-3 py-2 text-gray-500 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700"
-          >
-            <Settings className="mr-2 size-5" />
-            <span>Settings</span>
-          </a>
-        </div>
-      </div>
+    <Sidebar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
 
       {/* Main Content */}
       <div className="flex flex-1 flex-col">
