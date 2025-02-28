@@ -1,7 +1,7 @@
 import { useLiveAPIContext } from '@/contexts/LiveAPIContext';
 import { memo, useEffect } from 'react';
 
-function MacadamiaComponent() {
+function TwinAIComponent() {
   const { setConfig } = useLiveAPIContext();
 
   useEffect(() => {
@@ -32,4 +32,4 @@ function MacadamiaComponent() {
   return null;
 }
 
-export const Macadamia = memo(MacadamiaComponent);
+export const TwinAI = memo(TwinAIComponent);

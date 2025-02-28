@@ -1,5 +1,5 @@
-import Interview from '@/components/Interview';
+import Twin from '@/components/Twin';
 
 export default function CallPage() {
-  return <Interview />;
+  return <Twin />;
 }

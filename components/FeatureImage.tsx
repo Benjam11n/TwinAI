@@ -13,17 +13,18 @@ function FeatureImage() {
           <div className="aspect-video size-full flex-1 rounded-md bg-muted"></div>
           <div className="flex flex-1 flex-col gap-4 pl-0 lg:pl-20">
             <div>
-              <Badge>Features</Badge>
+              <Badge>Therapist Training</Badge>
             </div>
             <div className="flex flex-col gap-2">
               <h2 className="text-left text-xl font-semibold tracking-tighter md:text-5xl lg:max-w-xl">
-                Practice makes perfect interviews
+                Perfect your therapy skills with AI patients
               </h2>
               <p className="max-w-xl text-left text-lg leading-relaxed tracking-tight text-muted-foreground lg:max-w-sm">
-                Preparing for job interviews can be stressful and overwhelming.
-                Our AI-powered platform provides realistic interview scenarios,
-                personalized feedback, and comprehensive analysis to help you
-                perfect your responses and land your dream job with confidence.
+                Developing effective therapeutic skills requires diverse
+                clinical experience. Our AI platform allows you to create
+                digital twins of your patient's profiles, allowing you to
+                simulate sessions, practice interventions, and receive detailed
+                feedback—all in a risk-free environment.
               </p>
             </div>
             <div className="mt-4">
@@ -32,7 +33,7 @@ function FeatureImage() {
                 className="group relative flex items-center overflow-hidden rounded-full px-8 py-6 text-lg font-medium shadow-lg transition-all duration-300"
                 onClick={navigateNext}
               >
-                Start Practising
+                Start Training
                 <span className="ml-2 flex size-6 items-center justify-center rounded-full transition-all duration-300 group-hover:translate-x-1">
                   <ArrowUpRight className="transition-all" size={16} />
                 </span>

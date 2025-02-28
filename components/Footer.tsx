@@ -10,13 +10,13 @@ export default function Footer() {
             <div className="space-y-4">
               <div className="flex items-center gap-2">
                 <Logo className="size-10" />
-                <span className="text-lg font-semibold">Macadamia</span>
+                <span className="text-lg font-semibold">TwinAI</span>
               </div>
               <p className="text-sm text-muted-foreground">
-                Empowering job seekers with AI-powered interview practice tools.
+                Empowering therapists with AI-powered patient digital twins for
+                clinical skill development.
               </p>
             </div>
-
             <div className="space-y-4">
               <h3 className="font-semibold">Resources</h3>
               <ul className="space-y-2 text-sm text-muted-foreground">
@@ -27,7 +27,7 @@ export default function Footer() {
                 </li>
                 <li>
                   <a href="#" className="transition-colors hover:text-primary">
-                    Interview Tips
+                    Therapeutic Techniques
                   </a>
                 </li>
                 <li>
@@ -37,7 +37,6 @@ export default function Footer() {
                 </li>
               </ul>
             </div>
-
             <div className="space-y-4">
               <h3 className="font-semibold">Connect</h3>
               <div className="flex gap-4">
@@ -65,12 +64,9 @@ export default function Footer() {
               </div>
             </div>
           </div>
-
           <div className="mt-12 border-t border-border/10 pt-8">
             <div className="text-center text-sm text-muted-foreground">
-              <p>
-                © {new Date().getFullYear()} Macadamia. All rights reserved.
-              </p>
+              <p>© {new Date().getFullYear()} TwinAI. All rights reserved.</p>
             </div>
           </div>
         </div>

@@ -23,7 +23,7 @@ export const montserrat = localFont({
 });
 
 export const metadata: Metadata = {
-  title: 'Macadamia',
+  title: 'TwinAI',
   description: 'Crack your next interview with confidence',
 };
 

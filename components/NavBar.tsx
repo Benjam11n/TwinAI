@@ -37,7 +37,7 @@ export function NavBar() {
             className="flex items-center space-x-2"
           >
             <Logo className="size-10" />
-            <span className="inline-block text-2xl font-bold">Macadamia</span>
+            <span className="inline-block text-2xl font-bold">TwinAI</span>
           </Link>
         </div>
         <ThemeToggle />

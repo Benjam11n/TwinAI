@@ -17,9 +17,7 @@ export default function Hero() {
       const handleLoadedData = () => {
         setIsVideoLoaded(true);
       };
-
       videoElement.addEventListener('loadeddata', handleLoadedData);
-
       return () => {
         videoElement.removeEventListener('loadeddata', handleLoadedData);
       };
@@ -28,7 +26,7 @@ export default function Hero() {
 
   return (
     <div className="relative space-y-4 pb-16">
-      {/* Background gradient similar to Hypotenuse */}
+      {/* Background gradient */}
       <div className="absolute -right-24 -top-24 size-96 animate-pulse rounded-full bg-gradient-to-b from-green-100 to-green-300 opacity-40 blur-3xl"></div>
 
       {/* Hero content */}
@@ -36,31 +34,24 @@ export default function Hero() {
         {/* Main heading and subheading */}
         <div className="animate-fadeIn mt-16 flex flex-col gap-6">
           <h1 className="text-5xl font-semibold text-foreground md:text-6xl lg:text-7xl">
-            <ShinyText
-              text=" All-in-one AI interview"
-              disabled={false}
-              speed={3}
-            />
+            <ShinyText text="AI-Powered Patient" disabled={false} speed={3} />
             <br className="hidden sm:block" />
-            practice platform
+            Digital Twins
           </h1>
-
           <p className="text-xl text-muted-foreground">
-            Crack your next job interview with confidence.
+            Perfect your therapy skills with virtual patient simulations.
           </p>
-
           <div className="flex flex-wrap gap-4">
             <Button
               size="lg"
               className="group relative flex items-center overflow-hidden rounded-full px-8 py-6 text-lg font-medium shadow-lg transition-all duration-300"
               onClick={navigateNext}
             >
-              Start Practising
+              Create Patient Twin
               <span className="arrow-animation ml-2 flex size-6 items-center justify-center rounded-full">
                 <ArrowUpRight className="transition-all" size={16} />
               </span>
             </Button>
-
             <Link
               href="#"
               className="flex items-center px-4 py-2 text-lg font-medium text-green-600 hover:text-green-700"
@@ -70,64 +61,64 @@ export default function Hero() {
           </div>
         </div>
 
-        {/* Product visualization section - similar to the form in Hypotenuse */}
+        {/* Therapy simulation visualization */}
         <div className="animate-fadeIn light:border-gray-200 mt-10 overflow-hidden rounded-lg border shadow-md">
           <div className="p-4">
             <div className="mb-4 grid grid-cols-1 gap-4 md:grid-cols-3">
               <div className="light:border-gray-100 border-r pr-4">
-                <h3 className="mb-2 font-medium">Practice Interview</h3>
+                <h3 className="mb-2 font-medium">Patient Profile</h3>
                 <div className="flex gap-2">
                   <span className="rounded bg-muted-foreground/40 px-2 py-1 text-sm">
-                    Behavioral
+                    Depression
                   </span>
                   <span className="rounded bg-muted-foreground/20 px-2 py-1 text-sm">
-                    Technical
+                    Anxiety
                   </span>
                 </div>
               </div>
-
               <div className="col-span-2">
-                <h3 className="mb-2 font-medium">Interview Scenario</h3>
+                <h3 className="mb-2 font-medium">Therapy Session Scenario</h3>
                 <div className="light:border-gray-200 rounded-md border p-3">
                   <p>
-                    Tell me about a challenging situation you faced at work and
-                    how you overcame it.
+                    Patient expresses feeling overwhelmed by work
+                    responsibilities and reports difficulty sleeping for the
+                    past 3 weeks.
                   </p>
                 </div>
               </div>
             </div>
 
-            {/* Mock interview in progress */}
+            {/* Mock therapy session in progress */}
             <div className="light:border-gray-200 rounded-md border p-4">
               <div className="light:border-gray-100 mb-4 border-b pb-2">
                 <div className="flex items-center">
                   <div className="mr-2 size-2 rounded-full bg-primary"></div>
-                  <span className="text-sm">AI Interview in progress</span>
+                  <span className="text-sm">Therapy Session Simulation</span>
                 </div>
               </div>
-
               <div className="space-y-3">
                 <div className="rounded-lg bg-gray-50 p-3">
                   <p className="text-sm text-gray-700">
-                    <span className="font-medium">Interviewer:</span> Tell me
-                    about a challenging situation you faced at work and how you
-                    overcame it.
+                    <span className="font-medium">Patient:</span> I've been
+                    feeling really stressed lately. I can't seem to get a good
+                    night's sleep and it's affecting my work...
                   </p>
                 </div>
-
                 <div className="rounded-lg bg-primary/30 p-3">
                   <p className="text-sm">
-                    <span className="font-medium">You:</span> In my previous
-                    role, I was tasked with delivering a project with a tight
-                    deadline. The team was facing...
+                    <span className="font-medium">You (Therapist):</span> I
+                    understand that must be difficult. Could you tell me more
+                    about when these sleep issues began and what was happening
+                    in your life at that time?
                   </p>
                 </div>
-
                 <div className="flex items-center gap-2">
                   <div className="size-2 rounded-full bg-gray-300"></div>
                   <div className="size-2 rounded-full bg-gray-300"></div>
                   <div className="size-2 rounded-full bg-gray-300"></div>
-                  <span className="text-xs">AI analyzing response</span>
+                  <span className="text-xs">
+                    AI analyzing therapeutic approach
+                  </span>
                 </div>
               </div>
             </div>
@@ -143,7 +134,6 @@ export default function Hero() {
                 <div className="size-8 animate-spin rounded-full border-4 border-green-500 border-t-transparent"></div>
               </div>
             )}
-
             <video
               ref={videoRef}
               className={`size-full object-cover ${isVideoLoaded ? 'opacity-100' : 'opacity-0'}`}

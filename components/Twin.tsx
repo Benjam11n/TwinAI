@@ -5,14 +5,14 @@ import { useEffect, useRef, useState } from 'react';
 import Messages from './chat/Messages';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useLiveAPIContext } from '@/contexts/LiveAPIContext';
-import { Macadamia } from './Macadamia';
+import { TwinAI } from './TwinAI';
 import Controls from './chat/Controls';
 import { cn } from '@/lib/utils';
 import { useLoggerStore } from '@/store/use-logger-store';
 import UserTranscription from './UserTranscription';
 import { useInterviewStore } from '@/store/useInterviewStore';
 
-export default function Interview() {
+export default function Twin() {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [videoStream, setVideoStream] = useState<MediaStream | null>(null);
   const messagesRef = useRef<HTMLDivElement>(null);
@@ -49,7 +49,7 @@ export default function Interview() {
 
   return (
     <div className="animate-fadeIn mx-auto flex h-screen w-full flex-col">
-      <Macadamia />
+      <TwinAI />
       <AnimatePresence>
         {!connected ? (
           <motion.div

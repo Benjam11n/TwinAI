@@ -12,21 +12,20 @@ function Feature() {
             </div>
             <div className="flex flex-col gap-2">
               <h2 className="max-w-xl text-left text-3xl font-semibold tracking-tighter md:text-5xl">
-                AI-Powered interviews for everyone
+                AI-Powered training for therapists
               </h2>
-              <p className="max-w-xl text-left text-lg leading-relaxed tracking-tight text-muted-foreground  lg:max-w-lg">
-                Interviews are tough.
+              <p className="max-w-xl text-left text-lg leading-relaxed tracking-tight text-muted-foreground lg:max-w-lg">
+                Master therapeutic techniques through practice with diverse AI
+                patient profiles.
               </p>
             </div>
           </div>
-
-          <div className="grid gap-8 sm:grid-cols-1 lg:grid-cols-2">
+          <div className="grid gap-8 sm:grid-cols-1 lg:grid-cols-3">
             {FEATURES.map((feature, index) => (
               <div
                 key={index}
                 className="glass-panel feature-card-hover space-y-4 p-8"
               >
-                <div className="mb-2 aspect-video rounded-md bg-muted"></div>
                 <div className="flex flex-row items-center gap-2 space-x-2">
                   <div className="rounded-2xl bg-primary/10 p-4">
                     <feature.icon className="size-7 text-primary" />
