@@ -1,5 +1,3 @@
-'use client';
-
 /**
  * Copyright 2024 Google LLC
  *
@@ -15,11 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+'use client';
 
-import { useLiveAPI, UseLiveAPIResults } from '@/hooks/use-live-api';
+import {
+  useLiveAPIWithRAG,
+  UseLiveAPIWithRAGResults,
+} from '@/hooks/use-live-api-with-rag';
 import { createContext, FC, ReactNode, useContext } from 'react';
 
-const LiveAPIContext = createContext<UseLiveAPIResults | undefined>(undefined);
+const LiveAPIContext = createContext<UseLiveAPIWithRAGResults | undefined>(
+  undefined
+);
 
 export type LiveAPIProviderProps = {
   children: ReactNode;
@@ -32,7 +36,7 @@ export const LiveAPIProvider: FC<LiveAPIProviderProps> = ({
   apiKey,
   children,
 }) => {
-  const liveAPI = useLiveAPI({ url, apiKey });
+  const liveAPI = useLiveAPIWithRAG({ url, apiKey });
 
   return (
     <LiveAPIContext.Provider value={liveAPI}>
