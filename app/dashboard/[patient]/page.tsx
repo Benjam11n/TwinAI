@@ -12,6 +12,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Overview } from '@/components/dashboard/overview';
 import { CalendarView } from '@/components/dashboard/calendar-view';
 import { Separator } from '@/components/ui/separator';
+import { useSearchParams } from 'next/navigation';
 import {
   Activity,
   UserCircle,
@@ -21,9 +22,13 @@ import { RecentActivity } from '@/components/dashboard/recent-activity';
 import Sidebar from '@/components/Sidebar';
 
 
-
 export default function Dashboard() {
   const [searchQuery, setSearchQuery] = useState('');
+  const searchParams = useSearchParams();
+  const patient = searchParams.get('patient');
+  const decodedPatientName = decodeURIComponent(patient || "");
+  console.log(patient);
+
   return (
 
     <div className="flex min-h-screen bg-gray-100 dark:bg-gray-900">
@@ -102,7 +107,9 @@ export default function Dashboard() {
         <main className="flex-1 overflow-auto p-4 lg:p-6">
           <div className="flex flex-col space-y-4">
             <div className="flex items-center justify-between">
-              <h1 className="text-2xl font-bold tracking-tight">Calendar Dashboard</h1>
+            <header className="flex h-14 items-center border-b bg-white px-4 dark:bg-gray-800 lg:px-6">
+            <h1 className="text-2xl font-bold tracking-tight">{decodedPatientName}'s Dashboard</h1>
+            </header>
               <div className="flex items-center gap-2">
                 <button className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground shadow hover:bg-primary/90">
                   Download Report
