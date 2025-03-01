@@ -38,7 +38,7 @@ export function NavBar() {
           >
             <Logo className="size-10" />
             <div>
-              <span className="inline-block text-2xl font-bold text-green-600">
+              <span className="inline-block text-2xl font-bold text-lime-600">
                 Twin
               </span>
               <span className="inline-block text-2xl font-bold text-stone-500">

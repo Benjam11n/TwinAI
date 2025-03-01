@@ -26,6 +26,9 @@ export const montserrat = localFont({
 export const metadata: Metadata = {
   title: 'TwinAI',
   description: 'Advanced therapy training with AI patient digital twins',
+  icons: {
+    icon: '/images/Logo2.png',
+  },
 };
 
 const API_KEY = process.env.GEMINI_API_KEY as string;
