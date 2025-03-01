@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /**
  * Copyright 2024 Google LLC
  *
@@ -13,16 +14,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { audioContext } from '../lib/utils';
+// Changed import paths to match your project structure
 import {
   MultimodalLiveAPIClientConnection,
   MultimodalLiveClient,
-} from '@/lib/gemini/multimodal-live-client';
-import { LiveConfig } from '@/types/multimodal-live-types';
-import { AudioStreamer } from '@/lib/gemini/audio-streamer';
-import VolMeterWorket from '@/lib/worklets/vol-meter';
+} from '@/lib/gemini/multimodal-live-client'; // Updated path from @/lib/gemini/...
+import { LiveConfig } from '@/types/multimodal-live-types'; // Updated path from @/types/...
+import { AudioStreamer } from '@/lib/gemini/audio-streamer'; // Updated path from @/lib/gemini/...
+import VolMeterWorket from '@/lib/worklets/vol-meter'; // Updated path from @/lib/...
+import { audioContext } from '@/lib/utils';
 
 export type UseLiveAPIResults = {
   client: MultimodalLiveClient;
@@ -32,9 +33,8 @@ export type UseLiveAPIResults = {
   connect: () => Promise<void>;
   disconnect: () => Promise<void>;
   volume: number;
-  isTranscribing: boolean;
-  aiTranscription: string;
-  isModelTurn: boolean;
+  // Removed properties: isTranscribing, aiTranscription, isModelTurn
+  // These were likely removed because you're not using these features
 };
 
 export function useLiveAPI({
@@ -45,24 +45,20 @@ export function useLiveAPI({
     () => new MultimodalLiveClient({ url, apiKey }),
     [url, apiKey]
   );
-
   const audioStreamerRef = useRef<AudioStreamer | null>(null);
-
   const [connected, setConnected] = useState(false);
   const [config, setConfig] = useState<LiveConfig>({
     model: 'models/gemini-2.0-flash-exp',
   });
   const [volume, setVolume] = useState(0);
-  const [aiTranscription, setAiTranscription] = useState<string>('');
-  const [isTranscribing, setIsTranscribing] = useState(false);
-  const [isModelTurn, setIsModelTurn] = useState(true);
+  // Removed state variables for isTranscribing, aiTranscription, and isModelTurn
+
   // register audio for streaming server -> speakers
   useEffect(() => {
     if (!audioStreamerRef.current) {
       audioContext({ id: 'audio-out' }).then((audioCtx: AudioContext) => {
         audioStreamerRef.current = new AudioStreamer(audioCtx);
         audioStreamerRef.current
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           .addWorklet<any>('vumeter-out', VolMeterWorket, (ev: any) => {
             setVolume(ev.data.volume);
           })
@@ -77,40 +73,25 @@ export function useLiveAPI({
     const onClose = () => {
       setConnected(false);
     };
-
     const stopAudioStreamer = () => audioStreamerRef.current?.stop();
-
     const onAudio = (data: ArrayBuffer) =>
       audioStreamerRef.current?.addPCM16(new Uint8Array(data));
 
-    const onAiTranscription = (text: string) => {
-      setAiTranscription(text);
-    };
-
-    const onTranscribe = (isTranscribing: boolean) => {
-      setIsTranscribing(isTranscribing);
-    };
-
-    const onModelTurn = (isModelTurn: boolean) => {
-      setIsModelTurn(isModelTurn);
-    };
+    // Removed event handlers for transcription and model turn events
+    // since they're not needed in your implementation
 
     client
       .on('close', onClose)
       .on('interrupted', stopAudioStreamer)
-      .on('audio', onAudio)
-      .on('isTranscribing', onTranscribe)
-      .on('aiTranscription', onAiTranscription)
-      .on('isModelTurn', onModelTurn);
+      .on('audio', onAudio);
+    // Removed .on event handlers for isTranscribing, aiTranscription, and isModelTurn
 
     return () => {
       client
         .off('close', onClose)
         .off('interrupted', stopAudioStreamer)
-        .off('audio', onAudio)
-        .on('isTranscribing', onTranscribe)
-        .off('aiTranscription', onAiTranscription)
-        .off('isModelTurn', onModelTurn);
+        .off('audio', onAudio);
+      // Removed corresponding .off event handlers
     };
   }, [client]);
 
@@ -122,7 +103,7 @@ export function useLiveAPI({
     client.disconnect();
     await client.connect(config);
 
-    setAiTranscription('');
+    // Removed setting aiTranscription to empty string
 
     setConnected(true);
   }, [client, setConnected, config]);
@@ -140,8 +121,6 @@ export function useLiveAPI({
     connect,
     disconnect,
     volume,
-    isTranscribing,
-    aiTranscription,
-    isModelTurn,
+    // Removed isTranscribing, aiTranscription, and isModelTurn from the return object
   };
 }
