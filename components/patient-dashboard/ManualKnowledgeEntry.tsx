@@ -89,7 +89,7 @@ export function ManualKnowledgeEntryForm({
       <CardHeader>
         <CardTitle>Add Manual Knowledge</CardTitle>
         <CardDescription>
-          Add information directly to the digital twin's knowledge base
+          Add information directly to the digital twin&apos;s knowledge base
         </CardDescription>
       </CardHeader>
       <CardContent>
