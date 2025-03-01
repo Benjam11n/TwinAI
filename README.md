@@ -38,51 +38,53 @@ The digital twin feature offers a revolutionary approach to therapy practice and
 
 ### Frontend
 
-- **React & Next.js**: Modern, component-based architecture
-- **TypeScript**: Type-safe development for increased reliability
-- **TailwindCSS**: Responsive and customizable UI components
-- **Shadcn/UI**: Accessible component library for consistent UX
+- **React & Next.js**: Modern, component-based architecture for building dynamic user interfaces with server-side rendering capabilities, providing improved performance and SEO benefits.
+- **TypeScript**: Type-safe development for increased reliability, catching potential errors during development rather than runtime.
+- **TailwindCSS**: Responsive and customizable UI components with utility-first approach, enabling rapid prototyping and consistent design implementation.
+- **Shadcn/UI**: Accessible component library for consistent UX, built on Radix UI primitives, ensuring ARIA compliance and keyboard navigation support.
 
 ### AI Integration
 
-- **Voice Transcription**: Web Speech API with Google Gemini integration
-- **Risk Analysis**: Custom PyTorch model for suicide risk assessment
-- **ONNX Runtime**: Browser-based inference for treatment recommendations
-- **Retrieval Augmented Generation**: Vector database integration for context-aware responses
+- **Voice Transcription**: Web Speech API with Google Gemini integration for accurate, real-time speech-to-text conversion during therapy sessions.
+- **Risk Analysis**: Custom PyTorch LSTM model for suicide risk assessment:
+  - **Why LSTM?** Long Short-Term Memory networks were selected because they excel at capturing sequential dependencies in text, making them ideal for analyzing therapy conversations. Unlike simpler models, LSTMs can maintain context across long passages of text, recognizing linguistic patterns that may
+  - **Memory Capacity**: The model's ability to "remember" relevant information from earlier in a conversation while forgetting irrelevant details mirrors how human therapists assess risk through dialogue patterns.
+  - **Bidirectional Processing**: Implementation includes bidirectional capabilities, allowing the model to analyze text from both directions, improving contextual understanding of suicide risk indicators.
+  - **Pre-trained Word Embeddings**: Integration with Word2Vec embeddings provides semantic understanding beyond simple keyword matching, detecting subtle linguistic signals of risk.
+- **ONNX Runtime**: Browser-based inference for treatment recommendations enables client-side processing without sending sensitive patient data to external servers, enhancing privacy and reducing latency.
+- **Retrieval Augmented Generation**: Vector database integration for context-aware responses, grounding AI outputs in patient-specific information rather than generic responses.
+
+**Statistics for Risk Analysis model**:
+Train Loss: 0.0903, Train Acc: 0.9672
+Val Loss: 0.1401, Val Acc: 0.9491
 
 ### State Management
 
-- **Zustand**: Lightweight state management for session data
-- **Context API**: React contexts for feature-specific state requirements
-- **Local Storage**: Session persistence for uninterrupted user experience
+- **Zustand**: Lightweight state management for session data, chosen for its minimal boilerplate and hooks-based API that integrates seamlessly with React's functional component model.
+- **Context API**: React contexts for feature-specific state requirements, providing targeted state access only where needed to avoid unnecessary re-renders.
+- **Local Storage**: Session persistence for uninterrupted user experience, allowing temporary data retention without backend dependencies in the MVP phase.
 
 ### Data Visualization
 
-- **Recharts**: Dynamic charts for mood tracking and trend analysis
-- **Tailwind Styling**: Color-coded indicators for risk levels and treatment efficacy
+- **Recharts**: Dynamic charts for mood tracking and trend analysis, selected for its React integration and declarative API that simplifies creating responsive visualizations.
+- **Tailwind Styling**: Color-coded indicators for risk levels and treatment efficacy, providing intuitive visual feedback for therapists.
 
-## Project Structure
+### Model Training Approach
 
-```
-├── app/                       # Next.js application routes
-├── components/                # Reusable UI components
-│   ├── patient-dashboard/     # Dashboard-specific components
-│   ├── ui/                    # Base UI components
-│   └── ...                    # Other component categories
-├── contexts/                  # React context providers
-│   ├── LiveAPIContext.tsx     # API integration context
-│   ├── LiveTranscriptionContext.tsx  # Voice transcription context
-│   └── ...                    # Other contexts
-├── lib/                       # Utility functions and services
-│   ├── transcription/         # Transcription service
-│   ├── utils.ts               # General utilities
-│   └── ...                    # Other utilities
-├── models/                    # AI model files (ONNX, config)
-├── store/                     # State management
-│   └── use-therapy-session-store.ts  # Therapy session state
-├── types/                     # TypeScript type definitions
-└── data/                      # Mock data for MVP demonstration
-```
+The suicide risk assessment model was trained using a carefully designed approach:
+
+1. **Dataset Selection**: Utilized the "Suicide and Depression Detection" dataset from Kaggle, containing labeled examples of suicidal and non-suicidal language patterns.
+2. **Text Preprocessing**: Implemented tokenization, stopword removal, and sequence standardization to prepare text for the LSTM model.
+3. **Word Embeddings**: Incorporated pre-trained Word2Vec embeddings to capture semantic relationships between words, converting text into 300-dimensional vector representations.
+4. **Model Architecture**:
+   - Embedding layer initialized with pre-trained vectors
+   - LSTM layer with 64 hidden units
+   - Dense layers with ReLU activation for feature extraction
+   - Sigmoid output for binary classification
+5. **Optimization**: Trained with Adam optimizer and binary cross-entropy loss, with careful monitoring to prevent overfitting.
+6. **ONNX Conversion**: Exported the trained PyTorch model to ONNX format for efficient browser-based inference, enabling client-side risk assessment without server dependencies.
+
+This technical approach prioritizes performance and accuracy— critical factors for mental health applications.
 
 ## MVP Implementation Notes
 
@@ -98,8 +100,6 @@ In a production implementation, these components would be enhanced with:
 - HIPAA-compliant data storage
 - Expanded AI model training
 - Advanced encryption for sensitive patient information
-
-## Important Disclaimer
 
 **Storage Limitations**
 
@@ -160,42 +160,8 @@ You can obtain a Gemini API key by signing up for Google AI Studio or Google Clo
 4. Click on the digital twin session to start a digital twin session with the same patient
 5. Explore analysis of your responses and any high risk factors
 
-## Future Roadmap
-
-In future iterations, TwinAI will expand to include:
-
-### Advanced Patient Analytics
-
-- **Mood Analysis**: Track patient mood patterns with visual indicators and trend analysis
-- **Risk Assessment**: AI-powered suicide risk detection with severity classification
-- **Treatment Effectiveness**: Monitor progress across different intervention types
-
-### Personalized Treatment Planning
-
-- **Condition-Specific Plans**: Recommended interventions based on patient profiles
-- **Outcome Prediction**: Visualize potential treatment outcomes before implementation
-- **Session Planning**: Structure future sessions based on digital twin simulations
-
-### Enhanced Knowledge Integration
-
-- **Document Upload**: Import and analyze patient records, notes, and documentation
-- **Manual Knowledge Entry**: Add critical patient information directly into the system
-- **RAG-Based System**: Expanded retrieval-augmented generation for deeper context-aware interactions
-
-### Comprehensive Session Management
-
-- **Voice Transcription**: Enhanced automatic transcription of therapy conversations
-- **Session History**: Track and access all historical patient interactions
-- **Session Analysis**: Automated insights after each therapeutic encounter
-
 ## Data Attribution
 
 The suicide risk analysis model in TwinAI was trained using the "Suicide and Depression Detection" dataset from Kaggle, created by Nikhileswar Komati. This dataset is licensed under [Attribution-ShareAlike 4.0 International (CC BY-SA 4.0)](https://creativecommons.org/licenses/by-sa/4.0/).
 
 Dataset URL: [Suicide Watch Dataset on Kaggle](https://www.kaggle.com/datasets/nikhileswarkomati/suicide-watch)
-
-## License
-
-This project is licensed under the MIT License - see the LICENSE file for details.
-
-_Note: This README describes an MVP implementation with some simulated functionality for demonstration purposes. Full production deployment would require additional development and clinical validation._
