@@ -58,6 +58,8 @@ The digital twin feature offers a revolutionary approach to therapy practice and
 Train Loss: 0.0903, Train Acc: 0.9672
 Val Loss: 0.1401, Val Acc: 0.9491
 
+[View/Run the training notebook](https://colab.research.google.com/drive/1acEbj1tVHroBCSLednhDmZTgwRDd0RJ0?usp=sharing)
+
 ### State Management
 
 - **Zustand**: Lightweight state management for session data, chosen for its minimal boilerplate and hooks-based API that integrates seamlessly with React's functional component model.
