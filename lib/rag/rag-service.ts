@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { RAGVectorStore } from './vector-store';
 import { DocumentProcessor } from './document-processor';
 

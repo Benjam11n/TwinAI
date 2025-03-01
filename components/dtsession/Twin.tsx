@@ -47,6 +47,7 @@ export default function Twin() {
         },
       ]);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [aiTranscription]);
 
   return (

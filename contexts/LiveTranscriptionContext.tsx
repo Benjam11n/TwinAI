@@ -45,10 +45,9 @@ export const TranscriptionProvider = ({
   const [isTranscribing, setIsTranscribing] = useState(false);
   const [transcription, setTranscription] = useState('');
 
-  const mediaRecorderRef = useRef(null);
-  const chunksRef = useRef([]);
-  const transcriptionServiceRef = useRef(null);
-  // Remove the intervalRef since we won't be doing continuous transcription
+  const mediaRecorderRef = useRef<MediaRecorder | null>(null);
+  const chunksRef = useRef<Blob[]>([]);
+  const transcriptionServiceRef = useRef<TranscriptionService | null>(null);
 
   // Initialize the transcription service
   useEffect(() => {
@@ -58,12 +57,16 @@ export const TranscriptionProvider = ({
   }, [apiKey]);
 
   // Function to convert blob to base64
-  const convertBlobToBase64 = async (blob) => {
+  const convertBlobToBase64 = async (blob: Blob): Promise<string> => {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
       reader.onloadend = () => {
-        const base64String = reader.result.split(',')[1];
-        resolve(base64String);
+        if (typeof reader.result === 'string') {
+          const base64String = reader.result.split(',')[1];
+          resolve(base64String);
+        } else {
+          reject(new Error('Failed to convert blob to base64'));
+        }
       };
       reader.onerror = reject;
       reader.readAsDataURL(blob);
@@ -71,12 +74,16 @@ export const TranscriptionProvider = ({
   };
 
   // Function to send audio data to transcription service
-  const transcribeAudio = async (audioData) => {
+  const transcribeAudio = async (audioData: Blob): Promise<string> => {
     setIsTranscribing(true);
     try {
       const base64Audio = await convertBlobToBase64(audioData);
 
       // Use the TranscriptionService with Gemini
+      if (!transcriptionServiceRef.current) {
+        throw new Error('Transcription service not initialized');
+      }
+
       const result = await transcriptionServiceRef.current.transcribeAudio(
         base64Audio,
         audioData.type
@@ -92,21 +99,22 @@ export const TranscriptionProvider = ({
   };
 
   // Start recording but don't transcribe yet
-  const startTranscription = async () => {
+  const startTranscription = async (): Promise<void> => {
     if (isRecording) return;
 
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-      mediaRecorderRef.current = new MediaRecorder(stream);
+      const mediaRecorder = new MediaRecorder(stream);
+      mediaRecorderRef.current = mediaRecorder;
       chunksRef.current = [];
 
-      mediaRecorderRef.current.ondataavailable = (event) => {
+      mediaRecorder.ondataavailable = (event) => {
         if (event.data.size > 0) {
           chunksRef.current.push(event.data);
         }
       };
 
-      mediaRecorderRef.current.start(1000); // Collect data every second
+      mediaRecorder.start(1000); // Collect data every second
       setIsRecording(true);
     } catch (error) {
       console.error('Error accessing microphone:', error);
@@ -114,7 +122,7 @@ export const TranscriptionProvider = ({
   };
 
   // Stop recording and only then transcribe the entire audio
-  const stopTranscription = async () => {
+  const stopTranscription = async (): Promise<void> => {
     if (!isRecording || !mediaRecorderRef.current) return;
 
     // Stop media recorder
@@ -124,8 +132,12 @@ export const TranscriptionProvider = ({
       .forEach((track) => track.stop());
 
     // Wait for the final ondataavailable event to fire
-    await new Promise((resolve) => {
-      mediaRecorderRef.current.onstop = resolve;
+    await new Promise<void>((resolve) => {
+      if (mediaRecorderRef.current) {
+        mediaRecorderRef.current.onstop = () => resolve();
+      } else {
+        resolve();
+      }
     });
 
     // Process the entire audio at once
@@ -144,7 +156,7 @@ export const TranscriptionProvider = ({
   };
 
   // Clear transcription
-  const clearTranscription = () => {
+  const clearTranscription = (): void => {
     setTranscription('');
   };
 
@@ -160,7 +172,7 @@ export const TranscriptionProvider = ({
     };
   }, [isRecording]);
 
-  const value = {
+  const value: TranscriptionContextType = {
     startTranscription,
     stopTranscription,
     isRecording,

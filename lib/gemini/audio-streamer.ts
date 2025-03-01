@@ -152,6 +152,7 @@ export class AudioStreamer {
       const worklets = registeredWorklets.get(this.context);
 
       if (worklets) {
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         Object.entries(worklets).forEach(([workletName, graph]) => {
           const { node, handlers } = graph;
           if (node) {

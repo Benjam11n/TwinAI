@@ -76,6 +76,7 @@ export class RAGMultimodalLiveClient extends MultimodalLiveClient {
   /**
    * Send message with RAG-enhanced prompt when appropriate
    */
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   async send(parts: any[]): Promise<void> {
     // Check if this is a text message that could benefit from RAG
     const textParts = parts.filter((p) => p.text);

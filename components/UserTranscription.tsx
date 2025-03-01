@@ -30,6 +30,7 @@ const UserTranscription = ({ isModelTurn }: UserTranscriptionProps) => {
         },
       ]);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [transcription]);
 
   useEffect(() => {
@@ -38,6 +39,7 @@ const UserTranscription = ({ isModelTurn }: UserTranscriptionProps) => {
     } else if (isModelTurn && isRecording) {
       stopTranscription();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isModelTurn, isRecording, isTranscribing]);
 
   useEffect(() => {
@@ -46,6 +48,7 @@ const UserTranscription = ({ isModelTurn }: UserTranscriptionProps) => {
         stopTranscription();
       }
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isRecording]);
 
   return null;

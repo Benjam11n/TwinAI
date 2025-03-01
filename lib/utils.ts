@@ -118,7 +118,7 @@ export async function analyzeConversationRisks(
   const highestRiskEntry = results.reduce(
     (highest, current) =>
       current.risk.score > highest.risk.score ? current : highest,
-    { risk: { score: 0 } }
+    { risk: { score: 0, riskLevel: 'none' } }
   );
 
   return {

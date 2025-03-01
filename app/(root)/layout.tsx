@@ -1,8 +1,9 @@
 'use client';
+
 import Sidebar from '@/components/Sidebar';
 import { useState } from 'react';
 
-export function RootLayout({ children }: { children: React.ReactNode }) {
+export default function Layout({ children }: { children: React.ReactNode }) {
   const [searchQuery, setSearchQuery] = useState('');
 
   return (
@@ -12,5 +13,3 @@ export function RootLayout({ children }: { children: React.ReactNode }) {
     </main>
   );
 }
-
-export default RootLayout;

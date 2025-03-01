@@ -13,12 +13,14 @@ import {
   AccordionTrigger,
 } from '@/components/ui/accordion';
 import { Button } from '@/components/ui/button';
-import { Patient } from '@/types';
+import { Patient, PatientCondition } from '@/types';
 import { treatmentPlans } from '@/data/data';
 
 export function TreatmentPlansCard({ patient }: { patient: Patient }) {
   const recommendedPlans = treatmentPlans.filter((plan) =>
-    plan.suitable.some((condition) => patient.conditions.includes(condition))
+    plan.suitable.some((condition) =>
+      patient.conditions.includes(condition as PatientCondition)
+    )
   );
 
   return (
@@ -79,7 +81,8 @@ export function TreatmentPlansCard({ patient }: { patient: Patient }) {
         {recommendedPlans.length === 0 && (
           <div className="flex flex-col items-center justify-center py-6 text-center">
             <p className="text-sm text-muted-foreground">
-              No specific treatment plans found for the patient's conditions.
+              No specific treatment plans found for the patient&apos;s
+              conditions.
             </p>
             <Button variant="outline" size="sm" className="mt-4">
               Create Custom Plan

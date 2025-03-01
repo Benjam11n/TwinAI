@@ -38,7 +38,8 @@ export function DigitalTwinCard({ patientName }: { patientName: string }) {
           </Badge>
         </div>
         <CardDescription className="pt-1">
-          Interact with {patientName}'s digital twin for simulation and analysis
+          Interact with {patientName}&apos;s digital twin for simulation and
+          analysis
         </CardDescription>
       </CardHeader>
 
@@ -52,7 +53,7 @@ export function DigitalTwinCard({ patientName }: { patientName: string }) {
               <h3 className="mb-1 font-medium">AI Digital Twin</h3>
               <p className="text-sm text-muted-foreground">
                 Practice therapeutic approaches with an AI simulation based on
-                the patient's data and previous sessions.
+                the patient&apos;s data and previous sessions.
               </p>
             </div>
           </div>

@@ -7,23 +7,43 @@ import { Calendar, momentLocalizer } from 'react-big-calendar';
 import moment from 'moment';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 
-function transformEvents(googleEvents) {
+interface GoogleEvent {
+  id: string;
+  summary?: string;
+  start: {
+    dateTime?: string;
+    date?: string;
+  };
+  end: {
+    dateTime?: string;
+    date?: string;
+  };
+}
+
+interface TransformedEvent {
+  id: string;
+  title: string;
+  start: Date;
+  end: Date;
+}
+
+function transformEvents(googleEvents: GoogleEvent[]): TransformedEvent[] {
   return googleEvents.map((evt) => {
     return {
       id: evt.id,
       title: evt.summary || '(No Title)',
       start: evt.start.dateTime
         ? new Date(evt.start.dateTime)
-        : new Date(evt.start.date),
+        : new Date(evt.start.date || ''),
       end: evt.end.dateTime
         ? new Date(evt.end.dateTime)
-        : new Date(evt.end.date),
+        : new Date(evt.end.date || ''),
     };
   });
 }
 
 export default function CalendarPage() {
-  const [events, setEvents] = useState([]);
+  const [events, setEvents] = useState<TransformedEvent[]>([]);
 
   const localizer = momentLocalizer(moment);
 

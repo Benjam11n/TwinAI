@@ -11,6 +11,7 @@ import { Button } from '../ui/button';
 type KnowledgeBaseEntriesProps = {
   entries: Array<{
     content: string;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     metadata?: Record<string, any>;
   }>;
   onClearAll: () => Promise<void>;

@@ -50,6 +50,7 @@ export class AudioRecorder extends EventEmitter {
       throw new Error('Could not request user media');
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     this.starting = new Promise(async (resolve, reject) => {
       this.stream = await navigator.mediaDevices.getUserMedia({ audio: true });
       this.audioContext = await audioContext({ sampleRate: this.sampleRate });

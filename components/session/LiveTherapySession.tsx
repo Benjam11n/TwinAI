@@ -16,7 +16,9 @@ export default function LiveTherapySession() {
   const [sessionActive, setSessionActive] = useState(false);
   const [patientNotes, setPatientNotes] = useState('');
   const [sessionDuration, setSessionDuration] = useState(0);
-  const [timerInterval, setTimerInterval] = useState(null);
+  const [timerInterval, setTimerInterval] = useState<null | NodeJS.Timeout>(
+    null
+  );
 
   const {
     transcription: therapyTranscription,
@@ -136,12 +138,12 @@ export default function LiveTherapySession() {
             {sessionActive ? (
               <>
                 <MicOff size={16} />
-                End Session
+                End Transcription
               </>
             ) : (
               <>
                 <Mic size={16} />
-                Start Session
+                Start Transcription
               </>
             )}
           </Button>

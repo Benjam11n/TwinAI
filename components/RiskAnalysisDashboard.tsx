@@ -9,9 +9,24 @@ import { Button } from './ui/button';
 
 const RiskAnalysisDashboard = () => {
   const { conversationHistory } = useTherapySessionStore();
-  const [riskAnalysis, setRiskAnalysis] = useState(null);
+  interface RiskAnalysis {
+    overallRiskLevel: string;
+    results: Array<{
+      message: {
+        timestamp: number;
+        role: string;
+        content: string;
+      };
+      risk: {
+        riskLevel: string;
+        score: number;
+      };
+    }>;
+  }
+
+  const [riskAnalysis, setRiskAnalysis] = useState<RiskAnalysis | null>(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState('');
 
   useEffect(() => {
     async function runAnalysis() {
@@ -20,7 +35,7 @@ const RiskAnalysisDashboard = () => {
         const analysis = await analyzeConversationRisks(conversationHistory);
         setRiskAnalysis(analysis);
       } catch (err) {
-        setError(err.message);
+        setError(err instanceof Error ? err.message : 'An error occured');
       } finally {
         setLoading(false);
       }
@@ -54,8 +69,8 @@ const RiskAnalysisDashboard = () => {
           <Hourglass className="mb-4 size-16 animate-pulse" />
           <h2 className="mb-2 text-xl font-semibold">Analyzing Conversation</h2>
           <p className="max-w-md text-gray-600">
-            We're processing your conversation history to identify potential
-            risk patterns.
+            We&apos;re processing your conversation history to identify
+            potential risk patterns.
           </p>
         </div>
       </div>
@@ -87,7 +102,7 @@ const RiskAnalysisDashboard = () => {
           <FileWarning className="mb-4 size-16 text-gray-400" />
           <h2 className="mb-2 text-xl font-semibold">No Conversation Data</h2>
           <p className="mb-4 text-gray-600">
-            There isn't any conversation history to analyze yet.
+            There isn&apos;t any conversation history to analyze yet.
           </p>
           <Link
             href="/therapy-session"
@@ -112,7 +127,7 @@ const RiskAnalysisDashboard = () => {
           <FileWarning className="mb-4 size-16 text-gray-400" />
           <h2 className="mb-2 text-xl font-semibold">No Analysis Results</h2>
           <p className="mb-4 text-gray-600">
-            We couldn't generate any risk analysis from the current
+            We couldn&apos;t generate any risk analysis from the current
             conversation. This typically happens when conversations are very
             short or contain only system messages.
           </p>
@@ -152,17 +167,17 @@ const RiskAnalysisDashboard = () => {
                 : null;
 
             if (
-              result.message.role === 'therapist' &&
+              result.message.role === 'twin' &&
               nextMessage &&
-              nextMessage.role === 'twin'
+              nextMessage.role === 'therapist'
             ) {
               return (
                 <div
                   key={result.message.timestamp}
                   className="mb-4 rounded-lg border bg-white p-4 shadow-sm"
                 >
-                  <div className="grid grid-cols-3 gap-6">
-                    <div className="col-span-3 md:col-span-1">
+                  <div className="grid grid-cols-2 gap-6">
+                    <div className="col-span-2 md:col-span-1">
                       <h3 className="mb-2 font-medium">User Message:</h3>
                       <p className="min-h-[80px] rounded bg-gray-100 p-3">
                         {result.message.content}
@@ -175,22 +190,11 @@ const RiskAnalysisDashboard = () => {
                       </div>
                     </div>
 
-                    <div className="col-span-3 md:col-span-1">
+                    <div className="col-span-2 md:col-span-1">
                       <h3 className="mb-2 font-medium">Your Response:</h3>
                       <p className="min-h-[80px] rounded bg-primary/20 p-3">
                         {nextMessage.content}
                       </p>
-                    </div>
-
-                    <div className="col-span-3 md:col-span-1">
-                      <h3 className="mb-2 font-medium">Analysis:</h3>
-                      <div className="min-h-[80px] rounded-md border p-3">
-                        {getResponseAnalysis(
-                          result.risk.score,
-                          result.message.content,
-                          nextMessage.content
-                        )}
-                      </div>
                     </div>
                   </div>
                 </div>
@@ -214,7 +218,7 @@ const RiskAnalysisDashboard = () => {
                   className="mb-3 rounded-md border border-red-200 bg-red-50 p-3"
                 >
                   <p className="mb-1 font-medium">
-                    User: "{result.message.content}"
+                    User: &quot;{result.message.content}&quot;
                   </p>
                   <p className="text-sm text-red-700">
                     Risk Score: {(result.risk.score * 100).toFixed(1)}%
@@ -232,7 +236,11 @@ const RiskAnalysisDashboard = () => {
   );
 };
 
-function getRiskBgClass(level) {
+interface RiskBgClassProps {
+  level: string;
+}
+
+function getRiskBgClass(level: RiskBgClassProps['level']): string {
   switch (level) {
     case 'high':
       return 'bg-red-100 text-red-700';
@@ -242,17 +250,6 @@ function getRiskBgClass(level) {
       return 'bg-green-100 text-green-700';
     default:
       return 'bg-gray-100 text-gray-700';
-  }
-}
-
-function getResponseAnalysis(riskScore, userMessage, assistantResponse) {
-  // Simple heuristic-based analysis
-  if (riskScore > 0.7) {
-    return 'Your response appears calm and supportive. Continue monitoring closely and consider following up with specific resources.';
-  } else if (riskScore > 0.4) {
-    return 'Your response is appropriate for the moderate risk level detected. Maintain this supportive tone in future interactions.';
-  } else {
-    return 'No concerning patterns detected in this exchange. Your response is suitable for the conversation context.';
   }
 }
 
