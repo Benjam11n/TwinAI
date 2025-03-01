@@ -38,7 +38,7 @@ import {
   type LiveConfig,
 } from '../../types/multimodal-live-types';
 import { blobToJSON, base64ToArrayBuffer } from '../utils';
-import { ChatMessage } from '@/types';
+import { ConversationHistoryEntry } from '@/types';
 
 /**
  * the events that this client will emit
@@ -56,7 +56,7 @@ interface MultimodalLiveClientEventTypes {
   toolcallcancellation: (toolcallCancellation: ToolCallCancellation) => void;
   isTranscribing: (isTranscribing: boolean) => void;
   aiTranscription: (transcription: string) => void;
-  conversationUpdate: (conversation: ChatMessage[]) => void;
+  conversationUpdate: (conversation: ConversationHistoryEntry[]) => void;
   isModelTurn: (isModelTurn: boolean) => void;
 }
 

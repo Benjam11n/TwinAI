@@ -1,13 +1,16 @@
+'use client';
+
 import { Button } from './ui/button';
-import { useNavigationFlow } from '@/hooks/use-navigation-flow';
 import Link from 'next/link';
 import { ShinyText } from './ui/shiny-text';
 import { ArrowUpRight } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import { Card } from './ui/card';
+import { useRouter } from 'next/navigation';
+import { ROUTES } from '@/constants/routes';
 
 export default function Hero() {
-  const { navigateNext } = useNavigationFlow();
+  const router = useRouter();
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isVideoLoaded, setIsVideoLoaded] = useState(false);
 
@@ -45,9 +48,9 @@ export default function Hero() {
             <Button
               size="lg"
               className="group relative flex items-center overflow-hidden rounded-full px-8 py-6 text-lg font-medium shadow-lg transition-all duration-300"
-              onClick={navigateNext}
+              onClick={() => router.push(ROUTES.DASHBOARD)}
             >
-              Create Patient Twin
+              Explore TwinAI
               <span className="arrow-animation ml-2 flex size-6 items-center justify-center rounded-full">
                 <ArrowUpRight className="transition-all" size={16} />
               </span>

@@ -11,14 +11,14 @@ import {
 } from './multimodal-live-client';
 import { TranscriptionService } from '../transcription/transcription-service';
 import { blobToJSON } from '../utils';
-import { ChatMessage } from '@/types';
+import { ConversationHistoryEntry } from '@/types';
 import { RAGDocument, RAGService } from '../rag/rag-service';
 
 export class RAGMultimodalLiveClient extends MultimodalLiveClient {
   private transcriptionService: TranscriptionService;
   private ragService: RAGService;
   private accumulatedPcmData: string[] = [];
-  private conversationHistory: ChatMessage[] = [];
+  private conversationHistory: ConversationHistoryEntry[] = [];
   private ragInitialized: boolean = false;
   private documents: RAGDocument[] = [];
 

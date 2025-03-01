@@ -23,8 +23,6 @@ import {
 import { LiveConfig } from '@/types/multimodal-live-types';
 import { AudioStreamer } from '@/lib/gemini/audio-streamer';
 import VolMeterWorket from '@/lib/worklets/vol-meter';
-import { useInterviewStore } from '@/store/useInterviewStore';
-import { EnhancedMultimodalLiveClient } from '@/lib/gemini/enhanced-multimodal-live-client';
 
 export type UseLiveAPIResults = {
   client: MultimodalLiveClient;
@@ -43,19 +41,8 @@ export function useLiveAPI({
   url,
   apiKey,
 }: MultimodalLiveAPIClientConnection): UseLiveAPIResults {
-  const { role, resume, preset } = useInterviewStore();
-
-  const INITIAL_PROMPT = `${preset.personality}.
-  The user has applied for the role of ${role?.title} at ${role?.company}.
-  The job description of this role is ${role?.description}.
-  Here's a summary of their resume: ${resume}.
-  Given this context, you will conduct an interview.
-  You will ask me interview questions one at a time.
-  After I answer, reply briefly and ask the next question.
-  Please start with the first question.`;
-
   const client = useMemo(
-    () => new EnhancedMultimodalLiveClient({ url, apiKey }),
+    () => new MultimodalLiveClient({ url, apiKey }),
     [url, apiKey]
   );
 
@@ -136,11 +123,9 @@ export function useLiveAPI({
     await client.connect(config);
 
     setAiTranscription('');
-    console.log('sending initial prompt', INITIAL_PROMPT);
-    client.send([{ text: INITIAL_PROMPT }]);
 
     setConnected(true);
-  }, [client, setConnected, config, INITIAL_PROMPT]);
+  }, [client, setConnected, config]);
 
   const disconnect = useCallback(async () => {
     client.disconnect();

@@ -32,7 +32,7 @@ export function NavBar() {
       <nav className="container flex h-16 items-center px-4">
         <div className="flex gap-6 lg:gap-10">
           <Link
-            href={ROUTES.HOME}
+            href={ROUTES.DASHBOARD}
             prefetch
             className="flex items-center space-x-2"
           >

@@ -10,7 +10,7 @@ import Controls from './chat/Controls';
 import { cn } from '@/lib/utils';
 import { useLoggerStore } from '@/store/use-logger-store';
 import UserTranscription from './UserTranscription';
-import { useInterviewStore } from '@/store/useInterviewStore';
+import { useTherapySessionStore } from '@/store/use-therapy-session-store';
 
 export default function Twin() {
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -24,7 +24,8 @@ export default function Twin() {
     aiTranscription,
     isModelTurn,
   } = useLiveAPIContext();
-  const { conversationHistory, setConversationHistory } = useInterviewStore();
+  const { conversationHistory, setConversationHistory } =
+    useTherapySessionStore();
   const { log } = useLoggerStore();
 
   useEffect(() => {
@@ -48,7 +49,7 @@ export default function Twin() {
   }, [aiTranscription]);
 
   return (
-    <div className="animate-fadeIn mx-auto flex h-screen w-full flex-col">
+    <div className="animate-fadeIn mx-auto flex h-[92vh] w-full flex-col">
       <TwinAI />
       <AnimatePresence>
         {!connected ? (
@@ -69,7 +70,7 @@ export default function Twin() {
                 onClick={connected ? disconnect : connect}
               >
                 <Phone className="size-5 opacity-50" />
-                <span>Start Interview</span>
+                <span>Start Session</span>
               </Button>
             </motion.div>
           </motion.div>

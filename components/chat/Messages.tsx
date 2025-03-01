@@ -1,13 +1,13 @@
 import { forwardRef } from 'react';
 import { Message } from './Message';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useInterviewStore } from '@/store/useInterviewStore';
 import { useLiveAPIContext } from '@/contexts/LiveAPIContext';
+import { useTherapySessionStore } from '@/store/use-therapy-session-store';
 
 const Messages = forwardRef<HTMLDivElement>(function Messages(props, ref) {
-  const { conversationHistory } = useInterviewStore();
+  const { conversationHistory, isTranscribing: isUserTranscribing } =
+    useTherapySessionStore();
   const { isTranscribing: isAITranscribing } = useLiveAPIContext();
-  const { isTranscribing: isUserTranscribing } = useInterviewStore();
 
   const showLoadingMessage = isAITranscribing || isUserTranscribing;
   const loadingMessageRole = isAITranscribing ? 'assistant' : 'user';

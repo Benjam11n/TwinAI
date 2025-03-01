@@ -1,10 +1,13 @@
+'use client';
+
 import { Badge } from '@/components/ui/badge';
 import { Button } from './ui/button';
-import { useNavigationFlow } from '@/hooks/use-navigation-flow';
 import { ArrowUpRight } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import { ROUTES } from '@/constants/routes';
 
 function FeatureImage() {
-  const { navigateNext } = useNavigationFlow();
+  const router = useRouter();
 
   return (
     <div className="w-full py-20 lg:py-40">
@@ -31,7 +34,7 @@ function FeatureImage() {
               <Button
                 size="lg"
                 className="group relative flex items-center overflow-hidden rounded-full px-8 py-6 text-lg font-medium shadow-lg transition-all duration-300"
-                onClick={navigateNext}
+                onClick={() => router.push(ROUTES.DASHBOARD)}
               >
                 Start Training
                 <span className="ml-2 flex size-6 items-center justify-center rounded-full transition-all duration-300 group-hover:translate-x-1">
