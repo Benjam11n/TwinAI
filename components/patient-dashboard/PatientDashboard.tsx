@@ -21,10 +21,12 @@ import { KnowledgeBaseEntries } from './KnowledgeBaseEntries';
 import { useTherapySessionStore } from '@/store/use-therapy-session-store';
 import { Badge } from '../ui/badge';
 import { patients } from '@/data/data';
+import { useTranscription } from '@/contexts/LiveTranscriptionContext';
 
 export default function PatientDashboard({ patient }: { patient: string }) {
   const router = useRouter();
   const { setPatient, setConversationHistory } = useTherapySessionStore();
+  const { clearTranscription } = useTranscription();
 
   const {
     addDocuments,
@@ -107,6 +109,7 @@ export default function PatientDashboard({ patient }: { patient: string }) {
                     onClick={() => {
                       router.push(ROUTES.SESSION);
                       setPatient(currentPatient || null);
+                      clearTranscription();
                     }}
                     className="w-full gap-2"
                     variant="default"
@@ -162,6 +165,7 @@ export default function PatientDashboard({ patient }: { patient: string }) {
                     onClick={() => {
                       router.push(ROUTES.DTSESSION);
                       setConversationHistory([]);
+                      clearTranscription();
                     }}
                     className="w-full gap-2"
                     variant="secondary"

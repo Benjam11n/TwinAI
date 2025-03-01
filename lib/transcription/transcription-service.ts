@@ -23,10 +23,23 @@ export class TranscriptionService {
           },
         },
         {
-          text: 'Please transcribe the spoken language in this audio accurately. Ignore any background noise or non-speech sounds.',
+          text: `Please transcribe the spoken language in this audio accurately. 
+          If there is no clear speech or only background noise, respond with EMPTY_AUDIO.
+          Ignore any background noise, non-speech sounds, or unclear mumbling.
+          Only transcribe actual speech that you can confidently understand.`,
         },
       ]);
-      return result.response.text();
+
+      const transcription = result.response.text();
+
+      if (
+        transcription.includes('EMPTY_AUDIO') ||
+        transcription.trim() === ''
+      ) {
+        return '';
+      }
+
+      return transcription;
     } catch (error) {
       console.error('Transcription error:', error);
       throw error;

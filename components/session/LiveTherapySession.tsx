@@ -9,6 +9,7 @@ import { useTherapySessionStore } from '@/store/use-therapy-session-store';
 import { useTranscription } from '@/contexts/LiveTranscriptionContext';
 import { useRouter } from 'next/navigation';
 import { ROUTES } from '@/constants/routes';
+import { Textarea } from '../ui/textarea';
 
 export default function LiveTherapySession() {
   const router = useRouter();
@@ -149,6 +150,15 @@ export default function LiveTherapySession() {
             onClick={() => {
               saveSession();
               router.push(ROUTES.DASHBOARD);
+              if (transcription) {
+                setTranscription([
+                  ...therapyTranscription,
+                  {
+                    content: transcription,
+                    timestamp: Date.now(),
+                  },
+                ]);
+              }
             }}
           >
             End Session
@@ -239,7 +249,7 @@ export default function LiveTherapySession() {
             </div>
           )}
 
-          <div className="mb-4 rounded-lg border bg-muted/30 p-4">
+          <div className="mb-4 flex h-24 items-center rounded-lg border bg-muted/30 p-4">
             {transcription ? (
               <pre className="whitespace-pre-wrap font-sans text-sm">
                 {transcription}
@@ -257,12 +267,12 @@ export default function LiveTherapySession() {
             <h3 className="text-sm font-medium text-muted-foreground">
               Therapist Notes
             </h3>
-            <textarea
-              className="h-32 w-full rounded-md border bg-background p-2"
+            <Textarea
+              className="h-60 w-full rounded-md border bg-background p-2"
               placeholder="Add your session notes here..."
               value={patientNotes}
               onChange={(e) => setPatientNotes(e.target.value)}
-            ></textarea>
+            ></Textarea>
           </div>
         </Card>
       </div>

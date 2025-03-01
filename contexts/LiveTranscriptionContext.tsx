@@ -47,8 +47,8 @@ export const TranscriptionProvider = ({
 
   const mediaRecorderRef = useRef(null);
   const chunksRef = useRef([]);
-  const intervalRef = useRef(null);
   const transcriptionServiceRef = useRef(null);
+  // Remove the intervalRef since we won't be doing continuous transcription
 
   // Initialize the transcription service
   useEffect(() => {
@@ -91,7 +91,7 @@ export const TranscriptionProvider = ({
     }
   };
 
-  // Start recording and transcription
+  // Start recording but don't transcribe yet
   const startTranscription = async () => {
     if (isRecording) return;
 
@@ -106,21 +106,6 @@ export const TranscriptionProvider = ({
         }
       };
 
-      // Process audio chunks at regular intervals for live transcription
-      intervalRef.current = setInterval(async () => {
-        if (chunksRef.current.length > 0) {
-          const audioBlob = new Blob(chunksRef.current, { type: 'audio/wav' });
-          const newTranscript = await transcribeAudio(audioBlob);
-
-          if (newTranscript) {
-            setTranscription(newTranscript);
-          }
-
-          // Clear processed chunks
-          chunksRef.current = [];
-        }
-      }, 10000); // Process every 10 seconds
-
       mediaRecorderRef.current.start(1000); // Collect data every second
       setIsRecording(true);
     } catch (error) {
@@ -128,15 +113,9 @@ export const TranscriptionProvider = ({
     }
   };
 
-  // Stop recording and transcription
+  // Stop recording and only then transcribe the entire audio
   const stopTranscription = async () => {
     if (!isRecording || !mediaRecorderRef.current) return;
-
-    // Clear the processing interval
-    if (intervalRef.current) {
-      clearInterval(intervalRef.current);
-      intervalRef.current = null;
-    }
 
     // Stop media recorder
     mediaRecorderRef.current.stop();
@@ -144,7 +123,12 @@ export const TranscriptionProvider = ({
       .getTracks()
       .forEach((track) => track.stop());
 
-    // Process any remaining audio chunks
+    // Wait for the final ondataavailable event to fire
+    await new Promise((resolve) => {
+      mediaRecorderRef.current.onstop = resolve;
+    });
+
+    // Process the entire audio at once
     if (chunksRef.current.length > 0) {
       const audioBlob = new Blob(chunksRef.current, { type: 'audio/wav' });
       const finalTranscript = await transcribeAudio(audioBlob);
@@ -172,9 +156,6 @@ export const TranscriptionProvider = ({
         mediaRecorderRef.current.stream
           .getTracks()
           .forEach((track) => track.stop());
-      }
-      if (intervalRef.current) {
-        clearInterval(intervalRef.current);
       }
     };
   }, [isRecording]);

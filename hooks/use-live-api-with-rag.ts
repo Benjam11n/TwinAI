@@ -38,9 +38,7 @@ export function useLiveAPIWithRAG({
   url,
   apiKey,
 }: MultimodalLiveAPIClientConnection): UseLiveAPIWithRAGResults {
-  const { patient, patientNotes, conversationHistory } =
-    useTherapySessionStore();
-
+  const { patient, patientNotes, transcription } = useTherapySessionStore();
   const [knowledgeBaseEntries, setKnowledgeBaseEntries] = useState<
     RAGDocument[]
   >([]);
@@ -49,9 +47,9 @@ export function useLiveAPIWithRAG({
     Patient background:
     - Name: ${patient?.name}
     - Conditions: ${patient?.conditions.join(', ')}
-    - Therapy history: ${conversationHistory.length} previous sessions
+    - Therapy history: ${transcription.length} previous sessions
     Based on the following therapy session notes and transcriptions, embody the patient's communication style, thought patterns, concerns, and progress:
-    ${conversationHistory
+    ${transcription
       .map(
         (entry) =>
           `[${new Date(entry.timestamp).toLocaleString()}] ${entry.content}`
