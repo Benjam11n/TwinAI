@@ -36,7 +36,7 @@ export default function PatientDashboard({ patient }: { patient: string }) {
     <div className="flex min-h-screen">
       <div className="flex flex-1 flex-col">
         <header className="flex h-14 items-center justify-between border-b px-6">
-          <h1 className="text-2xl font-bold tracking-tight">
+          <h1 className="text-3xl font-semibold tracking-tight">
             {decodedPatientName}&apos;s Therapy Dashboard
           </h1>
         </header>

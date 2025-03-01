@@ -4,33 +4,16 @@ import { Button } from '../ui/button';
 import Link from 'next/link';
 import { ShinyText } from '../ui/shiny-text';
 import { ArrowUpRight } from 'lucide-react';
-import { useEffect, useRef, useState } from 'react';
-import { Card } from '../ui/card';
 import { useRouter } from 'next/navigation';
 import { ROUTES } from '@/constants/routes';
 
 export default function Hero() {
   const router = useRouter();
-  const videoRef = useRef<HTMLVideoElement>(null);
-  const [isVideoLoaded, setIsVideoLoaded] = useState(false);
-
-  useEffect(() => {
-    const videoElement = videoRef.current;
-    if (videoElement) {
-      const handleLoadedData = () => {
-        setIsVideoLoaded(true);
-      };
-      videoElement.addEventListener('loadeddata', handleLoadedData);
-      return () => {
-        videoElement.removeEventListener('loadeddata', handleLoadedData);
-      };
-    }
-  }, []);
 
   return (
     <div className="relative space-y-4 pb-16">
       {/* Background gradient */}
-      <div className="absolute -right-24 -top-24 size-96 animate-pulse rounded-full bg-gradient-to-b from-green-100 to-green-300 opacity-40 blur-3xl"></div>
+      <div className="absolute -right-24 -top-24 size-96 animate-pulse rounded-full bg-gradient-to-b from-primary/10 to-primary/40 opacity-40 blur-3xl"></div>
 
       {/* Hero content */}
       <div className="relative z-10 flex flex-col gap-8">
@@ -57,7 +40,7 @@ export default function Hero() {
             </Button>
             <Link
               href="#"
-              className="flex items-center px-4 py-2 text-lg font-medium text-green-600 hover:text-green-700"
+              className="flex items-center px-4 py-2 text-lg font-medium text-primary/70 hover:text-primary"
             >
               Learn more
             </Link>
@@ -102,9 +85,9 @@ export default function Hero() {
               <div className="space-y-3">
                 <div className="rounded-lg bg-gray-50 p-3">
                   <p className="text-sm text-gray-700">
-                    <span className="font-medium">Patient:</span> I've been
-                    feeling really stressed lately. I can't seem to get a good
-                    night's sleep and it's affecting my work...
+                    <span className="font-medium">Patient:</span> I&apos;ve been
+                    feeling really stressed lately. I can&apos;t seem to get a
+                    good night&apos;s sleep and it&apos;s affecting my work...
                   </p>
                 </div>
                 <div className="rounded-lg bg-primary/30 p-3">
@@ -127,31 +110,6 @@ export default function Hero() {
             </div>
           </div>
         </div>
-
-        {/* Video demo section */}
-        <Card className="mt-10">
-          {/* Video player */}
-          <div className="relative aspect-video w-full">
-            {!isVideoLoaded && (
-              <div className="absolute inset-0 flex items-center justify-center">
-                <div className="size-8 animate-spin rounded-full border-4 border-green-500 border-t-transparent"></div>
-              </div>
-            )}
-            <video
-              ref={videoRef}
-              className={`size-full object-cover ${isVideoLoaded ? 'opacity-100' : 'opacity-0'}`}
-              autoPlay
-              loop
-              muted
-              playsInline
-              onLoadedData={() => setIsVideoLoaded(true)}
-            >
-              <source src="" type="video/mp4" />
-              {/* Fallback message */}
-              Your browser does not support the video tag.
-            </video>
-          </div>
-        </Card>
       </div>
     </div>
   );

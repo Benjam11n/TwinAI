@@ -1,5 +1,4 @@
 'use client';
-
 import { useRouter } from 'next/navigation';
 import { Brain } from 'lucide-react';
 import {
@@ -26,14 +25,14 @@ export function DigitalTwinCard({ patientName }: { patientName: string }) {
       <CardHeader className="pb-3">
         <div className="flex items-center justify-between">
           <CardTitle className="flex items-center">
-            <div className="mr-3 rounded-full bg-purple-100 p-2 dark:bg-purple-900/30">
-              <Brain className="size-5 text-purple-600 dark:text-purple-400" />
+            <div className="mr-3 rounded-full bg-primary/20 p-2 dark:bg-green-900/30">
+              <Brain className="size-5 text-green-600 dark:text-green-400" />
             </div>
             Digital Twin Session
           </CardTitle>
           <Badge
             variant="outline"
-            className="border-purple-200 bg-purple-50 font-normal text-purple-700 dark:border-purple-900/50 dark:bg-purple-900/20 dark:text-purple-300"
+            className="border-green-200 bg-green-50 font-normal text-green-700 dark:border-green-900/50 dark:bg-green-900/20 dark:text-green-300"
           >
             AI-Powered
           </Badge>
@@ -45,10 +44,10 @@ export function DigitalTwinCard({ patientName }: { patientName: string }) {
 
       <CardContent className="flex-1">
         <div className="space-y-4">
-          <div className="rounded-lg border border-purple-100 bg-purple-50/50 p-4 dark:border-purple-900/30 dark:bg-purple-900/10">
+          <div className="rounded-lg border border-green-100 bg-primary/10 p-4 dark:border-green-900/30">
             <div className="flex flex-col items-center justify-center py-6 text-center">
-              <div className="mb-4 rounded-full bg-purple-100 p-4 dark:bg-purple-900/30">
-                <Brain className="size-10 text-purple-500 dark:text-purple-400" />
+              <div className="mb-4 rounded-full bg-primary/20 p-4 dark:bg-green-900/30">
+                <Brain className="size-10 text-green-600 dark:text-green-400" />
               </div>
               <h3 className="mb-1 font-medium">AI Digital Twin</h3>
               <p className="text-sm text-muted-foreground">
@@ -69,11 +68,6 @@ export function DigitalTwinCard({ patientName }: { patientName: string }) {
           }}
           className="w-full gap-2"
           variant="secondary"
-          style={{
-            backgroundColor: 'rgb(250, 245, 255)',
-            color: 'rgb(107, 33, 168)',
-            borderColor: 'rgb(233, 213, 255)',
-          }}
         >
           <Brain className="size-4" />
           Start Digital Twin Session

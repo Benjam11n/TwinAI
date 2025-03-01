@@ -190,7 +190,7 @@ In future iterations, TwinAI will expand to include:
 
 ## Data Attribution
 
-The suicide risk analysis model in TwinAI was trained using the "Suicide Watch" dataset from Kaggle, created by Nikhileswar Komati. This dataset is licensed under [Attribution-ShareAlike 4.0 International (CC BY-SA 4.0)](https://creativecommons.org/licenses/by-sa/4.0/).
+The suicide risk analysis model in TwinAI was trained using the "Suicide and Depression Detection" dataset from Kaggle, created by Nikhileswar Komati. This dataset is licensed under [Attribution-ShareAlike 4.0 International (CC BY-SA 4.0)](https://creativecommons.org/licenses/by-sa/4.0/).
 
 Dataset URL: [Suicide Watch Dataset on Kaggle](https://www.kaggle.com/datasets/nikhileswarkomati/suicide-watch)
 

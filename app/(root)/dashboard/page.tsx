@@ -48,7 +48,7 @@ export default function CalendarPage() {
   }, []);
 
   return (
-    <div className="flex min-h-screen dark:bg-gray-900">
+    <div className="flex min-h-screen">
       {/* Main Content */}
       <div className="flex flex-1 flex-col">
         {/* Calendar Content */}
@@ -89,7 +89,7 @@ export default function CalendarPage() {
                       {events.map((evt) => (
                         <li key={evt.id} className="">
                           <strong>{evt.title}</strong> <br />
-                          <span className="text-xs text-gray-500">
+                          <span className="text-xs">
                             {evt.start.toLocaleString()} -{' '}
                             {evt.end.toLocaleString()}
                           </span>

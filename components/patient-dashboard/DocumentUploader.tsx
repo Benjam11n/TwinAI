@@ -164,7 +164,7 @@ export const DocumentUploader: React.FC<DocumentUploaderProps> = ({
           )}
 
           {success && (
-            <div className="flex items-center gap-2 rounded bg-green-50 p-2 text-green-600 dark:bg-green-900/20 dark:text-green-400">
+            <div className="flex items-center gap-2 rounded bg-primary/10 p-2 text-primary dark:bg-green-900/20 dark:text-green-400">
               <Check className="size-4" />
               <span className="text-sm">{success}</span>
             </div>

@@ -32,7 +32,7 @@ export function MoodAnalysisCard() {
 
           <div className="flex items-center justify-between text-sm">
             <span className="text-muted-foreground">Trend</span>
-            <span className={isImproving ? 'text-green-600' : 'text-red-600'}>
+            <span className={isImproving ? 'text-primary' : 'text-red-600'}>
               <TrendingUp
                 className={`mr-1 inline size-4 ${isImproving ? '' : 'rotate-180'}`}
               />
