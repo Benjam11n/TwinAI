@@ -1,4 +1,4 @@
-import PatientDashboard from '@/components/PatientDashboard';
+import PatientDashboard from '@/components/patient-dashboard/PatientDashboard';
 
 const PatientPage = async ({ params }) => {
   const { patient } = await params;

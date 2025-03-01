@@ -1,4 +1,4 @@
-import Twin from '@/components/Twin';
+import Twin from '@/components/dtsession/Twin';
 
 const DTSessionPage = () => {
   return <Twin />;

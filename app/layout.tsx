@@ -5,7 +5,7 @@ import { ThemeProvider } from 'next-themes';
 import { LiveAPIProvider } from '@/contexts/LiveAPIContext';
 import { Toaster } from 'sonner';
 import localFont from 'next/font/local';
-import { NavBar } from '@/components/NavBar';
+import { NavBar } from '@/components/ui/NavBar';
 import { TranscriptionProvider } from '@/contexts/LiveTranscriptionContext';
 
 const geistSans = Geist({

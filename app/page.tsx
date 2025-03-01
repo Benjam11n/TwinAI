@@ -1,10 +1,10 @@
 'use client';
 
-import Footer from '@/components/Footer';
-import Hero from '@/components/Hero';
-import { Feature } from '@/components/Features';
-import { FeatureImage } from '@/components/FeatureImage';
-import { FaqSectionWithCategories } from '@/components/blocks/faq-with-categories';
+import Footer from '@/components/home/Footer';
+import Hero from '@/components/home/Hero';
+import { Feature } from '@/components/home/Features';
+import { FeatureImage } from '@/components/home/FeatureImage';
+import { Faq } from '@/components/home/Faq';
 import { DEMO_FAQS } from '@/constants';
 
 export default function Home() {
@@ -17,7 +17,7 @@ export default function Home() {
           <div className="animate-fadeIn">
             <Feature />
             <FeatureImage />
-            <FaqSectionWithCategories
+            <Faq
               title="Frequently Asked Questions"
               description="Find answers to common questions about our services"
               items={DEMO_FAQS}

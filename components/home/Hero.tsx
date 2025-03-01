@@ -1,11 +1,11 @@
 'use client';
 
-import { Button } from './ui/button';
+import { Button } from '../ui/button';
 import Link from 'next/link';
-import { ShinyText } from './ui/shiny-text';
+import { ShinyText } from '../ui/shiny-text';
 import { ArrowUpRight } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
-import { Card } from './ui/card';
+import { Card } from '../ui/card';
 import { useRouter } from 'next/navigation';
 import { ROUTES } from '@/constants/routes';
 

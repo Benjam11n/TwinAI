@@ -1,4 +1,4 @@
-import LiveTherapySession from '@/components/LiveTherapySession';
+import LiveTherapySession from '@/components/session/LiveTherapySession';
 
 const SessionPage = () => {
   return <LiveTherapySession />;

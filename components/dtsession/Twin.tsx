@@ -1,15 +1,16 @@
 'use client';
+
 import { Button } from '@/components/ui/button';
 import { Phone } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
-import Messages from './chat/Messages';
+import Messages from '../chat/Messages';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useLiveAPIContext } from '@/contexts/LiveAPIContext';
 import { TwinAI } from './TwinAI';
-import Controls from './chat/Controls';
+import Controls from '../chat/Controls';
 import { cn } from '@/lib/utils';
 import { useLoggerStore } from '@/store/use-logger-store';
-import UserTranscription from './UserTranscription';
+import UserTranscription from '../UserTranscription';
 import { useTherapySessionStore } from '@/store/use-therapy-session-store';
 
 export default function Twin() {

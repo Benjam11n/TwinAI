@@ -12,14 +12,14 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Mic, Brain } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { DocumentUploader } from '@/components/DocumentUploader';
+import { DocumentUploader } from '@/components/patient-dashboard/DocumentUploader';
 import { useRouter } from 'next/navigation';
 import { ROUTES } from '@/constants/routes';
 import { useLiveAPIContext } from '@/contexts/LiveAPIContext';
 import { ManualKnowledgeEntryForm } from './ManualKnowledgeEntry';
 import { KnowledgeBaseEntries } from './KnowledgeBaseEntries';
 import { useTherapySessionStore } from '@/store/use-therapy-session-store';
-import { Badge } from './ui/badge';
+import { Badge } from '../ui/badge';
 import { patients } from '@/data/data';
 
 export default function PatientDashboard({ patient }: { patient: string }) {
