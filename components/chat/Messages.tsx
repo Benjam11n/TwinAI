@@ -10,7 +10,7 @@ const Messages = forwardRef<HTMLDivElement>(function Messages(props, ref) {
   const { isTranscribing: isAITranscribing } = useLiveAPIContext();
 
   const showLoadingMessage = isAITranscribing || isUserTranscribing;
-  const loadingMessageRole = isAITranscribing ? 'assistant' : 'user';
+  const loadingMessageRole = isAITranscribing ? 'twin' : 'therapist';
 
   return (
     <motion.div className="grow overflow-auto rounded-md p-4" ref={ref}>

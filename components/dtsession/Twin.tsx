@@ -41,7 +41,7 @@ export default function Twin() {
       setConversationHistory([
         ...conversationHistory,
         {
-          role: 'assistant',
+          role: 'twin',
           content: aiTranscription,
           timestamp: Date.now(),
         },

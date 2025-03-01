@@ -249,7 +249,7 @@ export default function LiveTherapySession() {
             </div>
           )}
 
-          <div className="mb-4 flex h-24 items-center rounded-lg border bg-muted/30 p-4">
+          <div className="mb-4 flex items-center rounded-lg border bg-muted/30 p-4">
             {transcription ? (
               <pre className="whitespace-pre-wrap font-sans text-sm">
                 {transcription}

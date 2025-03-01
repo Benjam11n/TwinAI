@@ -171,7 +171,7 @@ export default function Controls({
 
   const handleEndCall = () => {
     disconnect();
-    router.push(ROUTES.DASHBOARD);
+    router.push(ROUTES.DTSESSION_ANALYSIS);
   };
 
   return (

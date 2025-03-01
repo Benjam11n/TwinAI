@@ -24,7 +24,7 @@ const UserTranscription = ({ isModelTurn }: UserTranscriptionProps) => {
       setConversationHistory([
         ...conversationHistory,
         {
-          role: 'user',
+          role: 'therapist',
           content: transcription,
           timestamp: Date.now(),
         },

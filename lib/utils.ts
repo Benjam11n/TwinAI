@@ -14,8 +14,10 @@
  * limitations under the License.
  */
 
+import { ConversationHistoryEntry } from '@/types';
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
+import { loadModel, predictRisk } from './suicideRiskDetection';
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -92,4 +94,36 @@ export function base64ToArrayBuffer(base64: string) {
     bytes[i] = binaryString.charCodeAt(i);
   }
   return bytes.buffer;
+}
+
+export async function analyzeConversationRisks(
+  history: ConversationHistoryEntry[]
+) {
+  // Ensure model is loaded
+  await loadModel();
+
+  const results = [];
+  const twinMessages = history.filter((entry) => entry.role === 'twin');
+
+  // Analyze each twin message
+  for (const message of twinMessages) {
+    const risk = await predictRisk(message.content);
+    results.push({
+      message,
+      risk,
+    });
+  }
+
+  // Find highest risk message
+  const highestRiskEntry = results.reduce(
+    (highest, current) =>
+      current.risk.score > highest.risk.score ? current : highest,
+    { risk: { score: 0 } }
+  );
+
+  return {
+    results,
+    highestRisk: highestRiskEntry,
+    overallRiskLevel: highestRiskEntry.risk?.riskLevel || 'none',
+  };
 }

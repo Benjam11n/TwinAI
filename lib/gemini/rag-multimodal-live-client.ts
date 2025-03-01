@@ -182,7 +182,7 @@ export class RAGMultimodalLiveClient extends MultimodalLiveClient {
 
           // Add to conversation history
           this.conversationHistory.push({
-            role: 'assistant',
+            role: 'twin',
             content: transcription,
             timestamp: Date.now(),
           });

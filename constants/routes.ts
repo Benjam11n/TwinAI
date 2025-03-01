@@ -3,5 +3,6 @@ export const ROUTES = {
   DASHBOARD: '/dashboard',
   SESSION: '/session',
   DTSESSION: '/dtsession',
+  DTSESSION_ANALYSIS: '/dtsession/analysis',
   PATIENT: (name: string) => `${name}`,
 };
