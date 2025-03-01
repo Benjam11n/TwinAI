@@ -151,7 +151,7 @@ const RiskAnalysisDashboard = () => {
       </div>
 
       <div className="mb-8">
-        <h2 className="mb-4 text-xl font-semibold">Message Analysis</h2>
+        <h2 className="mb-4 text-xl font-semibold">Session Analysis</h2>
 
         {riskAnalysis.results
           .map((result, index) => {
@@ -176,7 +176,7 @@ const RiskAnalysisDashboard = () => {
                 >
                   <div className="grid grid-cols-2 gap-6">
                     <div className="col-span-2 md:col-span-1">
-                      <h3 className="mb-2 font-medium">User Message:</h3>
+                      <h3 className="mb-2 font-medium">User:</h3>
                       <p className="min-h-[80px] rounded bg-gray-100 p-3">
                         {result.message.content}
                       </p>
@@ -204,7 +204,7 @@ const RiskAnalysisDashboard = () => {
       </div>
 
       <div className="mb-8">
-        <h2 className="mb-4 text-xl font-semibold">High Risk Messages</h2>
+        <h2 className="mb-4 text-xl font-semibold">High Risk Dialogs</h2>
         <div className="rounded-lg border bg-white p-4 shadow-sm">
           {riskAnalysis.results.filter((r) => r.risk.riskLevel === 'high')
             .length > 0 ? (
@@ -225,7 +225,7 @@ const RiskAnalysisDashboard = () => {
               ))
           ) : (
             <p className="p-3 text-gray-600">
-              No high risk messages detected in this conversation.
+              No high risk dialogs detected in this conversation.
             </p>
           )}
         </div>
