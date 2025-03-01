@@ -27,7 +27,6 @@ export class RAGService {
     const processedDocs = await DocumentProcessor.processDocuments(documents);
     console.log(`Created ${processedDocs.length} chunks`);
 
-    // Initialize vector store
     await this.vectorStore.initializeStore(processedDocs);
     console.log('Vector store initialized');
 

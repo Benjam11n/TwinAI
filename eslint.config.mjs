@@ -13,23 +13,14 @@ const compat = new FlatCompat({
 });
 
 const eslintConfig = [
-  // Core Next.js recommended rules and TypeScript support
   ...compat.extends('next/core-web-vitals', 'next/typescript'),
-
-  // Tailwind CSS recommended rules
   ...compat.extends('plugin:tailwindcss/recommended'),
-
-  // TanStack Query recommended rules
   ...compat.extends('plugin:@tanstack/query/recommended'),
-
-  // Prettier - make sure this comes last to override formatting rules
   prettierConfig,
-
-  // Your custom configurations (as a flat config object)
   {
     plugins: {
       import: importPlugin,
-      tailwindcss: tailwindPlugin, // You might need to re-register tailwind plugin here if needed for custom rules
+      tailwindcss: tailwindPlugin,
     },
     rules: {
       'import/order': [
@@ -58,7 +49,7 @@ const eslintConfig = [
           },
         },
       ],
-      'no-undef': 'off', // Keep your override rule if needed
+      'no-undef': 'off',
     },
     settings: {
       tailwindcss: {

@@ -48,11 +48,9 @@ export default function CalendarPage() {
   const localizer = momentLocalizer(moment);
 
   useEffect(() => {
-    // Example fetch from an API route (pages/api/calendar)
-    // or direct to Google if you have credentials on the client.
     async function fetchEvents() {
       try {
-        const res = await fetch('/api/calendar'); // Adjust if needed
+        const res = await fetch('/api/calendar');
         if (!res.ok) {
           throw new Error('Failed to fetch events');
         }

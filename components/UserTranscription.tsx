@@ -18,7 +18,6 @@ const UserTranscription = ({ isModelTurn }: UserTranscriptionProps) => {
   const { conversationHistory, setConversationHistory } =
     useTherapySessionStore();
 
-  // Add transcription to conversation when it changes
   useEffect(() => {
     if (transcription) {
       setConversationHistory([

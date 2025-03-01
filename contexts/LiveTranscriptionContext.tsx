@@ -73,13 +73,11 @@ export const TranscriptionProvider = ({
     });
   };
 
-  // Function to send audio data to transcription service
   const transcribeAudio = async (audioData: Blob): Promise<string> => {
     setIsTranscribing(true);
     try {
       const base64Audio = await convertBlobToBase64(audioData);
 
-      // Use the TranscriptionService with Gemini
       if (!transcriptionServiceRef.current) {
         throw new Error('Transcription service not initialized');
       }
@@ -114,7 +112,7 @@ export const TranscriptionProvider = ({
         }
       };
 
-      mediaRecorder.start(1000); // Collect data every second
+      mediaRecorder.start(1000);
       setIsRecording(true);
     } catch (error) {
       console.error('Error accessing microphone:', error);
@@ -125,7 +123,6 @@ export const TranscriptionProvider = ({
   const stopTranscription = async (): Promise<void> => {
     if (!isRecording || !mediaRecorderRef.current) return;
 
-    // Stop media recorder
     mediaRecorderRef.current.stop();
     mediaRecorderRef.current.stream
       .getTracks()
@@ -155,7 +152,6 @@ export const TranscriptionProvider = ({
     setIsRecording(false);
   };
 
-  // Clear transcription
   const clearTranscription = (): void => {
     setTranscription('');
   };

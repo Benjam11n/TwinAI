@@ -253,17 +253,3 @@ export class AudioStreamer {
     }
   }
 }
-
-// // Usage example:
-// const audioStreamer = new AudioStreamer();
-//
-// // In your streaming code:
-// function handleChunk(chunk: Uint8Array) {
-//   audioStreamer.handleChunk(chunk);
-// }
-//
-// // To start playing (call this in response to a user interaction)
-// await audioStreamer.resume();
-//
-// // To stop playing
-// // audioStreamer.stop();

@@ -29,7 +29,6 @@ export class RAGVectorStore {
         new Document({ pageContent: doc.content, metadata: doc.metadata || {} })
     );
 
-    // Create vector store
     this.vectorStore = await MemoryVectorStore.fromDocuments(
       docs,
       this.embeddingModel

@@ -48,7 +48,6 @@ const RiskAnalysisDashboard = () => {
     }
   }, [conversationHistory]);
 
-  // Return button at the top
   const ReturnButton = () => (
     <Link
       href="/dashboard"
@@ -156,7 +155,6 @@ const RiskAnalysisDashboard = () => {
 
         {riskAnalysis.results
           .map((result, index) => {
-            // Only show user messages followed by assistant messages to analyze triggers
             const nextMessage =
               index < conversationHistory.length - 1
                 ? conversationHistory[

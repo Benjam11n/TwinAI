@@ -79,10 +79,8 @@ export const DocumentUploader: React.FC<DocumentUploaderProps> = ({
         return;
       }
 
-      // Add to state
       setDocuments((prev) => [...prev, ...newDocuments]);
 
-      // Call the parent handler
       await onDocumentsAdded(newDocuments);
 
       setSuccess(`${newDocuments.length} documents processed successfully`);

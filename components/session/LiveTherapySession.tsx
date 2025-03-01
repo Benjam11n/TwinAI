@@ -36,14 +36,11 @@ export default function LiveTherapySession() {
     clearTranscription,
   } = useTranscription();
 
-  // Handle session start/stop
   const toggleSession = async () => {
     if (!sessionActive) {
-      // Starting session
       await startTranscription();
       setSessionActive(true);
 
-      // Start session timer
       const interval = setInterval(() => {
         setSessionDuration((prev) => prev + 1);
       }, 1000);
@@ -51,17 +48,14 @@ export default function LiveTherapySession() {
 
       toast.success('Therapy session started');
     } else {
-      // Ending session
       stopTranscription();
       setSessionActive(false);
 
-      // Stop session timer
       if (timerInterval) {
         clearInterval(timerInterval);
         setTimerInterval(null);
       }
 
-      // Save transcription to store
       if (transcription) {
         setTranscription([
           ...therapyTranscription,
