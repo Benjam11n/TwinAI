@@ -1,12 +1,12 @@
-import { Nut } from 'lucide-react';
+import Image from 'next/image';
 import React from 'react';
 
 export const Logo = ({ className = '' }: { className?: string }) => {
   return (
     <div
-      className={`flex ${className} items-center justify-center rounded-full bg-primary`}
+      className={`flex ${className} items-center justify-center rounded-full`}
     >
-      <Nut className={`text-white`} />
+      <Image src="/images/Logo2.png" alt="TwinAI Logo" width={40} height={40} />
     </div>
   );
 };

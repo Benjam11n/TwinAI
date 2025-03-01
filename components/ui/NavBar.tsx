@@ -37,7 +37,14 @@ export function NavBar() {
             className="flex items-center space-x-2"
           >
             <Logo className="size-10" />
-            <span className="inline-block text-2xl font-bold">TwinAI</span>
+            <div>
+              <span className="inline-block text-2xl font-bold text-green-600">
+                Twin
+              </span>
+              <span className="inline-block text-2xl font-bold text-stone-500">
+                AI
+              </span>
+            </div>
           </Link>
         </div>
         <ThemeToggle />
