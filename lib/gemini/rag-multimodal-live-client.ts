@@ -69,7 +69,6 @@ export class RAGMultimodalLiveClient extends MultimodalLiveClient {
       await this.initializeRAG();
     }
 
-    // Connect using parent method and return its result
     return super.connect(config);
   }
 

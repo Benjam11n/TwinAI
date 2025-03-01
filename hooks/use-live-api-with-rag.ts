@@ -136,7 +136,6 @@ export function useLiveAPIWithRAG({
     client.disconnect();
     await client.connect(config);
     setAiTranscription('');
-    console.log('sending initial prompt', INITIAL_PROMPT);
     client.send([{ text: INITIAL_PROMPT }]);
     setConnected(true);
   }, [client, setConnected, config, INITIAL_PROMPT]);

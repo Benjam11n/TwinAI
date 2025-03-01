@@ -1,3 +1,5 @@
+'use client';
+
 import { useTranscription } from '@/contexts/LiveTranscriptionContext';
 import { useTherapySessionStore } from '@/store/use-therapy-session-store';
 import { useEffect } from 'react';
