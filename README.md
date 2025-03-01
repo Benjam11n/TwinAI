@@ -54,12 +54,6 @@ The digital twin feature offers a revolutionary approach to therapy practice and
 - **ONNX Runtime**: Browser-based inference for treatment recommendations enables client-side processing without sending sensitive patient data to external servers, enhancing privacy and reducing latency.
 - **Retrieval Augmented Generation**: Vector database integration for context-aware responses, grounding AI outputs in patient-specific information rather than generic responses.
 
-**Statistics for Risk Analysis model**:
-Train Loss: 0.0903, Train Acc: 0.9672
-Val Loss: 0.1401, Val Acc: 0.9491
-
-[View/Run the training notebook](https://colab.research.google.com/drive/1acEbj1tVHroBCSLednhDmZTgwRDd0RJ0?usp=sharing)
-
 ### State Management
 
 - **Zustand**: Lightweight state management for session data, chosen for its minimal boilerplate and hooks-based API that integrates seamlessly with React's functional component model.
@@ -86,6 +80,12 @@ The suicide risk assessment model was trained using a carefully designed approac
 5. **Optimization**: Trained with Adam optimizer and binary cross-entropy loss, with careful monitoring to prevent overfitting.
 6. **ONNX Conversion**: Exported the trained PyTorch model to ONNX format for efficient browser-based inference, enabling client-side risk assessment without server dependencies.
 
+**Statistics for Risk Analysis model**:
+Train Loss: 0.0903, Train Acc: 0.9672
+Val Loss: 0.1401, Val Acc: 0.9491
+
+[View/Run the training notebook](https://colab.research.google.com/drive/1acEbj1tVHroBCSLednhDmZTgwRDd0RJ0?usp=sharing)
+
 This technical approach prioritizes performance and accuracy— critical factors for mental health applications.
 
 ## MVP Implementation Notes
@@ -94,16 +94,8 @@ This version represents a Minimum Viable Product (MVP) with certain limitations:
 
 - **Hardcoded Data**: Some patient data and analytics are pre-populated for demonstration purposes
 - **Limited AI Integration**: Risk analysis and digital twin capabilities are simplified prototypes
-- **Local Processing**: All data is processed locally without external API dependencies for MVP testing
 
-In a production implementation, these components would be enhanced with:
-
-- Secure backend API integration
-- HIPAA-compliant data storage
-- Expanded AI model training
-- Advanced encryption for sensitive patient information
-
-**Storage Limitations**
+### Storage Limitations
 
 TwinAI currently uses Zustand for client-side state management instead of a persistent database:
 
@@ -146,8 +138,8 @@ To use TwinAI's transcription features, you need to set up your environment vari
 
 2. Open the `.env` file and add your Gemini API key to the `GEMINI_API_KEY` variable:
 
-   ```
-   GEMINI_API_KEY=your_gemini_api_key_here
+   ```typescript
+   GEMINI_API_KEY = your_gemini_api_key_here;
    ```
 
 3. Save the file and restart the application if it's already running.
