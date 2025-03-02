@@ -4,7 +4,6 @@ declare global {
     date?: Date;
     patientNotes?: string;
     conversationHistory?: {
-      role: 'twin' | 'therapist';
       content: string;
       timestamp?: number;
     }[];
@@ -16,7 +15,7 @@ declare global {
   }
 
   interface GetPatientSessionParams {
-    patientId: string;
+    id: string;
   }
 }
 

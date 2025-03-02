@@ -8,24 +8,25 @@ import { toast } from 'sonner';
 import { useTherapySessionStore } from '@/store/use-therapy-session-store';
 import { useTranscription } from '@/contexts/LiveTranscriptionContext';
 import { useRouter } from 'next/navigation';
-import { ROUTES } from '@/constants/routes';
 import { Textarea } from '../ui/textarea';
+import { createSession } from '@/lib/actions/session.action';
+import { ROUTES } from '@/constants/routes';
+import { IPatientDoc } from '@/database';
 
-export default function LiveTherapySession() {
+export default function LiveTherapySession({
+  patient,
+}: {
+  patient: IPatientDoc;
+}) {
   const router = useRouter();
   const [sessionActive, setSessionActive] = useState(false);
   const [patientNotes, setPatientNotes] = useState('');
   const [sessionDuration, setSessionDuration] = useState(0);
-  const [timerInterval, setTimerInterval] = useState<null | NodeJS.Timeout>(
-    null
-  );
+  const [timerInterval, setTimerInterval] = useState<number | null>(null);
+  const [isSaving, setIsSaving] = useState(false);
 
-  const {
-    transcription: therapyTranscription,
-    setTranscription,
-    patient,
-    setPatientNotes: setStorePatientNotes,
-  } = useTherapySessionStore();
+  const { transcription: therapyTranscription, setTranscription } =
+    useTherapySessionStore();
 
   const {
     startTranscription,
@@ -77,14 +78,48 @@ export default function LiveTherapySession() {
     return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
   };
 
-  const saveSession = () => {
-    if (!transcription) return;
-
-    if (patientNotes) {
-      setStorePatientNotes(patientNotes);
+  const saveSessionToDatabase = async () => {
+    if (!patient?._id) {
+      toast.error('No patient selected');
+      return;
     }
 
-    toast.success('Session saved to store');
+    setIsSaving(true);
+    try {
+      const sessionData = {
+        patientId: patient._id as string,
+        date: new Date(),
+        patientNotes: patientNotes,
+        conversationHistory: [
+          ...therapyTranscription,
+          ...(transcription
+            ? [
+                {
+                  content: transcription,
+                  timestamp: Date.now(),
+                },
+              ]
+            : []),
+        ],
+        mood: 100,
+      };
+
+      const result = await createSession(sessionData);
+
+      if (result.success) {
+        toast.success('Session saved to database successfully');
+
+        router.push(ROUTES.PATIENT(patient._id as string));
+      } else {
+        toast.error('Failed to save session to database');
+        console.error('Error saving session:', result);
+      }
+    } catch (error) {
+      console.error('Error saving session:', error);
+      toast.error('An error occurred while saving the session');
+    } finally {
+      setIsSaving(false);
+    }
   };
 
   // Reset all session data
@@ -143,9 +178,7 @@ export default function LiveTherapySession() {
           </Button>
           <Button
             variant="destructive"
-            onClick={() => {
-              saveSession();
-              router.push(ROUTES.DASHBOARD);
+            onClick={async () => {
               if (transcription) {
                 setTranscription([
                   ...therapyTranscription,
@@ -155,9 +188,11 @@ export default function LiveTherapySession() {
                   },
                 ]);
               }
+              await saveSessionToDatabase();
             }}
+            disabled={isSaving}
           >
-            End Session
+            {isSaving ? 'Saving...' : 'End Session'}
           </Button>
         </div>
       </div>
@@ -213,11 +248,11 @@ export default function LiveTherapySession() {
                 variant="outline"
                 size="sm"
                 className="gap-2"
-                onClick={saveSession}
-                disabled={!transcription}
+                onClick={saveSessionToDatabase}
+                disabled={!transcription || isSaving}
               >
                 <Save size={16} />
-                Save Session
+                {isSaving ? 'Saving...' : 'Save to Database'}
               </Button>
 
               <Button
@@ -225,6 +260,7 @@ export default function LiveTherapySession() {
                 size="sm"
                 className="gap-2 text-red-500 hover:bg-red-50 hover:text-red-600"
                 onClick={resetSession}
+                disabled={isSaving}
               >
                 <Trash2 size={16} />
                 Reset Session

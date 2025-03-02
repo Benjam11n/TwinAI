@@ -11,14 +11,16 @@ import { RecentSessionsCard } from './RecentSessionsCard';
 import { ManualKnowledgeEntryForm } from './ManualKnowledgeEntry';
 import { DocumentUploader } from './DocumentUploader';
 import { KnowledgeBaseEntries } from './KnowledgeBaseEntries';
-import { IPatientDoc, ITreatmentPlanDoc } from '@/database';
+import { IPatientDoc, ISessionDoc, ITreatmentPlanDoc } from '@/database';
 
 export default function PatientDashboard({
   patient,
   treatmentPlans,
+  pastSessions,
 }: {
   patient: IPatientDoc;
   treatmentPlans: ITreatmentPlanDoc[] | undefined;
+  pastSessions: ISessionDoc[] | undefined;
 }) {
   const {
     addDocuments,
@@ -55,13 +57,13 @@ export default function PatientDashboard({
                 patient={patient}
                 treatmentPlans={treatmentPlans}
               />
-              <RecentSessionsCard />
+              <RecentSessionsCard pastSessions={pastSessions} />
             </div>
 
             {/* Session Cards */}
             <div className="grid gap-6 md:grid-cols-2">
               <LiveSessionCard patient={patient || null} />
-              <DigitalTwinCard patientName={name} />
+              <DigitalTwinCard patientName={name} patientId={patient.id} />
             </div>
 
             {/* Knowledge Base Section */}

@@ -108,10 +108,10 @@ export async function getPatientSessions(
     return handleError(validationResult) as ErrorResponse;
   }
 
-  const { patientId } = validationResult.params!;
+  const { id } = validationResult.params!;
 
   try {
-    const sessions = await Session.find({ patientId });
+    const sessions = await Session.find({ patientId: id });
 
     if (!sessions) {
       throw new Error('Patient sessions not found');

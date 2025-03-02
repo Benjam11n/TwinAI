@@ -15,7 +15,13 @@ import { ROUTES } from '@/constants/routes';
 import { useTherapySessionStore } from '@/store/use-therapy-session-store';
 import { useTranscription } from '@/contexts/LiveTranscriptionContext';
 
-export function DigitalTwinCard({ patientName }: { patientName: string }) {
+export function DigitalTwinCard({
+  patientName,
+  patientId,
+}: {
+  patientName: string;
+  patientId: string;
+}) {
   const router = useRouter();
   const { setConversationHistory } = useTherapySessionStore();
   const { clearTranscription } = useTranscription();
@@ -63,7 +69,7 @@ export function DigitalTwinCard({ patientName }: { patientName: string }) {
       <CardFooter className="pt-3">
         <Button
           onClick={() => {
-            router.push(ROUTES.DTSESSION);
+            router.push(ROUTES.DTSESSION(patientId));
             setConversationHistory([]);
             clearTranscription();
           }}

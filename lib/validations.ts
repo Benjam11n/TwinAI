@@ -21,9 +21,6 @@ export const GetTreatmentPlanSchema = z.object({
 });
 
 export const ConversationHistoryEntrySchema = z.object({
-  role: z.enum(['twin', 'therapist'], {
-    required_error: 'Role must be either "twin" or "therapist".',
-  }),
   content: z.string().min(1, { message: 'Content is required.' }),
   timestamp: z.number().optional().default(Date.now),
 });
@@ -50,7 +47,7 @@ export const GetSessionSchema = z.object({
 });
 
 export const GetPatientSessionSchema = z.object({
-  patientId: z.string().min(1, { message: 'Patient Id is required.' }),
+  id: z.string().min(1, { message: 'Patient Id is required.' }),
 });
 
 export const AccountSchema = z.object({

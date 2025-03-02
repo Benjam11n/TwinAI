@@ -15,9 +15,9 @@ import { Badge } from '@/components/ui/badge';
 import { ROUTES } from '@/constants/routes';
 import { useTherapySessionStore } from '@/store/use-therapy-session-store';
 import { useTranscription } from '@/contexts/LiveTranscriptionContext';
-import { Patient } from '@/types';
+import { IPatientDoc } from '@/database';
 
-export function LiveSessionCard({ patient }: { patient: Patient | null }) {
+export function LiveSessionCard({ patient }: { patient: IPatientDoc }) {
   const router = useRouter();
   const { setPatient } = useTherapySessionStore();
   const { clearTranscription } = useTranscription();
@@ -61,7 +61,7 @@ export function LiveSessionCard({ patient }: { patient: Patient | null }) {
       <CardFooter className="pt-3">
         <Button
           onClick={() => {
-            router.push(ROUTES.SESSION);
+            router.push(ROUTES.SESSION(patient._id as string));
             setPatient(patient);
             clearTranscription();
           }}

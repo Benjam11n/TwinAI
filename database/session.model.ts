@@ -1,7 +1,6 @@
 import { Schema, Document, models, model, Types } from 'mongoose';
 
 export interface ConversationHistoryEntry {
-  role: 'twin' | 'therapist';
   content: string;
   timestamp: number;
 }
@@ -18,11 +17,6 @@ export interface ISessionDoc extends ISession, Document {}
 
 const ConversationHistoryEntrySchema = new Schema(
   {
-    role: {
-      type: String,
-      enum: ['twin', 'therapist'],
-      required: true,
-    },
     content: {
       type: String,
       required: true,
