@@ -12,8 +12,9 @@ import { cn } from '@/lib/utils';
 import { useLoggerStore } from '@/store/use-logger-store';
 import UserTranscription from '../UserTranscription';
 import { useTherapySessionStore } from '@/store/use-therapy-session-store';
+import { IPatientDoc } from '@/database';
 
-export default function Twin() {
+export default function Twin({ patient }: { patient: IPatientDoc }) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [videoStream, setVideoStream] = useState<MediaStream | null>(null);
   const messagesRef = useRef<HTMLDivElement>(null);
@@ -95,6 +96,7 @@ export default function Twin() {
       <UserTranscription isModelTurn={isModelTurn} />
 
       <Controls
+        patient={patient}
         videoRef={videoRef}
         supportsVideo={true}
         onVideoStreamChange={setVideoStream}

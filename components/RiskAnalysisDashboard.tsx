@@ -4,10 +4,20 @@ import React, { useEffect, useState } from 'react';
 import { useTherapySessionStore } from '@/store/use-therapy-session-store';
 import { analyzeConversationRisks } from '@/lib/utils';
 import Link from 'next/link';
-import { ArrowLeft, FileWarning, Hourglass, AlertTriangle } from 'lucide-react';
+import {
+  ArrowLeft,
+  FileWarning,
+  Hourglass,
+  AlertTriangle,
+  Save,
+} from 'lucide-react';
 import { Button } from './ui/button';
+import { toast } from 'sonner';
+import { createDTSession } from '@/lib/actions/dtsession.action';
+import { IPatientDoc } from '@/database';
+import { ROUTES } from '@/constants/routes';
 
-const RiskAnalysisDashboard = () => {
+const RiskAnalysisDashboard = ({ patient }: { patient: IPatientDoc }) => {
   const { conversationHistory } = useTherapySessionStore();
   interface RiskAnalysis {
     overallRiskLevel: string;
@@ -27,6 +37,7 @@ const RiskAnalysisDashboard = () => {
   const [riskAnalysis, setRiskAnalysis] = useState<RiskAnalysis | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [isSaving, setIsSaving] = useState(false);
 
   useEffect(() => {
     async function runAnalysis() {
@@ -48,9 +59,64 @@ const RiskAnalysisDashboard = () => {
     }
   }, [conversationHistory]);
 
+  const saveAnalysisToDatabase = async () => {
+    if (!patient?._id) {
+      toast.error('No patient selected. Cannot save session.');
+      return;
+    }
+
+    try {
+      setIsSaving(true);
+
+      let riskScore = 0;
+      if (!riskAnalysis) {
+        riskScore = 0;
+      } else if (riskAnalysis.overallRiskLevel === 'low') {
+        riskScore = 25;
+      } else if (riskAnalysis.overallRiskLevel === 'medium') {
+        riskScore = 50;
+      } else if (riskAnalysis.overallRiskLevel === 'high') {
+        riskScore = 75;
+      }
+
+      // Transform the conversation history to match the schema
+      const formattedConversationHistory = conversationHistory.map((entry) => ({
+        role: entry.role || 'therapist', // Default to therapist if role is missing
+        content: entry.content,
+        timestamp: entry.timestamp,
+      }));
+
+      const sessionData = {
+        patientId: patient._id as string,
+        date: new Date(),
+        conversationHistory: formattedConversationHistory,
+        risk: riskScore,
+      };
+
+      const result = await createDTSession(sessionData);
+
+      if (result.success) {
+        toast.success('Risk analysis saved to database successfully');
+      } else {
+        throw new Error(
+          typeof result.error === 'string'
+            ? result.error
+            : 'Failed to save session'
+        );
+      }
+    } catch (error) {
+      console.error('Error saving analysis to database:', error);
+      toast.error(
+        error instanceof Error ? error.message : 'Failed to save analysis'
+      );
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
   const ReturnButton = () => (
     <Link
-      href="/dashboard"
+      href={ROUTES.PATIENT(patient._id as string)}
       className="mb-6 inline-flex items-center rounded-lg px-4 py-2 text-sm font-medium transition-colors"
     >
       <Button>
@@ -96,7 +162,17 @@ const RiskAnalysisDashboard = () => {
   if (!conversationHistory.length) {
     return (
       <div className="p-8">
-        <ReturnButton />
+        <div className="mb-6 flex items-center justify-between">
+          <ReturnButton />
+          <Button
+            onClick={saveAnalysisToDatabase}
+            disabled={isSaving}
+            className="flex items-center gap-2"
+          >
+            <Save className="size-4" />
+            {isSaving ? 'Saving...' : 'Save Analysis to Database'}
+          </Button>
+        </div>
         <div className="flex flex-col items-center rounded-lg border border-gray-200 bg-gray-50 p-8 text-center">
           <FileWarning className="mb-4 size-16 text-gray-400" />
           <h2 className="mb-2 text-xl font-semibold">No Conversation Data</h2>
@@ -121,7 +197,17 @@ const RiskAnalysisDashboard = () => {
   ) {
     return (
       <div className="p-8">
-        <ReturnButton />
+        <div className="mb-6 flex items-center justify-between">
+          <ReturnButton />
+          <Button
+            onClick={saveAnalysisToDatabase}
+            disabled={isSaving}
+            className="flex items-center gap-2"
+          >
+            <Save className="size-4" />
+            {isSaving ? 'Saving...' : 'Save Analysis to Database'}
+          </Button>
+        </div>
         <div className="flex flex-col items-center rounded-lg border border-gray-200 bg-gray-50 p-8 text-center">
           <FileWarning className="mb-4 size-16 text-gray-400" />
           <h2 className="mb-2 text-xl font-semibold">No Analysis Results</h2>
@@ -137,7 +223,17 @@ const RiskAnalysisDashboard = () => {
 
   return (
     <div className="p-8">
-      <ReturnButton />
+      <div className="mb-6 flex items-center justify-between">
+        <ReturnButton />
+        <Button
+          onClick={saveAnalysisToDatabase}
+          disabled={isSaving}
+          className="flex items-center gap-2"
+        >
+          <Save className="size-4" />
+          {isSaving ? 'Saving...' : 'Save Analysis to Database'}
+        </Button>
+      </div>
 
       <h1 className="mb-6 text-2xl font-bold">Risk Analysis Dashboard</h1>
 

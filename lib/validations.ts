@@ -93,3 +93,32 @@ export const SignInWithOAuthSchema = z.object({
 export const GetPatientSchema = z.object({
   id: z.string().min(1, { message: 'Patient ID is required.' }),
 });
+
+export const DTConversationHistoryEntrySchema = z.object({
+  role: z.enum(['twin', 'therapist'], {
+    required_error: 'Role must be either "twin" or "therapist".',
+  }),
+  content: z.string().min(1, { message: 'Content is required.' }),
+  timestamp: z.number().optional().default(Date.now),
+});
+
+export const CreateDTSessionSchema = z.object({
+  patientId: z.string(),
+  date: z
+    .date()
+    .optional()
+    .default(() => new Date()),
+  patientNotes: z.string().optional().default(''),
+  conversationHistory: z
+    .array(DTConversationHistoryEntrySchema)
+    .optional()
+    .default([]),
+  risk: z
+    .number()
+    .min(0, { message: 'Risk cannot be negative.' })
+    .max(100, { message: 'Risk cannot be more than 100.' }),
+});
+
+export const GetDTSessionSchema = z.object({
+  sessionId: z.string().min(1, { message: 'Session Id is required.' }),
+});

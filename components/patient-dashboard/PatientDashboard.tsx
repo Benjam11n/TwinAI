@@ -63,7 +63,10 @@ export default function PatientDashboard({
             {/* Session Cards */}
             <div className="grid gap-6 md:grid-cols-2">
               <LiveSessionCard patient={patient || null} />
-              <DigitalTwinCard patientName={name} patientId={patient.id} />
+              <DigitalTwinCard
+                patientName={name}
+                patientId={patient._id as string}
+              />
             </div>
 
             {/* Knowledge Base Section */}

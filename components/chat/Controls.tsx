@@ -19,6 +19,7 @@
 import { Button } from '@/components/ui/button';
 import { ROUTES } from '@/constants/routes';
 import { useLiveAPIContext } from '@/contexts/LiveAPIContext';
+import { IPatientDoc } from '@/database';
 import { UseMediaStreamResult } from '@/hooks/use-media-stream-mux';
 import { useScreenCapture } from '@/hooks/use-screen-capture';
 import { useWebcam } from '@/hooks/use-webcam';
@@ -33,11 +34,11 @@ import {
   MonitorOff,
 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
-import { ReactNode, RefObject, useEffect, useRef, useState } from 'react';
+import { RefObject, useEffect, useRef, useState } from 'react';
 
 interface ControlsProps {
+  patient: IPatientDoc;
   videoRef: RefObject<HTMLVideoElement | null>;
-  children?: ReactNode;
   supportsVideo: boolean;
   onVideoStreamChange?: (stream: MediaStream | null) => void;
 }
@@ -86,6 +87,7 @@ const MediaStreamButton = ({
 };
 
 export default function Controls({
+  patient,
   videoRef,
   onVideoStreamChange = () => {},
   supportsVideo,
@@ -189,7 +191,7 @@ export default function Controls({
 
   const handleEndCall = () => {
     disconnect();
-    router.push(ROUTES.DTSESSION_ANALYSIS);
+    router.push(ROUTES.DTSESSION_ANALYSIS(patient._id as string));
   };
 
   return (

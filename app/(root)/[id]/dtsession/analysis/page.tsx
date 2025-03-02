@@ -1,9 +1,18 @@
 import RiskAnalysisDashboard from '@/components/RiskAnalysisDashboard';
+import { getPatient } from '@/lib/actions/patient.action';
 
-export default function AnalysisPage() {
+export default async function AnalysisPage({ params }: RouteParams) {
+  const { id } = await params;
+
+  const patientResult = await getPatient({ id });
+
+  if (!patientResult.data) {
+    return;
+  }
+
   return (
     <div className="container mx-auto py-8">
-      <RiskAnalysisDashboard />
+      <RiskAnalysisDashboard patient={patientResult.data} />
     </div>
   );
 }
