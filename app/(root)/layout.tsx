@@ -1,15 +1,16 @@
-'use client';
+import { NavBar } from '@/components/ui/NavBar';
 
-import Sidebar from '@/components/Sidebar';
-import { useState } from 'react';
-
-export default function Layout({ children }: { children: React.ReactNode }) {
-  const [searchQuery, setSearchQuery] = useState('');
-
+export function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <main className="flex min-h-screen">
-      <Sidebar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
-      <div className="flex-1 overflow-auto">{children}</div>
-    </main>
+    <div className="flex min-h-screen flex-col">
+      <main className="w-full flex-1 bg-background/85">
+        <div className="container mx-auto mt-16 px-4 sm:px-6 lg:px-8">
+          <NavBar />
+          {children}
+        </div>
+      </main>
+    </div>
   );
 }
+
+export default RootLayout;

@@ -1,24 +1,34 @@
-import { Schema, Document, models, model } from 'mongoose';
+import { Schema, Document, models, model, Types } from 'mongoose';
+
+export enum PatientCondition {
+  DEPRESSION = 'Depression',
+  ANXIETY = 'Anxiety',
+  PTSD = 'PTSD',
+  STRESS = 'Stress',
+  OTHER = 'Other',
+}
 
 export interface IPatient {
+  therapistId: Types.ObjectId;
   name: string;
-  conditions: string[];
-  moodHistory?: Array<{
-    date: string;
-    score: number;
-  }>;
+  conditions: PatientCondition[];
 }
 
 export interface IPatientDoc extends IPatient, Document {}
 
 const PatientSchema = new Schema<IPatientDoc>(
   {
+    therapistId: {
+      type: Schema.Types.ObjectId,
+      ref: 'Therapist',
+      required: true,
+    },
     name: { type: String, required: true },
-    conditions: [{ type: String, required: true }],
-    moodHistory: [
+    conditions: [
       {
-        date: { type: String, required: true },
-        score: { type: Number, required: true },
+        type: String,
+        enum: Object.values(PatientCondition),
+        required: true,
       },
     ],
   },
