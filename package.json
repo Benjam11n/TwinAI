@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "seed": "ts-node scripts/seed.ts"
+    "seed": "ts-node --project tsconfig.scripts.json scripts/seed.ts"
   },
   "dependencies": {
     "@faker-js/faker": "^9.5.1",
@@ -62,13 +62,14 @@
     "@types/faker": "^6.6.11",
     "@types/js-cookie": "^3.0.6",
     "@types/lodash": "^4.17.15",
-    "@types/node": "^20.17.19",
+    "@types/node": "^20.17.22",
     "@types/react": "^19.0.10",
     "@types/react-big-calendar": "^1.16.1",
     "@types/react-dom": "^19.0.4",
     "@types/recharts": "^1.8.29",
     "@typescript-eslint/eslint-plugin": "^8.24.1",
     "@typescript-eslint/parser": "^8.24.1",
+    "dotenv": "^16.4.7",
     "eslint": "^9.21.0",
     "eslint-config-next": "15.1.7",
     "eslint-config-prettier": "^10.0.1",

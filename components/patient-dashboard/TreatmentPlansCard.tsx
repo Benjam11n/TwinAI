@@ -13,14 +13,17 @@ import {
   AccordionTrigger,
 } from '@/components/ui/accordion';
 import { Button } from '@/components/ui/button';
-import { Patient, PatientCondition } from '@/types';
-import { treatmentPlans } from '@/data/data';
+import { IPatientDoc, ITreatmentPlanDoc } from '@/database';
 
-export function TreatmentPlansCard({ patient }: { patient: Patient }) {
-  const recommendedPlans = treatmentPlans.filter((plan) =>
-    plan.suitable.some((condition) =>
-      patient.conditions.includes(condition as PatientCondition)
-    )
+export function TreatmentPlansCard({
+  patient,
+  treatmentPlans,
+}: {
+  patient: IPatientDoc;
+  treatmentPlans: ITreatmentPlanDoc[] | undefined;
+}) {
+  const recommendedPlans = treatmentPlans?.filter((plan) =>
+    plan.suitable.some((condition) => patient.conditions.includes(condition))
   );
 
   return (
@@ -35,50 +38,49 @@ export function TreatmentPlansCard({ patient }: { patient: Patient }) {
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <Accordion type="single" collapsible className="w-full">
-          {recommendedPlans.map((plan) => (
-            <AccordionItem key={plan.id} value={plan.id}>
-              <AccordionTrigger className="hover:no-underline">
-                <div className=" w-full pr-4 text-start">{plan.title}</div>
-              </AccordionTrigger>
-              <AccordionContent>
-                <div className="space-y-3 pt-2">
-                  <p className="text-sm text-muted-foreground">
-                    {plan.description}
-                  </p>
-
-                  <div className="rounded-md bg-muted/30 p-3">
-                    <h4 className="mb-2 text-sm font-medium">Key Sessions:</h4>
-                    <ul className="space-y-1">
-                      {plan.sessions.map((session, idx) => (
-                        <li key={idx} className="flex items-start text-sm">
-                          <Check className="mr-2 mt-0.5 size-4 shrink-0 text-green-500" />
-                          <span>{session}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-
-                  <div className="pt-2">
-                    <h4 className="mb-1 text-sm font-medium">
-                      Expected Outcomes:
-                    </h4>
+        {recommendedPlans && recommendedPlans.length > 0 ? (
+          <Accordion type="single" collapsible className="w-full">
+            {recommendedPlans.map((plan) => (
+              <AccordionItem key={plan.id} value={plan.id}>
+                <AccordionTrigger className="hover:no-underline">
+                  <div className="w-full pr-4 text-start">{plan.title}</div>
+                </AccordionTrigger>
+                <AccordionContent>
+                  <div className="space-y-3 pt-2">
                     <p className="text-sm text-muted-foreground">
-                      {plan.outcomes}
+                      {plan.description}
                     </p>
+                    <div className="rounded-md bg-muted/30 p-3">
+                      <h4 className="mb-2 text-sm font-medium">
+                        Key Sessions:
+                      </h4>
+                      <ul className="space-y-1">
+                        {plan.sessions.map((session, idx) => (
+                          <li key={idx} className="flex items-start text-sm">
+                            <Check className="mr-2 mt-0.5 size-4 shrink-0 text-green-500" />
+                            <span>{session}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                    <div className="pt-2">
+                      <h4 className="mb-1 text-sm font-medium">
+                        Expected Outcomes:
+                      </h4>
+                      <p className="text-sm text-muted-foreground">
+                        {plan.outcomes}
+                      </p>
+                    </div>
+                    <Button variant="outline" size="sm" className="mt-2 w-full">
+                      <Eye className="mr-2 size-4" />
+                      View Details
+                    </Button>
                   </div>
-
-                  <Button variant="outline" size="sm" className="mt-2 w-full">
-                    <Eye className="mr-2 size-4" />
-                    View Details
-                  </Button>
-                </div>
-              </AccordionContent>
-            </AccordionItem>
-          ))}
-        </Accordion>
-
-        {recommendedPlans.length === 0 && (
+                </AccordionContent>
+              </AccordionItem>
+            ))}
+          </Accordion>
+        ) : (
           <div className="flex flex-col items-center justify-center py-6 text-center">
             <p className="text-sm text-muted-foreground">
               No specific treatment plans found for the patient&apos;s

@@ -92,3 +92,7 @@ export const SignInWithOAuthSchema = z.object({
     image: z.string().url('Invalid image URL').optional(),
   }),
 });
+
+export const GetPatientSchema = z.object({
+  id: z.string().min(1, { message: 'Patient ID is required.' }),
+});

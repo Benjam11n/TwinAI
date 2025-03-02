@@ -9,18 +9,6 @@ export interface ChatMessage {
   timestamp: number;
 }
 
-export type PatientCondition =
-  | 'Depression'
-  | 'Anxiety'
-  | 'PTSD'
-  | 'Stress'
-  | 'Other';
-
-export type Patient = {
-  name: string;
-  conditions: PatientCondition[];
-};
-
 export type RiskAnalysis = {
   results: {
     message: ConversationHistoryEntry;

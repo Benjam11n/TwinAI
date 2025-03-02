@@ -1,12 +1,5 @@
 import { Schema, Document, models, model, Types } from 'mongoose';
 
-export interface ISession {
-  date: string;
-  type: string;
-  duration: string;
-  summary: string;
-}
-
 export interface IPatientTreatment {
   patient: Types.ObjectId;
   treatmentPlan: Types.ObjectId;
@@ -15,7 +8,6 @@ export interface IPatientTreatment {
   status: 'active' | 'completed' | 'discontinued';
   progress: number; // Percentage completion
   notes?: string;
-  sessions: ISession[];
 }
 
 export interface IPatientTreatmentDoc extends IPatientTreatment, Document {}
@@ -48,14 +40,6 @@ const PatientTreatmentSchema = new Schema<IPatientTreatmentDoc>(
       required: true,
     },
     notes: { type: String },
-    sessions: [
-      {
-        date: { type: String, required: true },
-        type: { type: String, required: true },
-        duration: { type: String, required: true },
-        summary: { type: String, required: true },
-      },
-    ],
   },
   { timestamps: true }
 );

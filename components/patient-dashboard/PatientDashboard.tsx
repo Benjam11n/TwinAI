@@ -3,7 +3,6 @@
 import React, { useState } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useLiveAPIContext } from '@/contexts/LiveAPIContext';
-import { patients } from '@/data/data';
 import { LiveSessionCard } from './LiveSessionCard';
 import { DigitalTwinCard } from './DigitalTwinCard';
 import { MoodAnalysisCard } from './MoodAnalysisCard';
@@ -12,8 +11,15 @@ import { RecentSessionsCard } from './RecentSessionsCard';
 import { ManualKnowledgeEntryForm } from './ManualKnowledgeEntry';
 import { DocumentUploader } from './DocumentUploader';
 import { KnowledgeBaseEntries } from './KnowledgeBaseEntries';
+import { IPatientDoc, ITreatmentPlanDoc } from '@/database';
 
-export default function PatientDashboard({ patient }: { patient: string }) {
+export default function PatientDashboard({
+  patient,
+  treatmentPlans,
+}: {
+  patient: IPatientDoc;
+  treatmentPlans: ITreatmentPlanDoc[] | undefined;
+}) {
   const {
     addDocuments,
     initializeRAG,
@@ -29,15 +35,14 @@ export default function PatientDashboard({ patient }: { patient: string }) {
     setIsInitialized(true);
   };
 
-  const decodedPatientName = decodeURIComponent(patient || '');
-  const currentPatient = patients.find((p) => p.name === decodedPatientName);
+  const { name } = patient;
 
   return (
     <div className="flex min-h-screen">
       <div className="flex flex-1 flex-col">
         <header className="flex h-14 items-center justify-between border-b px-6">
           <h1 className="text-3xl font-semibold tracking-tight">
-            {decodedPatientName}&apos;s Therapy Dashboard
+            {name}&apos;s Dashboard
           </h1>
         </header>
 
@@ -46,14 +51,17 @@ export default function PatientDashboard({ patient }: { patient: string }) {
             {/* Analytics and Treatment Section */}
             <div className="grid gap-6 md:grid-cols-3">
               <MoodAnalysisCard />
-              <TreatmentPlansCard patient={currentPatient || patients[0]} />
+              <TreatmentPlansCard
+                patient={patient}
+                treatmentPlans={treatmentPlans}
+              />
               <RecentSessionsCard />
             </div>
 
             {/* Session Cards */}
             <div className="grid gap-6 md:grid-cols-2">
-              <LiveSessionCard patient={currentPatient || null} />
-              <DigitalTwinCard patientName={decodedPatientName} />
+              <LiveSessionCard patient={patient || null} />
+              <DigitalTwinCard patientName={name} />
             </div>
 
             {/* Knowledge Base Section */}
