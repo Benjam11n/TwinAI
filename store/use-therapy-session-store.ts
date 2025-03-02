@@ -1,8 +1,9 @@
 import { create } from 'zustand';
-import { ChatMessage, ConversationHistoryEntry, Patient } from '@/types';
+import { ChatMessage, ConversationHistoryEntry } from '@/types';
+import { IPatientDoc } from '@/database';
 
 interface TherapySessionState {
-  patient: Patient | null;
+  patient: IPatientDoc | null;
 
   isTranscribing: boolean;
   transcription: ChatMessage[];
