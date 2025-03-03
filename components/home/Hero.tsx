@@ -2,7 +2,6 @@
 
 import { Button } from '../ui/button';
 import Link from 'next/link';
-import { ShinyText } from '../ui/shiny-text';
 import { ArrowUpRight } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { ROUTES } from '@/constants/routes';
@@ -20,7 +19,8 @@ export default function Hero() {
         {/* Main heading and subheading */}
         <div className="animate-fadeIn mt-16 flex flex-col gap-6">
           <h1 className="text-5xl font-semibold text-foreground md:text-6xl lg:text-7xl">
-            <ShinyText text="AI-Powered Patient" disabled={false} speed={3} />
+            <span className="text-primary">AI-Powered</span>
+            <span> Patient</span>
             <br className="hidden sm:block" />
             Digital Twins
           </h1>

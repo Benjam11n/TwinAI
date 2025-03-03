@@ -34,7 +34,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body
         className={`
           ${montserrat.variable}
@@ -42,13 +42,18 @@ export default function RootLayout({
           antialiased
         `}
       >
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          <LiveAPIProvider url={uri} apiKey={API_KEY}>
-            <TranscriptionProvider apiKey={API_KEY}>
+        <LiveAPIProvider url={uri} apiKey={API_KEY}>
+          <TranscriptionProvider apiKey={API_KEY}>
+            <ThemeProvider
+              attribute="class"
+              defaultTheme="system"
+              enableSystem
+              disableTransitionOnChange
+            >
               {children}
-            </TranscriptionProvider>
-          </LiveAPIProvider>
-        </ThemeProvider>
+            </ThemeProvider>
+          </TranscriptionProvider>
+        </LiveAPIProvider>
         <Toaster richColors />
       </body>
     </html>

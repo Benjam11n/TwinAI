@@ -41,7 +41,7 @@ export function TreatmentPlansCard({
         {recommendedPlans && recommendedPlans.length > 0 ? (
           <Accordion type="single" collapsible className="w-full">
             {recommendedPlans.map((plan) => (
-              <AccordionItem key={plan.id} value={plan.id}>
+              <AccordionItem key={plan._id as string} value={plan.id}>
                 <AccordionTrigger className="hover:no-underline">
                   <div className="w-full pr-4 text-start">{plan.title}</div>
                 </AccordionTrigger>
@@ -55,8 +55,8 @@ export function TreatmentPlansCard({
                         Key Sessions:
                       </h4>
                       <ul className="space-y-1">
-                        {plan.sessions.map((session, idx) => (
-                          <li key={idx} className="flex items-start text-sm">
+                        {plan.sessions.map((session, index) => (
+                          <li key={index} className="flex items-start text-sm">
                             <Check className="mr-2 mt-0.5 size-4 shrink-0 text-green-500" />
                             <span>{session}</span>
                           </li>
