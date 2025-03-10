@@ -22,7 +22,9 @@ export default function LiveTherapySession({
   const [sessionActive, setSessionActive] = useState(false);
   const [patientNotes, setPatientNotes] = useState('');
   const [sessionDuration, setSessionDuration] = useState(0);
-  const [timerInterval, setTimerInterval] = useState<number | null>(null);
+  const [timerInterval, setTimerInterval] = useState<NodeJS.Timeout | null>(
+    null
+  );
   const [isSaving, setIsSaving] = useState(false);
 
   const { transcription: therapyTranscription, setTranscription } =

@@ -43,7 +43,7 @@ export default function ClientSidebar({ patients }: ClientSidebarProps) {
           {filteredPatients.length > 0 ? (
             filteredPatients.map((patient) => (
               <div
-                key={patient.id}
+                key={patient._id as string}
                 onClick={() =>
                   router.push(ROUTES.PATIENT(patient._id as string))
                 }

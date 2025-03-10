@@ -1,6 +1,6 @@
-import { FileText, Calendar, Download, ExternalLink } from 'lucide-react';
+import { FileText, Calendar } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
+// import { Button } from '@/components/ui/button';
 import { ISessionDoc } from '@/database';
 
 export function RecentSessionsCard({
@@ -21,7 +21,7 @@ export function RecentSessionsCard({
           {pastSessions &&
             pastSessions.map((session) => (
               <div
-                key={session.id}
+                key={session._id as string}
                 className="flex flex-col space-y-2 rounded-md border p-3"
               >
                 <div className="flex items-center justify-between">
@@ -35,7 +35,7 @@ export function RecentSessionsCard({
                   </div>
                 </div>
 
-                <div className="flex items-center space-x-2 pt-1">
+                {/* <div className="flex items-center space-x-2 pt-1">
                   <Button variant="ghost" size="sm" className="h-7 px-2">
                     <Download className="mr-1 size-3" />
                     <span className="text-xs">PDF</span>
@@ -44,13 +44,13 @@ export function RecentSessionsCard({
                     <ExternalLink className="mr-1 size-3" />
                     <span className="text-xs">View</span>
                   </Button>
-                </div>
+                </div> */}
               </div>
             ))}
-
+          {/* 
           <Button variant="outline" size="sm" className="w-full">
             View All Sessions
-          </Button>
+          </Button> */}
         </div>
       </CardContent>
     </Card>

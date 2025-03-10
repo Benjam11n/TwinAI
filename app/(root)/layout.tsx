@@ -1,6 +1,10 @@
 import { NavBar } from '@/components/ui/NavBar';
 
-export function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
     <div className="flex min-h-screen flex-col">
       <main className="w-full flex-1 bg-background/85">
@@ -12,5 +16,3 @@ export function RootLayout({ children }: { children: React.ReactNode }) {
     </div>
   );
 }
-
-export default RootLayout;

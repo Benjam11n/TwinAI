@@ -7,6 +7,7 @@ import VolMeterWorket from '@/lib/worklets/vol-meter';
 import { RAGDocument } from '@/lib/rag/rag-service';
 import { useTherapySessionStore } from '@/store/use-therapy-session-store';
 import { RAGMultimodalLiveClient } from '@/lib/gemini/rag-multimodal-live-client';
+import { getPatientSessions } from '@/lib/actions/session.action';
 
 export type ManualKnowledgeEntry = {
   title: string;
@@ -38,26 +39,10 @@ export function useLiveAPIWithRAG({
   url,
   apiKey,
 }: MultimodalLiveAPIClientConnection): UseLiveAPIWithRAGResults {
-  const { patient, patientNotes, transcription } = useTherapySessionStore();
+  const { patient } = useTherapySessionStore();
   const [knowledgeBaseEntries, setKnowledgeBaseEntries] = useState<
     RAGDocument[]
   >([]);
-
-  const INITIAL_PROMPT = `You are now a digital twin of ${patient?.name}, created based on transcribed therapy sessions.
-    Patient background:
-    - Name: ${patient?.name}
-    - Conditions: ${patient?.conditions.join(', ')}
-    - Therapy history: ${transcription.length} previous sessions
-    Based on the following therapy session notes and transcriptions, embody the patient's communication style, thought patterns, concerns, and progress:
-    ${transcription
-      .map(
-        (entry) =>
-          `[${new Date(entry.timestamp).toLocaleString()}] ${entry.content}`
-      )
-      .join('\n\n')}
-    ${patientNotes ? `Therapist's additional notes: ${patientNotes}` : ''}
-    When responding to questions or scenarios, maintain the authentic voice and psychological profile of the patient. Reflect their current mental state, coping mechanisms, and therapeutic progress.
-    If asked about topics not covered in the therapy sessions, respond in a way that's consistent with what's known about the patient, but indicate uncertainty where appropriate.`;
 
   const client = useMemo(
     () => new RAGMultimodalLiveClient({ url, apiKey }),
@@ -128,17 +113,71 @@ export function useLiveAPIWithRAG({
   }, [client]);
 
   const connect = useCallback(async () => {
-    console.log(config);
     if (!config) {
       throw new Error('config has not been set');
     }
 
+    const sessionsResult = await getPatientSessions({
+      id: patient?._id as string,
+    });
+
+    let sessions = sessionsResult.data;
+
+    // Sort sessions by date in descending order (most recent first)
+    sessions =
+      sessions &&
+      sessions
+        .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+        .slice(0, 3); // Keep only the latest three sessions
+
+    // Format past sessions for the prompt
+    const pastSessionsText =
+      sessions && sessions.length > 0
+        ? sessions
+            .map((session) => {
+              const sessionNotes = session.patientNotes
+                ? `Therapist's Notes: ${session.patientNotes}`
+                : '';
+
+              const conversationHistory = session.conversationHistory
+                .map(
+                  (entry) =>
+                    `[${new Date(entry.timestamp).toLocaleString()}] : ${entry.content}`
+                )
+                .join('\n');
+
+              return `Session on ${new Date(session.date).toLocaleString()}:\n${sessionNotes}\n${conversationHistory}`;
+            })
+            .join('\n\n')
+        : 'No previous session data available.';
+
+    // Include the most recent therapist notes separately if available
+    const latestTherapistNotes = sessions?.[0]?.patientNotes
+      ? `Most recent therapist's notes: ${sessions[0].patientNotes}`
+      : '';
+
+    const UPDATED_PROMPT = `You are now a digital twin of ${patient?.name}, created based on transcribed therapy sessions.
+      Patient background:
+      - Name: ${patient?.name}
+      - Conditions: ${patient?.conditions?.join(', ') || 'Unknown'}
+      - Therapy history: ${sessions?.length || 0} recent sessions
+      Based on the following therapy session notes and transcriptions, embody the patient's communication style, thought patterns, concerns, and progress:
+      
+      ${pastSessionsText}
+  
+      ${latestTherapistNotes}
+  
+      When responding to questions or scenarios, maintain the authentic voice and psychological profile of the patient. Reflect their current mental state, coping mechanisms, and therapeutic progress.
+      If asked about topics not covered in the therapy sessions, respond in a way that's consistent with what's known about the patient, but indicate uncertainty where appropriate. Just say Hi initially, with a short intro of your problem`;
+
+    console.log(UPDATED_PROMPT);
+
     client.disconnect();
     await client.connect(config);
     setAiTranscription('');
-    client.send([{ text: INITIAL_PROMPT }]);
+    client.send([{ text: UPDATED_PROMPT }]);
     setConnected(true);
-  }, [client, setConnected, config, INITIAL_PROMPT]);
+  }, [client, setConnected, config]);
 
   const disconnect = useCallback(async () => {
     client.disconnect();

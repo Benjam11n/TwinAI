@@ -1,6 +1,6 @@
-import { BarChart3, ChevronRight, TrendingUp } from 'lucide-react';
+import { BarChart3, TrendingUp } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
+// import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import { moodHistory } from '@/data/data';
 
@@ -50,14 +50,14 @@ export function MoodAnalysisCard() {
             </p>
           </div>
 
-          <Button
+          {/* <Button
             variant="outline"
             className="w-full justify-between"
             size="sm"
           >
             View Detailed Analysis
             <ChevronRight className="size-4" />
-          </Button>
+          </Button> */}
         </div>
       </CardContent>
     </Card>

@@ -50,6 +50,12 @@ export default function PatientDashboard({
 
         <main className="flex-1 overflow-auto p-6">
           <div className="flex flex-col space-y-6">
+            {/* Session Cards */}
+            <div className="grid gap-6 md:grid-cols-2">
+              <LiveSessionCard patient={patient || null} />
+              <DigitalTwinCard patient={patient} />
+            </div>
+
             {/* Analytics and Treatment Section */}
             <div className="grid gap-6 md:grid-cols-3">
               <MoodAnalysisCard />
@@ -58,15 +64,6 @@ export default function PatientDashboard({
                 treatmentPlans={treatmentPlans}
               />
               <RecentSessionsCard pastSessions={pastSessions} />
-            </div>
-
-            {/* Session Cards */}
-            <div className="grid gap-6 md:grid-cols-2">
-              <LiveSessionCard patient={patient || null} />
-              <DigitalTwinCard
-                patientName={name}
-                patientId={patient._id as string}
-              />
             </div>
 
             {/* Knowledge Base Section */}

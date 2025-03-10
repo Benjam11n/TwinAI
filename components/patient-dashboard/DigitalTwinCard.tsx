@@ -14,16 +14,11 @@ import { Badge } from '@/components/ui/badge';
 import { ROUTES } from '@/constants/routes';
 import { useTherapySessionStore } from '@/store/use-therapy-session-store';
 import { useTranscription } from '@/contexts/LiveTranscriptionContext';
+import { IPatientDoc } from '@/database';
 
-export function DigitalTwinCard({
-  patientName,
-  patientId,
-}: {
-  patientName: string;
-  patientId: string;
-}) {
+export function DigitalTwinCard({ patient }: { patient: IPatientDoc }) {
   const router = useRouter();
-  const { setConversationHistory } = useTherapySessionStore();
+  const { setConversationHistory, setPatient } = useTherapySessionStore();
   const { clearTranscription } = useTranscription();
 
   return (
@@ -44,7 +39,7 @@ export function DigitalTwinCard({
           </Badge>
         </div>
         <CardDescription className="pt-1">
-          Interact with {patientName}&apos;s digital twin for simulation and
+          Interact with {patient.name}&apos;s digital twin for simulation and
           analysis
         </CardDescription>
       </CardHeader>
@@ -69,7 +64,8 @@ export function DigitalTwinCard({
       <CardFooter className="pt-3">
         <Button
           onClick={() => {
-            router.push(ROUTES.DTSESSION(patientId));
+            router.push(ROUTES.DTSESSION(patient._id as string));
+            setPatient(patient);
             setConversationHistory([]);
             clearTranscription();
           }}
