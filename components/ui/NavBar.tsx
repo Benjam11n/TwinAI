@@ -5,6 +5,7 @@ import { ThemeToggle } from '@/components/theme/ThemeToggle';
 import { ROUTES } from '@/constants/routes';
 import { Logo } from './Logo';
 import { useEffect, useState } from 'react';
+import { SidebarButton } from '../SidebarButton';
 
 export function NavBar() {
   const [scrolled, setScrolled] = useState(false);
@@ -13,11 +14,8 @@ export function NavBar() {
     const handleScroll = () => {
       setScrolled(window.scrollY > 10);
     };
-
     window.addEventListener('scroll', handleScroll);
-
     handleScroll();
-
     return () => {
       window.removeEventListener('scroll', handleScroll);
     };
@@ -25,12 +23,15 @@ export function NavBar() {
 
   return (
     <header
-      className={`absolute top-0 z-50 w-full transition-all duration-300 ${
-        scrolled ? 'bg-background/80' : 'bg-transparent'
+      className={`fixed top-0 z-50 w-full transition-all duration-300 ${
+        scrolled ? 'bg-background/80 backdrop-blur-sm' : 'bg-transparent'
       }`}
     >
-      <nav className="container flex h-16 items-center px-4">
-        <div className="flex gap-6 lg:gap-10">
+      <nav className="container flex h-16 items-center justify-between px-4">
+        <div className="flex items-center gap-4">
+          {/* Mobile sidebar toggle button */}
+          <SidebarButton />
+
           <Link
             href={ROUTES.DASHBOARD}
             prefetch
@@ -47,6 +48,7 @@ export function NavBar() {
             </div>
           </Link>
         </div>
+
         <ThemeToggle />
       </nav>
     </header>

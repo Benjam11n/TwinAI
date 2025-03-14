@@ -85,7 +85,6 @@ export default function CalendarPage() {
 
             {/* Calendar Card */}
             <Card>
-              <CardHeader></CardHeader>
               <CardContent>
                 {/* Full Calendar View */}
                 <div className="mb-8 w-full">

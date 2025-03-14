@@ -42,8 +42,8 @@ export default function PatientDashboard({
   return (
     <div className="flex min-h-screen">
       <div className="flex flex-1 flex-col">
-        <header className="flex h-14 items-center justify-between border-b px-6">
-          <h1 className="text-3xl font-semibold tracking-tight">
+        <header className="mt-14 flex h-12 items-center justify-between px-6">
+          <h1 className="text-3xl font-semibold tracking-tight md:text-2xl">
             {name}&apos;s Dashboard
           </h1>
         </header>
