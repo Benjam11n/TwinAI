@@ -40,8 +40,8 @@ export function TreatmentPlansCard({
       <CardContent>
         {recommendedPlans && recommendedPlans.length > 0 ? (
           <Accordion type="single" collapsible className="w-full">
-            {recommendedPlans.map((plan) => (
-              <AccordionItem key={plan._id as string} value={plan.id}>
+            {recommendedPlans?.map((plan, index) => (
+              <AccordionItem key={plan._id as string} value={String(index)}>
                 <AccordionTrigger className="hover:no-underline">
                   <div className="w-full pr-4 text-start">{plan.title}</div>
                 </AccordionTrigger>
