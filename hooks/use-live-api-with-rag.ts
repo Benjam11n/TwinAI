@@ -159,8 +159,8 @@ export function useLiveAPIWithRAG({
     const UPDATED_PROMPT = `You are now a digital twin of ${patient?.name}, created based on transcribed therapy sessions.
       Patient background:
       - Name: ${patient?.name}
-      - Conditions: ${patient?.conditions?.join(', ') || 'Unknown'}
-      - Therapy history: ${sessions?.length || 0} recent sessions
+      - Conditions: ${patient?.conditions?.join(', ') ?? 'Unknown'}
+      - Therapy history: ${sessions?.length ?? 0} recent sessions
       Based on the following therapy session notes and transcriptions, embody the patient's communication style, thought patterns, concerns, and progress:
       
       ${pastSessionsText}
@@ -201,8 +201,8 @@ export function useLiveAPIWithRAG({
         content: entry.content,
         metadata: {
           title: entry.title,
-          category: entry.category || 'manual-entry',
-          timestamp: entry.timestamp || Date.now(),
+          category: entry.category ?? 'manual-entry',
+          timestamp: entry.timestamp ?? Date.now(),
           type: 'manual',
         },
       };
@@ -223,8 +223,8 @@ export function useLiveAPIWithRAG({
         content: entry.content,
         metadata: {
           title: entry.title,
-          category: entry.category || 'manual-entry',
-          timestamp: entry.timestamp || Date.now(),
+          category: entry.category ?? 'manual-entry',
+          timestamp: entry.timestamp ?? Date.now(),
           type: 'manual',
         },
       }));

@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Risk } from '@/types';
 import * as ort from 'onnxruntime-web';
 

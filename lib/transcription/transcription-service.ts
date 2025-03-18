@@ -3,7 +3,7 @@ import { GoogleGenerativeAI } from '@google/generative-ai';
 const MODEL_NAME = 'gemini-1.5-flash-8b';
 
 export class TranscriptionService {
-  private model;
+  private readonly model;
 
   constructor(apiKey: string) {
     const genAI = new GoogleGenerativeAI(apiKey);
