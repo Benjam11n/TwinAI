@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { ArrowLeft, Download, FileText } from 'lucide-react';
 import { ROUTES } from '@/constants/routes';
-import { ConversationHistoryEntry, ISessionDoc } from '@/database';
+import { ConversationHistoryEntry } from '@/database';
 import { SentimentResult, SessionView } from '@/types';
 
 interface SessionSummaryClientProps {
@@ -97,8 +97,8 @@ export default function SessionSummaryClient({
   )[0][0];
 
   // Capitalize first letter for display
-  const displaySentiment =
-    overallSentiment.charAt(0).toUpperCase() + overallSentiment.slice(1);
+  const displaySentiment = (overallSentiment.charAt(0).toUpperCase() +
+    overallSentiment.slice(1)) as 'Positive' | 'Neutral' | 'Negative';
 
   // Determine the color based on sentiment
   const sentimentColor = {

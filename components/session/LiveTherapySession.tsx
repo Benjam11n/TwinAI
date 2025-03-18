@@ -36,7 +36,6 @@ export default function LiveTherapySession({
     isRecording,
     transcription,
     isTranscribing,
-    clearTranscription,
   } = useTranscription();
 
   const toggleSession = async () => {

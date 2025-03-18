@@ -12,8 +12,7 @@ export const ROUTES = {
   DTSESSION: (patientId: string) => `/${patientId}/dtsession`,
   DTSESSION_DETAIL: (patientId: string, sessionId: string) =>
     `/${patientId}/dtsession/${sessionId}`,
-  DTSESSION_ANALYSIS: (patientId: string, sessionId: string) =>
-    `/${patientId}/dtsession/${sessionId}/analysis`,
+  DTSESSION_ANALYSIS: (patientId: string) => `/${patientId}/dtsession/analysis`,
 
   SIGN_IN_WITH_OAUTH: `signin-with-oauth`,
 };

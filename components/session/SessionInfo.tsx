@@ -1,5 +1,4 @@
 'use client';
-
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Trash2 } from 'lucide-react';
@@ -30,7 +29,6 @@ export default function SessionInfo({
     if (sessionActive && isRecording) {
       stopTranscription();
     }
-
     clearTranscription();
     toast.info('Session data cleared');
   };
@@ -38,13 +36,11 @@ export default function SessionInfo({
   return (
     <Card className="p-6 md:col-span-1">
       <h2 className="mb-4 text-xl font-semibold">Session Info</h2>
-
       <div className="space-y-4">
         <div>
           <h3 className="text-sm font-medium text-muted-foreground">Patient</h3>
           <p className="text-lg">{patient?.name || 'Unknown Patient'}</p>
         </div>
-
         <div>
           <h3 className="text-sm font-medium text-muted-foreground">
             Condition Profile
@@ -66,19 +62,22 @@ export default function SessionInfo({
             ))}
           </div>
         </div>
-
         <div>
           <h3 className="text-sm font-medium text-muted-foreground">
             Session Duration
           </h3>
           <div className="flex items-center gap-2">
             <div
-              className={`size-2 rounded-full ${sessionActive ? 'animate-pulse bg-green-500' : 'bg-gray-300'}`}
+              className={`size-2 rounded-full ${
+                sessionActive ? 'animate-pulse bg-green-500' : 'bg-gray-300'
+              }`}
             ></div>
             <p className="text-lg">{formatDuration()}</p>
+            <p className="text-sm text-muted-foreground">
+              ({sessionDuration} seconds)
+            </p>
           </div>
         </div>
-
         <div className="flex flex-col gap-2">
           <Button
             variant="ghost"
