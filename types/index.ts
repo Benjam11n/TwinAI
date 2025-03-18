@@ -28,3 +28,33 @@ export type RiskAnalysis = {
 };
 
 export type Risk = { score: number; riskLevel: string };
+
+export interface SentimentScore {
+  label: 'positive' | 'neutral' | 'negative';
+  score: number;
+}
+
+export interface SentimentAnalysisData {
+  text: string;
+  sentiment: SentimentScore[];
+  dominant_sentiment: 'positive' | 'neutral' | 'negative';
+}
+
+export interface SentimentAnalysisResponse {
+  success: boolean;
+  data: SentimentAnalysisData;
+  status: number;
+}
+
+// For use in components with timestamp
+export interface SentimentResult extends SentimentAnalysisData {
+  timestamp: string | number | Date;
+}
+
+export interface SessionView {
+  patientId: { _id: string; name: string };
+  date: Date;
+  patientNotes: string;
+  conversationHistory: ConversationHistoryEntry[];
+  mood: number;
+}
