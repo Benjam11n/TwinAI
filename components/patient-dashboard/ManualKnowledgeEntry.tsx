@@ -37,7 +37,7 @@ export function ManualKnowledgeEntryForm({
     'Behavioral Observations',
     'Other',
   ],
-}: ManualKnowledgeEntryFormProps) {
+}: Readonly<ManualKnowledgeEntryFormProps>) {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [category, setCategory] = useState(categories[0]);

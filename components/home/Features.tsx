@@ -21,9 +21,9 @@ function Feature() {
             </div>
           </div>
           <div className="grid gap-8 sm:grid-cols-1 lg:grid-cols-3">
-            {FEATURES.map((feature, index) => (
+            {FEATURES.map((feature) => (
               <div
-                key={index}
+                key={feature.title}
                 className="glass-panel feature-card-hover space-y-4 p-8"
               >
                 <div className="flex flex-row items-center gap-2 space-x-2">

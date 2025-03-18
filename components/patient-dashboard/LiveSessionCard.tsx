@@ -17,7 +17,11 @@ import { useTherapySessionStore } from '@/store/use-therapy-session-store';
 import { useTranscription } from '@/contexts/LiveTranscriptionContext';
 import { IPatientDoc } from '@/database';
 
-export function LiveSessionCard({ patient }: { patient: IPatientDoc }) {
+interface LiveSessionCardProps {
+  patient: IPatientDoc;
+}
+
+export function LiveSessionCard({ patient }: Readonly<LiveSessionCardProps>) {
   const router = useRouter();
   const { setPatient } = useTherapySessionStore();
   const { clearTranscription } = useTranscription();

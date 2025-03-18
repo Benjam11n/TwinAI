@@ -1,18 +1,21 @@
 'use client';
 
 import { useSidebarStore } from '@/store/sidebar-store';
-import { Menu } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
 
 export function SidebarButton() {
-  const toggle = useSidebarStore((state) => state.toggle);
+  const { isOpen, toggle } = useSidebarStore();
 
   return (
     <button
       className="rounded-full p-2 text-foreground hover:bg-primary/10 md:hidden"
-      onClick={toggle}
-      aria-label="Toggle sidebar"
+      onClick={(e) => {
+        e.stopPropagation();
+        toggle();
+      }}
+      aria-label={isOpen ? 'Close sidebar' : 'Open sidebar'}
     >
-      <Menu size={24} />
+      {isOpen ? <X size={24} /> : <Menu size={24} />}
     </button>
   );
 }

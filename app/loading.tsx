@@ -10,7 +10,7 @@ const Loading = () => {
           <div className="absolute -inset-12 flex items-center justify-center opacity-30">
             {[...Array(3)].map((_, i) => (
               <div
-                key={i}
+                key={`ping-animation-${i}`}
                 className="absolute animate-ping rounded-full border-2 border-primary"
                 style={{
                   width: `${(i + 2) * 40}px`,

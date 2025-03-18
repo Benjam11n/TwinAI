@@ -1,18 +1,21 @@
 'use client';
-
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { Home, Search } from 'lucide-react';
 import { ROUTES } from '@/constants/routes';
 import { IPatientDoc } from '@/database/patient.model';
 import { useSidebarStore } from '@/store/sidebar-store';
 import { Input } from './ui/input';
+import { Button } from './ui/button';
 
 interface ClientSidebarProps {
   patients: IPatientDoc[];
 }
 
-export default function ClientSidebar({ patients }: ClientSidebarProps) {
+export default function ClientSidebar({
+  patients,
+}: Readonly<ClientSidebarProps>) {
+  const sidebarRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
   const [searchQuery, setSearchQuery] = useState('');
   const { isOpen, close } = useSidebarStore();
@@ -24,9 +27,11 @@ export default function ClientSidebar({ patients }: ClientSidebarProps) {
   // Close sidebar when clicking outside on mobile
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      const sidebar = document.getElementById('mobile-sidebar');
-
-      if (sidebar && !sidebar.contains(event.target as Node) && isOpen) {
+      if (
+        sidebarRef.current &&
+        !sidebarRef.current.contains(event.target as Node) &&
+        isOpen
+      ) {
         close();
       }
     };
@@ -46,7 +51,6 @@ export default function ClientSidebar({ patients }: ClientSidebarProps) {
     };
 
     window.addEventListener('popstate', handleRouteChange);
-
     return () => {
       window.removeEventListener('popstate', handleRouteChange);
     };
@@ -59,26 +63,29 @@ export default function ClientSidebar({ patients }: ClientSidebarProps) {
         <div
           className="fixed inset-0 z-20 bg-black/50 md:hidden"
           onClick={close}
+          aria-label="Close mobile menu"
         />
       )}
 
       {/* Sidebar */}
       <div
         id="mobile-sidebar"
+        ref={sidebarRef}
         className={`
-          fixed top-0 z-20 h-full w-64 bg-background pt-16 shadow-lg transition-transform duration-300 ease-in-out md:static
+          fixed top-0 z-30 h-full w-64 bg-background pt-16 shadow-lg transition-transform duration-300 ease-in-out md:static
           md:translate-x-0 md:pt-0 md:shadow-none
           ${isOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'}
         `}
       >
         <div className="flex h-full flex-col space-y-4 p-4">
-          <div
+          <Button
+            variant="ghost"
             onClick={() => router.push(ROUTES.DASHBOARD)}
             className="flex cursor-pointer flex-row items-center gap-x-2 rounded-lg px-3 py-2 text-gray-900 hover:bg-primary/20 dark:text-gray-100 dark:hover:bg-primary/60"
           >
             <Home size={18} />
             Dashboard
-          </div>
+          </Button>
 
           {/* Search Bar */}
           <div className="relative">

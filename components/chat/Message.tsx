@@ -10,7 +10,7 @@ interface MessageProps {
   isLatest: boolean;
 }
 
-export function Message({ role, content, isLatest }: MessageProps) {
+export function Message({ role, content, isLatest }: Readonly<MessageProps>) {
   return (
     <motion.div
       className={cn(

@@ -1,7 +1,7 @@
 import RiskAnalysisDashboard from '@/components/RiskAnalysisDashboard';
 import { getPatient } from '@/lib/actions/patient.action';
 
-export default async function AnalysisPage({ params }: RouteParams) {
+export default async function AnalysisPage({ params }: Readonly<RouteParams>) {
   const { id } = await params;
 
   const patientResult = await getPatient({ id });

@@ -60,9 +60,22 @@ const MediaStreamButton = ({
   start,
   stop,
   connected,
-}: MediaStreamButtonProps) => {
+}: Readonly<MediaStreamButtonProps>) => {
   const buttonClasses =
     'flex items-center justify-center w-12 h-12 bg-neutral-200 text-neutral-600 rounded-2xl border border-transparent transition-all hover:bg-transparent hover:border-neutral-200 focus:outline-none focus:ring-2 focus:ring-neutral-800';
+
+  const buttonIcon =
+    type === 'webcam' ? (
+      isStreaming ? (
+        <CameraOff size={24} />
+      ) : (
+        <Camera size={24} />
+      )
+    ) : isStreaming ? (
+      <MonitorOff size={24} />
+    ) : (
+      <Monitor size={24} />
+    );
 
   return (
     <Button
@@ -71,17 +84,7 @@ const MediaStreamButton = ({
       onClick={isStreaming ? stop : start}
       disabled={!connected}
     >
-      {type === 'webcam' ? (
-        isStreaming ? (
-          <CameraOff size={24} />
-        ) : (
-          <Camera size={24} />
-        )
-      ) : isStreaming ? (
-        <MonitorOff size={24} />
-      ) : (
-        <Monitor size={24} />
-      )}
+      {buttonIcon}
     </Button>
   );
 };

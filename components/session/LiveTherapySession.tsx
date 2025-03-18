@@ -13,11 +13,13 @@ import { createSession } from '@/lib/actions/session.action';
 import { ROUTES } from '@/constants/routes';
 import { IPatientDoc } from '@/database';
 
+interface LiveTherapySessionProps {
+  patient: IPatientDoc;
+}
+
 export default function LiveTherapySession({
   patient,
-}: {
-  patient: IPatientDoc;
-}) {
+}: Readonly<LiveTherapySessionProps>) {
   const router = useRouter();
   const [sessionActive, setSessionActive] = useState(false);
   const [patientNotes, setPatientNotes] = useState('');
@@ -218,7 +220,7 @@ export default function LiveTherapySession({
               <div className="mt-1 flex flex-wrap gap-2">
                 {patient?.conditions?.map((condition, index) => (
                   <span
-                    key={index}
+                    key={condition}
                     className={`rounded-full px-3 py-1 text-xs ${
                       index % 3 === 0
                         ? 'bg-blue-100 text-blue-800'

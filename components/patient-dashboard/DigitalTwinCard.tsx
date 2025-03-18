@@ -16,7 +16,11 @@ import { useTherapySessionStore } from '@/store/use-therapy-session-store';
 import { useTranscription } from '@/contexts/LiveTranscriptionContext';
 import { IPatientDoc } from '@/database';
 
-export function DigitalTwinCard({ patient }: { patient: IPatientDoc }) {
+interface DigitalTwinCardProps {
+  patient: IPatientDoc;
+}
+
+export function DigitalTwinCard({ patient }: Readonly<DigitalTwinCardProps>) {
   const router = useRouter();
   const { setConversationHistory, setPatient } = useTherapySessionStore();
   const { clearTranscription } = useTranscription();

@@ -115,10 +115,6 @@
   }
 }
 
-.pulse-animation {
-  animation: pulse 8s infinite ease-in-out;
-}
-
 @keyframes arrow-nudge {
   0% {
     transform: translateX(0);

@@ -182,7 +182,7 @@ export const DocumentUploader: React.FC<DocumentUploaderProps> = ({
               <div className="max-h-36 space-y-2 overflow-y-auto">
                 {documents.map((doc, index) => (
                   <div
-                    key={index}
+                    key={`document-index${index}`}
                     className="flex items-center justify-between rounded bg-muted p-2"
                   >
                     <div className="flex items-center gap-2">

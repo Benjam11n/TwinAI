@@ -31,13 +31,13 @@ function transformEvents(googleEvents: GoogleEvent[]): TransformedEvent[] {
   return googleEvents.map((evt) => {
     return {
       id: evt.id,
-      title: evt.summary || '(No Title)',
+      title: evt.summary ?? '(No Title)',
       start: evt.start.dateTime
         ? new Date(evt.start.dateTime)
-        : new Date(evt.start.date || ''),
+        : new Date(evt.start.date ?? ''),
       end: evt.end.dateTime
         ? new Date(evt.end.dateTime)
-        : new Date(evt.end.date || ''),
+        : new Date(evt.end.date ?? ''),
     };
   });
 }
@@ -55,7 +55,7 @@ export default function CalendarPage() {
           throw new Error('Failed to fetch events');
         }
         const data = await res.json();
-        const transformed = transformEvents(data.events || []);
+        const transformed = transformEvents(data.events ?? []);
         setEvents(transformed);
       } catch (error) {
         console.error('Error fetching calendar events:', error);

@@ -17,6 +17,18 @@ import { createDTSession } from '@/lib/actions/dtsession.action';
 import { IPatientDoc } from '@/database';
 import { ROUTES } from '@/constants/routes';
 
+const ReturnButton = ({ patientId }: { patientId: string }) => (
+  <Link
+    href={ROUTES.PATIENT(patientId)}
+    className="mb-6 inline-flex items-center rounded-lg px-4 py-2 text-sm font-medium transition-colors"
+  >
+    <Button>
+      <ArrowLeft className="mr-2 size-4" />
+      Return to Dashboard
+    </Button>
+  </Link>
+);
+
 const RiskAnalysisDashboard = ({ patient }: { patient: IPatientDoc }) => {
   const { conversationHistory } = useTherapySessionStore();
   interface RiskAnalysis {
@@ -69,14 +81,15 @@ const RiskAnalysisDashboard = ({ patient }: { patient: IPatientDoc }) => {
       setIsSaving(true);
 
       let riskScore = 0;
-      if (!riskAnalysis) {
-        riskScore = 0;
-      } else if (riskAnalysis.overallRiskLevel === 'low') {
-        riskScore = 25;
-      } else if (riskAnalysis.overallRiskLevel === 'medium') {
-        riskScore = 50;
-      } else if (riskAnalysis.overallRiskLevel === 'high') {
-        riskScore = 75;
+
+      if (riskAnalysis) {
+        if (riskAnalysis.overallRiskLevel === 'low') {
+          riskScore = 25;
+        } else if (riskAnalysis.overallRiskLevel === 'medium') {
+          riskScore = 50;
+        } else if (riskAnalysis.overallRiskLevel === 'high') {
+          riskScore = 75;
+        }
       }
 
       // Transform the conversation history to match the schema
@@ -114,22 +127,10 @@ const RiskAnalysisDashboard = ({ patient }: { patient: IPatientDoc }) => {
     }
   };
 
-  const ReturnButton = () => (
-    <Link
-      href={ROUTES.PATIENT(patient._id as string)}
-      className="mb-6 inline-flex items-center rounded-lg px-4 py-2 text-sm font-medium transition-colors"
-    >
-      <Button>
-        <ArrowLeft className="mr-2 size-4" />
-        Return to Dashboard
-      </Button>
-    </Link>
-  );
-
   if (loading) {
     return (
       <div className="flex min-h-[60vh] flex-col items-center justify-center p-8">
-        <ReturnButton />
+        <ReturnButton patientId={patient._id as string} />
         <div className="flex flex-col items-center text-center">
           <Hourglass className="mb-4 size-16 animate-pulse" />
           <h2 className="mb-2 text-xl font-semibold">Analyzing Conversation</h2>
@@ -145,7 +146,7 @@ const RiskAnalysisDashboard = ({ patient }: { patient: IPatientDoc }) => {
   if (error) {
     return (
       <div className="p-8">
-        <ReturnButton />
+        <ReturnButton patientId={patient._id as string} />
         <div className="flex flex-col items-center rounded-lg border border-red-200 bg-red-50 p-8 text-center">
           <AlertTriangle className="mb-4 size-16 text-red-500" />
           <h2 className="mb-2 text-xl font-semibold">Analysis Error</h2>
@@ -163,7 +164,7 @@ const RiskAnalysisDashboard = ({ patient }: { patient: IPatientDoc }) => {
     return (
       <div className="p-8">
         <div className="mb-6 flex items-center justify-between">
-          <ReturnButton />
+          <ReturnButton patientId={patient._id as string} />
           <Button
             onClick={saveAnalysisToDatabase}
             disabled={isSaving}
@@ -190,15 +191,11 @@ const RiskAnalysisDashboard = ({ patient }: { patient: IPatientDoc }) => {
     );
   }
 
-  if (
-    !riskAnalysis ||
-    !riskAnalysis.results ||
-    riskAnalysis.results.length === 0
-  ) {
+  if (!riskAnalysis?.results?.length) {
     return (
       <div className="p-8">
         <div className="mb-6 flex items-center justify-between">
-          <ReturnButton />
+          <ReturnButton patientId={patient._id as string} />
           <Button
             onClick={saveAnalysisToDatabase}
             disabled={isSaving}
@@ -224,7 +221,7 @@ const RiskAnalysisDashboard = ({ patient }: { patient: IPatientDoc }) => {
   return (
     <div className="p-8">
       <div className="mb-6 flex items-center justify-between">
-        <ReturnButton />
+        <ReturnButton patientId={patient._id as string} />
         <Button
           onClick={saveAnalysisToDatabase}
           disabled={isSaving}
