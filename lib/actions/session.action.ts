@@ -10,6 +10,7 @@ import {
   GetPatientSessionSchema,
   GetSessionSchema,
 } from '../validations';
+import { SessionView } from '@/types';
 
 export async function createSession(
   params: CreateSessionParams
@@ -57,7 +58,7 @@ export async function createSession(
 
 export async function getSession(
   params: GetSessionParams
-): Promise<ActionResponse<ISessionDoc>> {
+): Promise<ActionResponse<SessionView>> {
   const validationResult = await action({
     params,
     schema: GetSessionSchema,
@@ -70,7 +71,10 @@ export async function getSession(
   const { sessionId } = validationResult.params!;
 
   try {
-    const session = await Session.findOne({ sessionId });
+    const session = await Session.findOne({ _id: sessionId }).populate({
+      path: 'patientId',
+      select: 'name',
+    });
 
     if (!session) {
       throw new Error('Session not found');
