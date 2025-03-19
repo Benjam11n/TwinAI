@@ -44,6 +44,9 @@ importers:
       '@types/mongoose':
         specifier: ^5.11.97
         version: 5.11.97
+      axios:
+        specifier: ^1.8.3
+        version: 1.8.3
       class-variance-authority:
         specifier: ^0.7.1
         version: 0.7.1
@@ -61,7 +64,7 @@ importers:
         version: 146.0.0
       langchain:
         specifier: ^0.3.19
-        version: 0.3.19(@langchain/core@0.3.42(openai@4.86.2(zod@3.24.2)))(@langchain/google-genai@0.1.10(@langchain/core@0.3.42(openai@4.86.2(zod@3.24.2)))(zod@3.24.2))(openai@4.86.2(zod@3.24.2))
+        version: 0.3.19(@langchain/core@0.3.42(openai@4.86.2(zod@3.24.2)))(@langchain/google-genai@0.1.10(@langchain/core@0.3.42(openai@4.86.2(zod@3.24.2)))(zod@3.24.2))(axios@1.8.3)(openai@4.86.2(zod@3.24.2))
       lodash:
         specifier: ^4.17.21
         version: 4.17.21
@@ -1195,6 +1198,9 @@ packages:
     resolution: {integrity: sha512-Xm7bpRXnDSX2YE2YFfBk2FnF0ep6tmG7xPh8iHee8MIcrgq762Nkce856dYtJYLkuIoYZvGfTs/PbZhideTcEg==}
     engines: {node: '>=4'}
 
+  axios@1.8.3:
+    resolution: {integrity: sha512-iP4DebzoNlP/YN2dpwCgb8zoCmhtkajzS48JvwmkSkXvPI3DHc7m+XYL5tGnSlJtR6nImXZmdCuN5aP8dh1d8A==}
+
   axobject-query@4.1.0:
     resolution: {integrity: sha512-qIj0G9wZbMGNLjLmg1PT6v2mE9AH2zlnADJD/2tC6E00hgmhUOfEB6greHPAfLRSufHqROIUTkw6E+M3lH0PTQ==}
     engines: {node: '>= 0.4'}
@@ -1688,6 +1694,15 @@ packages:
 
   flatted@3.3.3:
     resolution: {integrity: sha512-GX+ysw4PBCz0PzosHDepZGANEuFCMLrnRTiEy9McGjmkCQYwRq4A/X786G/fjM/+OjsWSU1ZrY5qyARZmO/uwg==}
+
+  follow-redirects@1.15.9:
+    resolution: {integrity: sha512-gew4GsXizNgdoRyqmyfMHyAmXsZDk6mHkSxZFCzW9gwlbtOW44CDtYavM+y+72qD/Vq2l550kMF52DT8fOLJqQ==}
+    engines: {node: '>=4.0'}
+    peerDependencies:
+      debug: '*'
+    peerDependenciesMeta:
+      debug:
+        optional: true
 
   for-each@0.3.5:
     resolution: {integrity: sha512-dKx12eRCVIzqCxFGplyFKJMPvLEWgmNtUrpTiJIR5u97zEhRG8ySrtboPHZXx7daLxQVrl643cTzbab2tkQjxg==}
@@ -2616,6 +2631,9 @@ packages:
   protobufjs@7.4.0:
     resolution: {integrity: sha512-mRUWCc3KUU4w1jU8sGxICXH/gNS94DvI1gxqDvBzhj1JpcsimQkYiOJfwsPUykUI5ZaspFbSgmBLER8IrQ3tqw==}
     engines: {node: '>=12.0.0'}
+
+  proxy-from-env@1.1.0:
+    resolution: {integrity: sha512-D+zkORCbA9f1tdWRK0RaCR3GPv50cMxcrz4X8k5LTSUD1Dkw47mKJEZQNunItRTkWwgtaUSo1RVFRIG9ZXiFYg==}
 
   punycode@2.3.1:
     resolution: {integrity: sha512-vYt7UD1U9Wg6138shLtLOvdAu+8DsC/ilFtEVHcH+wydcSpNE20AfSOduf6MkRFahL5FY7X1oU7nKVZFtfq8Fg==}
@@ -4102,6 +4120,14 @@ snapshots:
 
   axe-core@4.10.3: {}
 
+  axios@1.8.3:
+    dependencies:
+      follow-redirects: 1.15.9
+      form-data: 4.0.2
+      proxy-from-env: 1.1.0
+    transitivePeerDependencies:
+      - debug
+
   axobject-query@4.1.0: {}
 
   balanced-match@1.0.2: {}
@@ -4724,6 +4750,8 @@ snapshots:
 
   flatted@3.3.3: {}
 
+  follow-redirects@1.15.9: {}
+
   for-each@0.3.5:
     dependencies:
       is-callable: 1.2.7
@@ -5151,7 +5179,7 @@ snapshots:
     dependencies:
       json-buffer: 3.0.1
 
-  langchain@0.3.19(@langchain/core@0.3.42(openai@4.86.2(zod@3.24.2)))(@langchain/google-genai@0.1.10(@langchain/core@0.3.42(openai@4.86.2(zod@3.24.2)))(zod@3.24.2))(openai@4.86.2(zod@3.24.2)):
+  langchain@0.3.19(@langchain/core@0.3.42(openai@4.86.2(zod@3.24.2)))(@langchain/google-genai@0.1.10(@langchain/core@0.3.42(openai@4.86.2(zod@3.24.2)))(zod@3.24.2))(axios@1.8.3)(openai@4.86.2(zod@3.24.2)):
     dependencies:
       '@langchain/core': 0.3.42(openai@4.86.2(zod@3.24.2))
       '@langchain/openai': 0.4.4(@langchain/core@0.3.42(openai@4.86.2(zod@3.24.2)))
@@ -5168,6 +5196,7 @@ snapshots:
       zod-to-json-schema: 3.24.3(zod@3.24.2)
     optionalDependencies:
       '@langchain/google-genai': 0.1.10(@langchain/core@0.3.42(openai@4.86.2(zod@3.24.2)))(zod@3.24.2)
+      axios: 1.8.3
     transitivePeerDependencies:
       - encoding
       - openai
@@ -5585,6 +5614,8 @@ snapshots:
       '@protobufjs/utf8': 1.1.0
       '@types/node': 20.17.24
       long: 5.3.1
+
+  proxy-from-env@1.1.0: {}
 
   punycode@2.3.1: {}
 

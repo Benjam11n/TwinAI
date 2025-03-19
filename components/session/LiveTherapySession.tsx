@@ -2,16 +2,16 @@
 
 import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
-import { Card } from '@/components/ui/card';
-import { Mic, MicOff, Save, Trash2 } from 'lucide-react';
+import { Mic, MicOff } from 'lucide-react';
 import { toast } from 'sonner';
 import { useTherapySessionStore } from '@/store/use-therapy-session-store';
 import { useTranscription } from '@/contexts/LiveTranscriptionContext';
 import { useRouter } from 'next/navigation';
-import { Textarea } from '../ui/textarea';
 import { createSession } from '@/lib/actions/session.action';
 import { ROUTES } from '@/constants/routes';
 import { IPatientDoc } from '@/database';
+import SessionInfo from './SessionInfo';
+import LiveTranscriptionCard from './LiveTranscriptionCard';
 
 interface LiveTherapySessionProps {
   patient: IPatientDoc;
@@ -38,7 +38,6 @@ export default function LiveTherapySession({
     isRecording,
     transcription,
     isTranscribing,
-    clearTranscription,
   } = useTranscription();
 
   const toggleSession = async () => {
@@ -82,7 +81,7 @@ export default function LiveTherapySession({
     return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
   };
 
-  const saveSessionToDatabase = async () => {
+  const endSessionAndNavigate = async () => {
     if (!patient?._id) {
       toast.error('No patient selected');
       return;
@@ -90,6 +89,18 @@ export default function LiveTherapySession({
 
     setIsSaving(true);
     try {
+      // If there's active transcription, add it to the store
+      if (transcription) {
+        setTranscription([
+          ...therapyTranscription,
+          {
+            content: transcription,
+            timestamp: Date.now(),
+          },
+        ]);
+      }
+
+      // Create the session in the database
       const sessionData = {
         patientId: patient._id as string,
         date: new Date(),
@@ -111,37 +122,29 @@ export default function LiveTherapySession({
       const result = await createSession(sessionData);
 
       if (result.success) {
-        toast.success('Session saved to database successfully');
+        toast.success('Session saved successfully');
 
-        router.push(ROUTES.PATIENT(patient._id as string));
+        // Navigate to the session summary page
+        if (result.data?._id) {
+          router.push(
+            ROUTES.SESSION_ANALYSIS(
+              patient._id as string,
+              result?.data?._id as string
+            )
+          );
+        } else {
+          router.push(ROUTES.PATIENT(patient._id as string));
+        }
       } else {
-        toast.error('Failed to save session to database');
+        toast.error('Failed to save session');
         console.error('Error saving session:', result);
       }
     } catch (error) {
       console.error('Error saving session:', error);
-      toast.error('An error occurred while saving the session');
+      toast.error('An error occurred');
     } finally {
       setIsSaving(false);
     }
-  };
-
-  // Reset all session data
-  const resetSession = () => {
-    if (sessionActive) {
-      stopTranscription();
-      setSessionActive(false);
-
-      if (timerInterval) {
-        clearInterval(timerInterval);
-        setTimerInterval(null);
-      }
-    }
-
-    clearTranscription();
-    setPatientNotes('');
-    setSessionDuration(0);
-    toast.info('Session data cleared');
   };
 
   // Clean up on unmount
@@ -182,18 +185,7 @@ export default function LiveTherapySession({
           </Button>
           <Button
             variant="destructive"
-            onClick={async () => {
-              if (transcription) {
-                setTranscription([
-                  ...therapyTranscription,
-                  {
-                    content: transcription,
-                    timestamp: Date.now(),
-                  },
-                ]);
-              }
-              await saveSessionToDatabase();
-            }}
+            onClick={endSessionAndNavigate}
             disabled={isSaving}
           >
             {isSaving ? 'Saving...' : 'End Session'}
@@ -202,115 +194,21 @@ export default function LiveTherapySession({
       </div>
 
       <div className="grid gap-6 md:grid-cols-3">
-        <Card className="p-6 md:col-span-1">
-          <h2 className="mb-4 text-xl font-semibold">Session Info</h2>
+        <SessionInfo
+          patient={patient}
+          sessionActive={sessionActive}
+          sessionDuration={sessionDuration}
+          formatDuration={formatDuration}
+          isSaving={isSaving}
+        />
 
-          <div className="space-y-4">
-            <div>
-              <h3 className="text-sm font-medium text-muted-foreground">
-                Patient
-              </h3>
-              <p className="text-lg">{patient?.name || 'Sarah Johnson'}</p>
-            </div>
-
-            <div>
-              <h3 className="text-sm font-medium text-muted-foreground">
-                Condition Profile
-              </h3>
-              <div className="mt-1 flex flex-wrap gap-2">
-                {patient?.conditions?.map((condition, index) => (
-                  <span
-                    key={condition}
-                    className={`rounded-full px-3 py-1 text-xs ${
-                      index % 3 === 0
-                        ? 'bg-blue-100 text-blue-800'
-                        : index % 3 === 1
-                          ? 'bg-purple-100 text-purple-800'
-                          : 'bg-amber-100 text-amber-800'
-                    }`}
-                  >
-                    {condition}
-                  </span>
-                ))}
-              </div>
-            </div>
-
-            <div>
-              <h3 className="text-sm font-medium text-muted-foreground">
-                Session Duration
-              </h3>
-              <div className="flex items-center gap-2">
-                <div
-                  className={`size-2 rounded-full ${sessionActive ? 'animate-pulse bg-green-500' : 'bg-gray-300'}`}
-                ></div>
-                <p className="text-lg">{formatDuration()}</p>
-              </div>
-            </div>
-
-            <div className="flex flex-col gap-2">
-              <Button
-                variant="outline"
-                size="sm"
-                className="gap-2"
-                onClick={saveSessionToDatabase}
-                disabled={!transcription || isSaving}
-              >
-                <Save size={16} />
-                {isSaving ? 'Saving...' : 'Save to Database'}
-              </Button>
-
-              <Button
-                variant="ghost"
-                size="sm"
-                className="gap-2 text-red-500 hover:bg-red-50 hover:text-red-600"
-                onClick={resetSession}
-                disabled={isSaving}
-              >
-                <Trash2 size={16} />
-                Reset Session
-              </Button>
-            </div>
-          </div>
-        </Card>
-
-        <Card className="p-6 md:col-span-2">
-          <h2 className="mb-4 text-xl font-semibold">Live Transcription</h2>
-
-          {isTranscribing && (
-            <div className="mb-4 flex items-center gap-2">
-              <div className="size-3 animate-pulse rounded-full bg-blue-500"></div>
-              <p className="text-sm text-muted-foreground">
-                Processing audio...
-              </p>
-            </div>
-          )}
-
-          <div className="mb-4 flex items-center rounded-lg border bg-muted/30 p-4">
-            {transcription ? (
-              <pre className="whitespace-pre-wrap font-sans text-sm">
-                {transcription}
-              </pre>
-            ) : (
-              <p className="text-center text-muted-foreground">
-                {sessionActive
-                  ? 'Listening... Transcription will appear here.'
-                  : 'Start the session to begin recording and transcribing.'}
-              </p>
-            )}
-          </div>
-
-          <div className="space-y-2">
-            <h3 className="text-sm font-medium text-muted-foreground">
-              Therapist Notes
-            </h3>
-            <Textarea
-              className="h-60 w-full rounded-md border bg-background p-2"
-              placeholder="Add your session notes here..."
-              value={patientNotes}
-              onChange={(e) => setPatientNotes(e.target.value)}
-            ></Textarea>
-          </div>
-        </Card>
+        <LiveTranscriptionCard
+          isTranscribing={isTranscribing}
+          transcription={transcription}
+          sessionActive={sessionActive}
+          patientNotes={patientNotes}
+          setPatientNotes={setPatientNotes}
+        />
       </div>
     </div>
   );
