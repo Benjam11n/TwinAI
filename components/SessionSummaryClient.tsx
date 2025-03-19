@@ -15,7 +15,7 @@ interface SessionSummaryClientProps {
 
 export default function SessionSummaryClient({
   session,
-}: SessionSummaryClientProps) {
+}: Readonly<SessionSummaryClientProps>) {
   const router = useRouter();
   const [sentimentResults, setSentimentResults] = useState<SentimentResult[]>(
     []
@@ -248,9 +248,9 @@ export default function SessionSummaryClient({
               {session.conversationHistory &&
               session.conversationHistory.length > 0 ? (
                 <div className="space-y-4">
-                  {session.conversationHistory.map((transcript, index) => (
+                  {session.conversationHistory.map((transcript) => (
                     <div
-                      key={index}
+                      key={transcript.timestamp}
                       className="border-b border-gray-200 pb-3 last:border-0"
                     >
                       <div className="mb-1 flex items-start justify-between">

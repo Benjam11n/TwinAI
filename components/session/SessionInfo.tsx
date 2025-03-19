@@ -1,4 +1,5 @@
 'use client';
+
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Trash2 } from 'lucide-react';
@@ -14,13 +15,23 @@ interface SessionInfoProps {
   isSaving: boolean;
 }
 
+const getConditionColorClass = (index: number) => {
+  if (index % 3 === 0) {
+    return 'bg-blue-100 text-blue-800';
+  } else if (index % 3 === 1) {
+    return 'bg-purple-100 text-purple-800';
+  } else {
+    return 'bg-amber-100 text-amber-800';
+  }
+};
+
 export default function SessionInfo({
   patient,
   sessionActive,
   sessionDuration,
   formatDuration,
   isSaving,
-}: SessionInfoProps) {
+}: Readonly<SessionInfoProps>) {
   const { clearTranscription, stopTranscription, isRecording } =
     useTranscription();
 
@@ -48,14 +59,8 @@ export default function SessionInfo({
           <div className="mt-1 flex flex-wrap gap-2">
             {patient?.conditions?.map((condition, index) => (
               <span
-                key={index}
-                className={`rounded-full px-3 py-1 text-xs ${
-                  index % 3 === 0
-                    ? 'bg-blue-100 text-blue-800'
-                    : index % 3 === 1
-                      ? 'bg-purple-100 text-purple-800'
-                      : 'bg-amber-100 text-amber-800'
-                }`}
+                key={condition}
+                className={`rounded-full px-3 py-1 text-xs ${getConditionColorClass(index)}`}
               >
                 {condition}
               </span>

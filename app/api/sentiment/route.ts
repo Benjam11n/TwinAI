@@ -44,10 +44,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
     const sentimentResult: SentimentAnalysisData = {
       text,
       sentiment: result,
-      dominant_sentiment: dominantSentiment.label as
-        | 'positive'
-        | 'neutral'
-        | 'negative',
+      dominant_sentiment: dominantSentiment.label,
     };
 
     return NextResponse.json(

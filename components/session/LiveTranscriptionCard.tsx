@@ -17,7 +17,7 @@ export default function LiveTranscriptionCard({
   sessionActive,
   patientNotes,
   setPatientNotes,
-}: LiveTranscriptionCardProps) {
+}: Readonly<LiveTranscriptionCardProps>) {
   return (
     <Card className="p-6 md:col-span-2">
       <h2 className="mb-4 text-xl font-semibold">Live Transcription</h2>
