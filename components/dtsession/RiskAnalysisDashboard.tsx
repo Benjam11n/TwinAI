@@ -11,20 +11,25 @@ import {
   AlertTriangle,
   Save,
 } from 'lucide-react';
-import { Button } from '../ui/button';
+import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
 import { createDTSession } from '@/lib/actions/dtsession.action';
 import { IPatientDoc } from '@/database';
 import { ROUTES } from '@/constants/routes';
-import { Card } from '../ui/card';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
+import { cn } from '@/lib/utils';
 
 const ReturnButton = ({ patientId }: { patientId: string }) => (
-  <Link
-    href={ROUTES.PATIENT_DASHBOARD(patientId)}
-    className="mb-6 inline-flex items-center rounded-lg px-4 py-2 text-sm font-medium transition-colors"
-  >
-    <Button>
-      <ArrowLeft className="mr-2 size-4" />
+  <Link href={ROUTES.PATIENT_DASHBOARD(patientId)}>
+    <Button variant="outline" className="gap-2">
+      <ArrowLeft className="size-4" />
       Return to Dashboard
     </Button>
   </Link>
@@ -82,15 +87,14 @@ const RiskAnalysisDashboard = ({ patient }: { patient: IPatientDoc }) => {
       setIsSaving(true);
 
       let riskScore = 0;
-
-      if (riskAnalysis) {
-        if (riskAnalysis.overallRiskLevel === 'low') {
-          riskScore = 25;
-        } else if (riskAnalysis.overallRiskLevel === 'medium') {
-          riskScore = 50;
-        } else if (riskAnalysis.overallRiskLevel === 'high') {
-          riskScore = 75;
-        }
+      if (!riskAnalysis) {
+        riskScore = 0;
+      } else if (riskAnalysis.overallRiskLevel === 'low') {
+        riskScore = 25;
+      } else if (riskAnalysis.overallRiskLevel === 'medium') {
+        riskScore = 50;
+      } else if (riskAnalysis.overallRiskLevel === 'high') {
+        riskScore = 75;
       }
 
       // Transform the conversation history to match the schema
@@ -130,32 +134,42 @@ const RiskAnalysisDashboard = ({ patient }: { patient: IPatientDoc }) => {
 
   if (loading) {
     return (
-      <div className="flex min-h-[60vh] flex-col items-center justify-center p-8">
+      <div className="container mx-auto space-y-6 p-8">
         <ReturnButton patientId={patient._id as string} />
-        <div className="flex flex-col items-center text-center">
-          <Hourglass className="mb-4 size-16 animate-pulse" />
-          <h2 className="mb-2 text-xl font-semibold">Analyzing Conversation</h2>
-          <p className="max-w-md text-gray-600">
-            We&apos;re processing your conversation history to identify
-            potential risk patterns.
-          </p>
-        </div>
+        <Card className="flex flex-col items-center justify-center p-8 text-center">
+          <CardContent className="pt-6">
+            <Hourglass className="mx-auto mb-4 size-16 animate-pulse text-muted-foreground" />
+            <CardTitle className="mb-2 text-xl">
+              Analyzing Conversation
+            </CardTitle>
+            <CardDescription className="max-w-md">
+              We&apos;re processing your conversation history to identify
+              potential risk patterns.
+            </CardDescription>
+          </CardContent>
+        </Card>
       </div>
     );
   }
 
   if (error) {
     return (
-      <div className="p-8">
+      <div className="container mx-auto space-y-6 p-8">
         <ReturnButton patientId={patient._id as string} />
-        <Card className="flex flex-col items-center rounded-lg p-8 text-center">
-          <AlertTriangle className="mb-4 size-16 text-red-500" />
-          <h2 className="mb-2 text-xl font-semibold">Analysis Error</h2>
-          <p className="mb-4 text-red-600">{error}</p>
-          <p>
-            There was a problem analyzing your conversation. Please try again
-            later or contact support if this issue persists.
-          </p>
+        <Card className="border-destructive/20">
+          <CardHeader className="flex flex-col items-center pb-2 text-center">
+            <AlertTriangle className="mb-4 size-16 text-destructive" />
+            <CardTitle>Analysis Error</CardTitle>
+            <CardDescription className="text-destructive">
+              {error}
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="text-center">
+            <p>
+              There was a problem analyzing your conversation. Please try again
+              later or contact support if this issue persists.
+            </p>
+          </CardContent>
         </Card>
       </div>
     );
@@ -163,186 +177,220 @@ const RiskAnalysisDashboard = ({ patient }: { patient: IPatientDoc }) => {
 
   if (!conversationHistory.length) {
     return (
-      <div className="p-8">
-        <div className="mb-6 flex items-center justify-between">
+      <div className="container mx-auto space-y-6 p-8">
+        <div className="flex flex-col items-center justify-between gap-4 sm:flex-row">
           <ReturnButton patientId={patient._id as string} />
           <Button
             onClick={saveAnalysisToDatabase}
             disabled={isSaving}
-            className="flex items-center gap-2"
+            className="gap-2"
           >
             <Save className="size-4" />
-            {isSaving ? 'Saving...' : 'Save Analysis to Database'}
+            {isSaving ? 'Saving...' : 'Save Analysis'}
           </Button>
         </div>
-        <div className="flex flex-col items-center rounded-lg border border-gray-200 bg-gray-50 p-8 text-center">
-          <FileWarning className="mb-4 size-16 text-gray-400" />
-          <h2 className="mb-2 text-xl font-semibold">No Conversation Data</h2>
-          <p className="mb-4 text-gray-600">
-            There isn&apos;t any conversation history to analyze yet.
-          </p>
-          <Link
-            href="/therapy-session"
-            className="rounded px-4 py-2 text-white transition-colors"
-          >
-            <Button>Start a New Session</Button>
-          </Link>
-        </div>
+        <Card className="text-center">
+          <CardHeader className="flex flex-col items-center">
+            <FileWarning className="mb-4 size-16 text-muted-foreground" />
+            <CardTitle>No Conversation Data</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <p className="mb-4">
+              There isn&apos;t any conversation history to analyze yet.
+            </p>
+          </CardContent>
+          <CardFooter className="flex justify-center">
+            <Link href="/therapy-session">
+              <Button>Start a New Session</Button>
+            </Link>
+          </CardFooter>
+        </Card>
       </div>
     );
   }
 
   if (!riskAnalysis?.results?.length) {
     return (
-      <div className="p-8">
-        <div className="mb-6 flex items-center justify-between">
+      <div className="container mx-auto space-y-6 p-8">
+        <div className="flex flex-col items-center justify-between gap-4 sm:flex-row">
           <ReturnButton patientId={patient._id as string} />
           <Button
             onClick={saveAnalysisToDatabase}
             disabled={isSaving}
-            className="flex items-center gap-2"
+            className="gap-2"
           >
             <Save className="size-4" />
-            {isSaving ? 'Saving...' : 'Save Analysis to Database'}
+            {isSaving ? 'Saving...' : 'Save Analysis'}
           </Button>
         </div>
-        <div className="flex flex-col items-center rounded-lg border border-gray-200 bg-gray-50 p-8 text-center">
-          <FileWarning className="mb-4 size-16 text-gray-400" />
-          <h2 className="mb-2 text-xl font-semibold">No Analysis Results</h2>
-          <p className="mb-4 text-gray-600">
-            We couldn&apos;t generate any risk analysis from the current
-            conversation. This typically happens when conversations are very
-            short or contain only system messages.
-          </p>
-        </div>
+        <Card>
+          <CardHeader className="flex flex-col items-center text-center">
+            <FileWarning className="mb-4 size-16 text-muted-foreground" />
+            <CardTitle>No Analysis Results</CardTitle>
+          </CardHeader>
+          <CardContent className="text-center">
+            <p>
+              We couldn&apos;t generate any risk analysis from the current
+              conversation. This typically happens when conversations are very
+              short or contain only system messages.
+            </p>
+          </CardContent>
+        </Card>
       </div>
     );
   }
 
+  // Helper function for risk level styling
+  const getRiskTextClass = (level: string): string => {
+    switch (level) {
+      case 'high':
+        return 'text-destructive';
+      case 'medium':
+        return 'text-amber-500';
+      case 'low':
+        return 'text-green-500';
+      default:
+        return 'text-muted-foreground';
+    }
+  };
+
+  const getRiskBgClass = (level: string): string => {
+    switch (level) {
+      case 'high':
+        return 'bg-destructive/10 text-destructive';
+      case 'medium':
+        return 'bg-amber-500/10 text-amber-500';
+      case 'low':
+        return 'bg-green-500/10 text-green-500';
+      default:
+        return 'bg-muted text-muted-foreground';
+    }
+  };
+
   return (
-    <div className="p-8">
-      <div className="mb-6 flex items-center justify-between">
+    <div className="container mx-auto space-y-6 p-8">
+      <div className="flex flex-col items-center justify-between gap-4 sm:flex-row">
         <ReturnButton patientId={patient._id as string} />
         <Button
           onClick={saveAnalysisToDatabase}
           disabled={isSaving}
-          className="flex items-center gap-2"
+          className="gap-2"
         >
           <Save className="size-4" />
-          {isSaving ? 'Saving...' : 'Save Analysis to Database'}
+          {isSaving ? 'Saving...' : 'Save Analysis'}
         </Button>
       </div>
 
       <h1 className="mb-6 text-2xl font-bold">Risk Analysis Dashboard</h1>
 
-      <div className="mb-8 rounded-lg border bg-white p-6 shadow-sm">
-        <h2 className="mb-3 text-xl font-semibold">Overall Risk Assessment</h2>
-        <div
-          className={`rounded-md p-3 text-lg font-medium ${getRiskBgClass(riskAnalysis.overallRiskLevel)}`}
-        >
-          Risk Level: {riskAnalysis.overallRiskLevel.toUpperCase()}
-        </div>
-      </div>
+      <Card>
+        <CardHeader>
+          <CardTitle>Overall Risk Assessment</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div
+            className={cn(
+              'rounded-md p-3 text-lg font-medium',
+              getRiskBgClass(riskAnalysis.overallRiskLevel)
+            )}
+          >
+            Risk Level: {riskAnalysis.overallRiskLevel.toUpperCase()}
+          </div>
+        </CardContent>
+      </Card>
 
-      <div className="mb-8">
-        <h2 className="mb-4 text-xl font-semibold">Session Analysis</h2>
+      <Card>
+        <CardHeader>
+          <CardTitle>Session Analysis</CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          {riskAnalysis.results
+            .map((result, index) => {
+              const nextMessage =
+                index < conversationHistory.length - 1
+                  ? conversationHistory[
+                      conversationHistory.findIndex(
+                        (m) => m.timestamp === result.message.timestamp
+                      ) + 1
+                    ]
+                  : null;
 
-        {riskAnalysis.results
-          .map((result, index) => {
-            const nextMessage =
-              index < conversationHistory.length - 1
-                ? conversationHistory[
-                    conversationHistory.findIndex(
-                      (m) => m.timestamp === result.message.timestamp
-                    ) + 1
-                  ]
-                : null;
-
-            if (
-              result.message.role === 'twin' &&
-              nextMessage &&
-              nextMessage.role === 'therapist'
-            ) {
-              return (
-                <div
-                  key={result.message.timestamp}
-                  className="mb-4 rounded-lg border bg-white p-4 shadow-sm"
-                >
-                  <div className="grid grid-cols-2 gap-6">
-                    <div className="col-span-2 md:col-span-1">
-                      <h3 className="mb-2 font-medium">User:</h3>
-                      <p className="min-h-[80px] rounded bg-gray-100 p-3">
-                        {result.message.content}
-                      </p>
-                      <div
-                        className={`mt-3 rounded-md p-2 text-center font-medium ${getRiskBgClass(result.risk.riskLevel)}`}
-                      >
-                        Risk: {result.risk.riskLevel.toUpperCase()} (
-                        {(result.risk.score * 100).toFixed(1)}%)
+              if (
+                result.message.role === 'twin' &&
+                nextMessage &&
+                nextMessage.role === 'therapist'
+              ) {
+                return (
+                  <Card
+                    key={result.message.timestamp}
+                    className="overflow-hidden"
+                  >
+                    <CardContent className="grid grid-cols-1 gap-6 p-6 md:grid-cols-2">
+                      <div>
+                        <h3 className="mb-2 font-medium">User:</h3>
+                        <div className="min-h-[80px] rounded-md bg-muted p-3">
+                          {result.message.content}
+                        </div>
+                        <div
+                          className={cn(
+                            'mt-3 rounded-md p-2 text-center font-medium',
+                            getRiskBgClass(result.risk.riskLevel)
+                          )}
+                        >
+                          Risk: {result.risk.riskLevel.toUpperCase()} (
+                          {(result.risk.score * 100).toFixed(1)}%)
+                        </div>
                       </div>
-                    </div>
 
-                    <div className="col-span-2 md:col-span-1">
-                      <h3 className="mb-2 font-medium">Your Response:</h3>
-                      <p className="min-h-[80px] rounded bg-primary/20 p-3">
-                        {nextMessage.content}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              );
-            }
-            return null;
-          })
-          .filter(Boolean)}
-      </div>
+                      <div>
+                        <h3 className="mb-2 font-medium">Your Response:</h3>
+                        <div className="min-h-[80px] rounded-md bg-primary/10 p-3">
+                          {nextMessage.content}
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                );
+              }
+              return null;
+            })
+            .filter(Boolean)}
+        </CardContent>
+      </Card>
 
-      <div className="mb-8">
-        <h2 className="mb-4 text-xl font-semibold">High Risk Dialogs</h2>
-        <div className="rounded-lg border bg-white p-4 shadow-sm">
+      <Card>
+        <CardHeader>
+          <CardTitle>High Risk Dialogs</CardTitle>
+        </CardHeader>
+        <CardContent>
           {riskAnalysis.results.filter((r) => r.risk.riskLevel === 'high')
             .length > 0 ? (
-            riskAnalysis.results
-              .filter((r) => r.risk.riskLevel === 'high')
-              .map((result) => (
-                <div
-                  key={result.message.timestamp}
-                  className="mb-3 rounded-md border border-red-200 bg-red-50 p-3"
-                >
-                  <p className="mb-1 font-medium">
-                    User: &quot;{result.message.content}&quot;
-                  </p>
-                  <p className="text-sm text-red-700">
-                    Risk Score: {(result.risk.score * 100).toFixed(1)}%
-                  </p>
-                </div>
-              ))
+            <div className="space-y-3">
+              {riskAnalysis.results
+                .filter((r) => r.risk.riskLevel === 'high')
+                .map((result) => (
+                  <div
+                    key={result.message.timestamp}
+                    className="rounded-md border-destructive/20 bg-destructive/5 p-3"
+                  >
+                    <p className="mb-1 font-medium">
+                      User: &quot;{result.message.content}&quot;
+                    </p>
+                    <p className={cn('text-sm', getRiskTextClass('high'))}>
+                      Risk Score: {(result.risk.score * 100).toFixed(1)}%
+                    </p>
+                  </div>
+                ))}
+            </div>
           ) : (
-            <p className="p-3 text-gray-600">
+            <p className="text-muted-foreground">
               No high risk dialogs detected in this conversation.
             </p>
           )}
-        </div>
-      </div>
+        </CardContent>
+      </Card>
     </div>
   );
 };
-
-interface RiskBgClassProps {
-  level: string;
-}
-
-function getRiskBgClass(level: RiskBgClassProps['level']): string {
-  switch (level) {
-    case 'high':
-      return 'bg-red-100 text-red-700';
-    case 'medium':
-      return 'bg-yellow-100 text-yellow-700';
-    case 'low':
-      return 'bg-green-100 text-green-700';
-    default:
-      return 'bg-gray-100 text-gray-700';
-  }
-}
 
 export default RiskAnalysisDashboard;

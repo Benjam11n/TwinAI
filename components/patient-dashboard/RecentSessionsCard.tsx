@@ -5,11 +5,20 @@ import { Button } from '../ui/button';
 
 interface RecentSessionsCardProps {
   pastSessions?: ISessionDoc[];
+  limit?: number;
 }
 
 export function RecentSessionsCard({
   pastSessions,
+  limit = 5,
 }: Readonly<RecentSessionsCardProps>) {
+  const recentSessions = pastSessions
+    ?.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+    ?.slice(0, limit);
+
+  const totalSessions = pastSessions?.length || 0;
+  const hasMoreSessions = totalSessions > limit;
+
   return (
     <Card>
       <CardHeader className="pb-3">
@@ -20,7 +29,7 @@ export function RecentSessionsCard({
       </CardHeader>
       <CardContent>
         <div className="space-y-4">
-          {pastSessions?.map((session) => (
+          {recentSessions?.map((session) => (
             <div
               key={session._id as string}
               className="flex flex-col space-y-2 rounded-md border p-3"
@@ -47,9 +56,24 @@ export function RecentSessionsCard({
               </div>
             </div>
           ))}
-          <Button variant="outline" size="sm" className="w-full">
-            View All Sessions
-          </Button>
+
+          {hasMoreSessions && (
+            <Button variant="outline" size="sm" className="w-full">
+              View All Sessions ({totalSessions})
+            </Button>
+          )}
+
+          {!hasMoreSessions && totalSessions > 0 && (
+            <Button variant="outline" size="sm" className="w-full">
+              Manage Sessions
+            </Button>
+          )}
+
+          {totalSessions === 0 && (
+            <div className="py-2 text-center text-muted-foreground">
+              No sessions available
+            </div>
+          )}
         </div>
       </CardContent>
     </Card>
