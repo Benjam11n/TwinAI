@@ -10,7 +10,7 @@ import { TwinAI } from './TwinAI';
 import Controls from '../chat/Controls';
 import { cn } from '@/lib/utils';
 import { useLoggerStore } from '@/store/use-logger-store';
-import UserTranscription from '../UserTranscription';
+import UserTranscription from './UserTranscription';
 import { useTherapySessionStore } from '@/store/use-therapy-session-store';
 import { IPatientDoc } from '@/database';
 

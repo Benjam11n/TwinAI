@@ -5,7 +5,7 @@ import { ThemeToggle } from '@/components/theme/ThemeToggle';
 import { ROUTES } from '@/constants/routes';
 import { Logo } from './Logo';
 import { useEffect, useState } from 'react';
-import { SidebarButton } from '../SidebarButton';
+import { SidebarButton } from '../sidebar/SidebarButton';
 
 export function NavBar() {
   const [scrolled, setScrolled] = useState(false);
@@ -29,7 +29,6 @@ export function NavBar() {
     >
       <nav className="container flex h-16 items-center justify-between px-4">
         <div className="flex items-center gap-4">
-          {/* Mobile sidebar toggle button */}
           <SidebarButton />
 
           <Link

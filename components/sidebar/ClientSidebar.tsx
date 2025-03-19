@@ -1,12 +1,13 @@
 'use client';
+
 import { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { Home, Search } from 'lucide-react';
 import { ROUTES } from '@/constants/routes';
 import { IPatientDoc } from '@/database/patient.model';
 import { useSidebarStore } from '@/store/sidebar-store';
-import { Input } from './ui/input';
-import { Button } from './ui/button';
+import { Input } from '../ui/input';
+import { Button } from '../ui/button';
 
 interface ClientSidebarProps {
   patients: IPatientDoc[];

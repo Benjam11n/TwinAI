@@ -25,57 +25,14 @@
   --radius: 0.75rem;
 }
 
-.dark {
-  --background: 50 15% 10%;
-  --foreground: 50 10% 90%;
-  --card: 50 15% 15%;
-  --card-foreground: 50 10% 90%;
-  --popover: 50 15% 5%;
-  --popover-foreground: 50 10% 90%;
-  --primary: 120 35% 50%;
-  --primary-foreground: 0 0% 100%;
-  --secondary: 50 15% 20%;
-  --secondary-foreground: 0 0% 100%;
-  --muted: 50 15% 25%;
-  --muted-foreground: 50 10% 65%;
-  --accent: 120 15% 25%;
-  --accent-foreground: 50 10% 90%;
-  --destructive: 0 50% 50%;
-  --destructive-foreground: 50 10% 90%;
-  --border: 50 15% 30%;
-  --input: 50 15% 40%;
-  --ring: 120 30% 50%;
-  --radius: 0.75rem;
-}
-
 @layer base {
   * {
     @apply border-border;
   }
+
   body {
     @apply bg-background text-foreground;
   }
-}
-
-.glass-panel {
-  @apply bg-card/90 backdrop-blur-md border border-border/20 rounded-lg shadow-lg;
-}
-
-.hero-gradient {
-  background: linear-gradient(
-    135deg,
-    hsl(30 40% 50% / 0.1) 0%,
-    hsl(35 30% 90% / 0.1) 100%
-  );
-}
-
-.feature-card-hover {
-  @apply transition-all duration-300 hover:scale-105 hover:shadow-xl hover:bg-card/95;
-}
-
-.animated-gradient {
-  background-size: 200% 200%;
-  animation: gradient 15s ease infinite;
 }
 
 @keyframes gradient {
@@ -127,10 +84,6 @@
   }
 }
 
-.arrow-animation {
-  animation: arrow-nudge 1.5s infinite ease-in-out;
-}
-
 @keyframes pulse {
   0% {
     transform: scale(1);
@@ -146,10 +99,6 @@
   }
 }
 
-.pulse-animation {
-  animation: pulse 8s infinite ease-in-out;
-}
-
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -163,56 +112,4 @@
 
 .animate-fadeIn {
   animation: fadeIn 0.5s ease-out forwards;
-}
-
-/* integration-section.css */
-.platform-logo-container {
-  transition:
-    transform 0.3s ease,
-    box-shadow 0.3s ease;
-}
-
-.platform-logo-container:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
-}
-
-.cta-button {
-  position: relative;
-  overflow: hidden;
-}
-
-.cta-button::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(255, 255, 255, 0.2);
-  transform: translateX(-100%);
-  transition: transform 0.3s ease;
-}
-
-.cta-button:hover::after {
-  transform: translateX(0);
-}
-
-.gradient-text {
-  background: linear-gradient(90deg, #7c3aed, #a78bfa);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-}
-
-@media (max-width: 768px) {
-  .integration-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-@media (max-width: 480px) {
-  .integration-grid {
-    grid-template-columns: 1fr;
-  }
 }

@@ -11,7 +11,7 @@ import {
   AlertTriangle,
   Save,
 } from 'lucide-react';
-import { Button } from './ui/button';
+import { Button } from '../ui/button';
 import { toast } from 'sonner';
 import { createDTSession } from '@/lib/actions/dtsession.action';
 import { IPatientDoc } from '@/database';
