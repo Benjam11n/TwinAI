@@ -9,7 +9,7 @@ interface SessionDetailsCardProps {
 
 export default function SessionDetailsCard({
   session,
-}: SessionDetailsCardProps) {
+}: Readonly<SessionDetailsCardProps>) {
   const sessionDate = new Date(session.date);
 
   return (

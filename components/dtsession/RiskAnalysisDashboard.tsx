@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { useTherapySessionStore } from '@/store/use-therapy-session-store';
-import { analyzeConversationRisks } from '@/lib/utils';
+import { analyzeConversationRisks, cn } from '@/lib/utils';
 import Link from 'next/link';
 import {
   ArrowLeft,
@@ -24,7 +24,6 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import { cn } from '@/lib/utils';
 
 const ReturnButton = ({ patientId }: { patientId: string }) => (
   <Link href={ROUTES.PATIENT_DASHBOARD(patientId)}>
@@ -88,8 +87,10 @@ const RiskAnalysisDashboard = ({ patient }: { patient: IPatientDoc }) => {
 
       let riskScore = 0;
       if (!riskAnalysis) {
-        riskScore = 0;
-      } else if (riskAnalysis.overallRiskLevel === 'low') {
+        return;
+      }
+
+      if (riskAnalysis.overallRiskLevel === 'low') {
         riskScore = 25;
       } else if (riskAnalysis.overallRiskLevel === 'medium') {
         riskScore = 50;

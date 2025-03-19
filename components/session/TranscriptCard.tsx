@@ -7,7 +7,9 @@ interface TranscriptCardProps {
   transcripts: ConversationHistoryEntry[];
 }
 
-export default function TranscriptCard({ transcripts }: TranscriptCardProps) {
+export default function TranscriptCard({
+  transcripts,
+}: Readonly<TranscriptCardProps>) {
   return (
     <Card className="mb-6 p-6">
       <h2 className="mb-4 text-xl font-semibold">Transcription</h2>

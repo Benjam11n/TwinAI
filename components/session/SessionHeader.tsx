@@ -13,7 +13,7 @@ interface SessionHeaderProps {
 export default function SessionHeader({
   sessionDate,
   patientId,
-}: SessionHeaderProps) {
+}: Readonly<SessionHeaderProps>) {
   const router = useRouter();
 
   return (

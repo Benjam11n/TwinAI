@@ -61,10 +61,18 @@ export default function ClientSidebar({
     <>
       {/* Overlay when mobile menu is open */}
       {isOpen && (
-        <div
+        <button
+          type="button"
           className="fixed inset-0 z-20 bg-black/50 md:hidden"
           onClick={close}
           aria-label="Close mobile menu"
+          role="button"
+          tabIndex={0}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              close();
+            }
+          }}
         />
       )}
 
@@ -104,15 +112,16 @@ export default function ClientSidebar({
           <div className="max-h-[calc(100vh-180px)] space-y-2 overflow-auto">
             {filteredPatients.length > 0 ? (
               filteredPatients.map((patient) => (
-                <div
+                <Button
                   key={patient._id as string}
+                  variant="ghost"
                   onClick={() =>
                     router.push(ROUTES.PATIENT_DASHBOARD(patient._id as string))
                   }
-                  className="cursor-pointer rounded-lg px-3 py-2 text-gray-900 hover:bg-primary/20 dark:text-gray-100 dark:hover:bg-primary/60"
+                  className="w-full justify-start rounded-lg px-3 py-2 text-gray-900 hover:bg-primary/20 dark:text-gray-100 dark:hover:bg-primary/60"
                 >
                   {patient.name}
-                </div>
+                </Button>
               ))
             ) : (
               <div className="px-3 py-2 text-gray-500">No patients found</div>

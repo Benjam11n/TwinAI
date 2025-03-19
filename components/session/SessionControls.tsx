@@ -15,7 +15,7 @@ export default function SessionControls({
   isSaving,
   toggleSession,
   endSession,
-}: SessionControlsProps) {
+}: Readonly<SessionControlsProps>) {
   return (
     <div className="flex items-center gap-2">
       <Button

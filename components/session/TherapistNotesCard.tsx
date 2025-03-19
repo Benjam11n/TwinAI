@@ -6,7 +6,9 @@ interface TherapistNotesCardProps {
   notes?: string;
 }
 
-export default function TherapistNotesCard({ notes }: TherapistNotesCardProps) {
+export default function TherapistNotesCard({
+  notes,
+}: Readonly<TherapistNotesCardProps>) {
   return (
     <Card className="p-6">
       <h2 className="mb-4 text-xl font-semibold">Therapist Notes</h2>

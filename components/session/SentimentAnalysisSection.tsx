@@ -8,10 +8,22 @@ interface SentimentAnalysisSectionProps {
   sentimentResults: SentimentResult[];
 }
 
+const getSentimentColorClass = (
+  sentiment: 'positive' | 'neutral' | 'negative'
+): string => {
+  if (sentiment === 'positive') {
+    return 'bg-green-500';
+  } else if (sentiment === 'neutral') {
+    return 'bg-blue-500';
+  } else {
+    return 'bg-red-500';
+  }
+};
+
 export default function SentimentAnalysisSection({
   isAnalyzing,
   sentimentResults,
-}: SentimentAnalysisSectionProps) {
+}: Readonly<SentimentAnalysisSectionProps>) {
   const sentimentCounts = {
     positive: 0,
     neutral: 0,
@@ -80,15 +92,9 @@ export default function SentimentAnalysisSection({
                     </div>
                     <div className="h-2 w-full overflow-hidden rounded-full bg-gray-200">
                       <div
-                        className={`h-full rounded-full ${
-                          sentiment === 'positive'
-                            ? 'bg-green-500'
-                            : sentiment === 'neutral'
-                              ? 'bg-blue-500'
-                              : 'bg-red-500'
-                        }`}
+                        className={`h-full rounded-full ${getSentimentColorClass(sentiment as 'positive' | 'neutral' | 'negative')}`}
                         style={{ width: `${percentage}%` }}
-                      ></div>
+                      />
                     </div>
                   </div>
                 )
