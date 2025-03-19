@@ -13,15 +13,17 @@ import { DocumentUploader } from './DocumentUploader';
 import { KnowledgeBaseEntries } from './KnowledgeBaseEntries';
 import { IPatientDoc, ISessionDoc, ITreatmentPlanDoc } from '@/database';
 
+interface PatientDashboardProps {
+  patient: IPatientDoc;
+  treatmentPlans: ITreatmentPlanDoc[] | undefined;
+  pastSessions: ISessionDoc[] | undefined;
+}
+
 export default function PatientDashboard({
   patient,
   treatmentPlans,
   pastSessions,
-}: {
-  patient: IPatientDoc;
-  treatmentPlans: ITreatmentPlanDoc[] | undefined;
-  pastSessions: ISessionDoc[] | undefined;
-}) {
+}: Readonly<PatientDashboardProps>) {
   const {
     addDocuments,
     initializeRAG,

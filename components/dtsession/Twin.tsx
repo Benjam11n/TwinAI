@@ -10,11 +10,15 @@ import { TwinAI } from './TwinAI';
 import Controls from '../chat/Controls';
 import { cn } from '@/lib/utils';
 import { useLoggerStore } from '@/store/use-logger-store';
-import UserTranscription from '../UserTranscription';
+import UserTranscription from './UserTranscription';
 import { useTherapySessionStore } from '@/store/use-therapy-session-store';
 import { IPatientDoc } from '@/database';
 
-export default function Twin({ patient }: { patient: IPatientDoc }) {
+interface TwinProps {
+  patient: IPatientDoc;
+}
+
+export default function Twin({ patient }: Readonly<TwinProps>) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [videoStream, setVideoStream] = useState<MediaStream | null>(null);
   const messagesRef = useRef<HTMLDivElement>(null);
@@ -90,7 +94,15 @@ export default function Twin({ patient }: { patient: IPatientDoc }) {
         ref={videoRef}
         autoPlay
         playsInline
-      />
+      >
+        <track
+          kind="captions"
+          label="English captions"
+          src="/path/to/captions.vtt"
+          srcLang="en"
+          default
+        />
+      </video>
 
       <Messages ref={messagesRef} />
       <UserTranscription isModelTurn={isModelTurn} />

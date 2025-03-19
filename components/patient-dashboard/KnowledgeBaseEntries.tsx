@@ -24,7 +24,7 @@ export function KnowledgeBaseEntries({
   onClearAll,
   onInitialize,
   isInitialized,
-}: KnowledgeBaseEntriesProps) {
+}: Readonly<KnowledgeBaseEntriesProps>) {
   const [isClearing, setIsClearing] = useState(false);
   const [isInitializing, setIsInitializing] = useState(false);
 

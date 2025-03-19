@@ -1,10 +1,10 @@
-import { NavBar } from '@/components/ui/NavBar';
+import { NavBar } from '@/components/ui/nav-bar';
 
 export default function RootLayout({
   children,
-}: {
+}: Readonly<{
   children: React.ReactNode;
-}) {
+}>) {
   return (
     <div className="flex min-h-screen flex-col">
       <main className="w-full flex-1 bg-background/85">

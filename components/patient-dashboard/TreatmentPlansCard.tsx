@@ -15,13 +15,15 @@ import {
 import { Button } from '@/components/ui/button';
 import { IPatientDoc, ITreatmentPlanDoc } from '@/database';
 
+interface TreatmentPlansCardProps {
+  patient: IPatientDoc;
+  treatmentPlans: ITreatmentPlanDoc[] | undefined;
+}
+
 export function TreatmentPlansCard({
   patient,
   treatmentPlans,
-}: {
-  patient: IPatientDoc;
-  treatmentPlans: ITreatmentPlanDoc[] | undefined;
-}) {
+}: Readonly<TreatmentPlansCardProps>) {
   const recommendedPlans = treatmentPlans?.filter((plan) =>
     plan.suitable.some((condition) => patient.conditions.includes(condition))
   );
@@ -55,8 +57,11 @@ export function TreatmentPlansCard({
                         Key Sessions:
                       </h4>
                       <ul className="space-y-1">
-                        {plan.sessions.map((session, idx) => (
-                          <li key={idx} className="flex items-start text-sm">
+                        {plan.sessions.map((session) => (
+                          <li
+                            key={session}
+                            className="flex items-start text-sm"
+                          >
                             <Check className="mr-2 mt-0.5 size-4 shrink-0 text-green-500" />
                             <span>{session}</span>
                           </li>

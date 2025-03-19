@@ -1,8 +1,6 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Button } from '@/components/ui/button';
-import { Mic, MicOff } from 'lucide-react';
 import { toast } from 'sonner';
 import { useTherapySessionStore } from '@/store/use-therapy-session-store';
 import { useTranscription } from '@/contexts/LiveTranscriptionContext';
@@ -12,12 +10,15 @@ import { ROUTES } from '@/constants/routes';
 import { IPatientDoc } from '@/database';
 import SessionInfo from './SessionInfo';
 import LiveTranscriptionCard from './LiveTranscriptionCard';
+import SessionControls from './SessionControls';
+
+interface LiveTherapySessionProps {
+  patient: IPatientDoc;
+}
 
 export default function LiveTherapySession({
   patient,
-}: {
-  patient: IPatientDoc;
-}) {
+}: Readonly<LiveTherapySessionProps>) {
   const router = useRouter();
   const [sessionActive, setSessionActive] = useState(false);
   const [patientNotes, setPatientNotes] = useState('');
@@ -131,7 +132,7 @@ export default function LiveTherapySession({
             )
           );
         } else {
-          router.push(ROUTES.PATIENT(patient._id as string));
+          router.push(ROUTES.PATIENT_DASHBOARD(patient._id as string));
         }
       } else {
         toast.error('Failed to save session');
@@ -163,32 +164,12 @@ export default function LiveTherapySession({
         <div>
           <h1 className="text-3xl font-bold">{`Therapy Session with ${patient?.name}`}</h1>
         </div>
-        <div className="flex items-center gap-2">
-          <Button
-            onClick={toggleSession}
-            variant={sessionActive ? 'destructive' : 'default'}
-            className="gap-2"
-          >
-            {sessionActive ? (
-              <>
-                <MicOff size={16} />
-                End Transcription
-              </>
-            ) : (
-              <>
-                <Mic size={16} />
-                Start Transcription
-              </>
-            )}
-          </Button>
-          <Button
-            variant="destructive"
-            onClick={endSessionAndNavigate}
-            disabled={isSaving}
-          >
-            {isSaving ? 'Saving...' : 'End Session'}
-          </Button>
-        </div>
+        <SessionControls
+          sessionActive={sessionActive}
+          isSaving={isSaving}
+          toggleSession={toggleSession}
+          endSession={endSessionAndNavigate}
+        />
       </div>
 
       <div className="grid gap-6 md:grid-cols-3">

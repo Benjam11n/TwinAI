@@ -1,4 +1,4 @@
-import SessionSummaryClient from '@/components/SessionSummaryClient';
+import SessionSummaryClient from '@/components/session/SessionSummaryClient';
 import { getSession } from '@/lib/actions/session.action';
 
 export default async function SessionSummaryPage({

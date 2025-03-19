@@ -15,10 +15,10 @@ import { ConversationHistoryEntry } from '@/types';
 import { RAGDocument, RAGService } from '../rag/rag-service';
 
 export class RAGMultimodalLiveClient extends MultimodalLiveClient {
-  private transcriptionService: TranscriptionService;
-  private ragService: RAGService;
+  private readonly transcriptionService: TranscriptionService;
+  private readonly ragService: RAGService;
   private accumulatedPcmData: string[] = [];
-  private conversationHistory: ConversationHistoryEntry[] = [];
+  private readonly conversationHistory: ConversationHistoryEntry[] = [];
   private ragInitialized: boolean = false;
   private documents: RAGDocument[] = [];
 

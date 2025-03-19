@@ -12,7 +12,7 @@ export function ShinyText({
   disabled = false,
   speed = 5,
   className,
-}: ShinyTextProps) {
+}: Readonly<ShinyTextProps>) {
   return (
     <div
       className={cn(

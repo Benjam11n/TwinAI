@@ -1,10 +1,11 @@
 import type { Metadata } from 'next';
-import './globals.css';
 import { ThemeProvider } from 'next-themes';
 import { LiveAPIProvider } from '@/contexts/LiveAPIContext';
 import { Toaster } from 'sonner';
 import localFont from 'next/font/local';
 import { TranscriptionProvider } from '@/contexts/LiveTranscriptionContext';
+
+import './globals.css';
 
 export const montserrat = localFont({
   src: './fonts/Montserrat-VariableFont_wght.ttf',
