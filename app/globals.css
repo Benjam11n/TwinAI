@@ -25,6 +25,29 @@
   --radius: 0.75rem;
 }
 
+.dark {
+  --background: 50 15% 10%;
+  --foreground: 50 10% 90%;
+  --card: 50 15% 15%;
+  --card-foreground: 50 10% 90%;
+  --popover: 50 15% 5%;
+  --popover-foreground: 50 10% 90%;
+  --primary: 120 35% 50%;
+  --primary-foreground: 0 0% 100%;
+  --secondary: 50 15% 20%;
+  --secondary-foreground: 0 0% 100%;
+  --muted: 50 15% 25%;
+  --muted-foreground: 50 10% 65%;
+  --accent: 120 15% 25%;
+  --accent-foreground: 50 10% 90%;
+  --destructive: 0 50% 50%;
+  --destructive-foreground: 50 10% 90%;
+  --border: 50 15% 30%;
+  --input: 50 15% 40%;
+  --ring: 120 30% 50%;
+  --radius: 0.75rem;
+}
+
 @layer base {
   * {
     @apply border-border;
@@ -112,4 +135,28 @@
 
 .animate-fadeIn {
   animation: fadeIn 0.5s ease-out forwards;
+}
+
+.glass-panel {
+  @apply bg-card/90 backdrop-blur-md border border-border/20 rounded-lg shadow-lg;
+}
+
+.feature-card-hover {
+  @apply transition-all duration-300 hover:scale-105 hover:shadow-xl hover:bg-card/95;
+}
+
+@keyframes arrow-nudge {
+  0% {
+    transform: translateX(0);
+  }
+  60% {
+    transform: translateX(3px);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+.arrow-animation {
+  animation: arrow-nudge 1.5s infinite ease-in-out;
 }

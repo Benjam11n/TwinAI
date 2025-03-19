@@ -107,7 +107,7 @@ export default function ClientSidebar({
                 <div
                   key={patient._id as string}
                   onClick={() =>
-                    router.push(ROUTES.PATIENT(patient._id as string))
+                    router.push(ROUTES.PATIENT_DASHBOARD(patient._id as string))
                   }
                   className="cursor-pointer rounded-lg px-3 py-2 text-gray-900 hover:bg-primary/20 dark:text-gray-100 dark:hover:bg-primary/60"
                 >

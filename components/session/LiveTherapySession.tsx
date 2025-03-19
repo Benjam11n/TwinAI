@@ -132,7 +132,7 @@ export default function LiveTherapySession({
             )
           );
         } else {
-          router.push(ROUTES.PATIENT(patient._id as string));
+          router.push(ROUTES.PATIENT_DASHBOARD(patient._id as string));
         }
       } else {
         toast.error('Failed to save session');

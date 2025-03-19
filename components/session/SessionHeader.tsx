@@ -22,7 +22,7 @@ export default function SessionHeader({
         <Button
           variant="ghost"
           className="mb-2"
-          onClick={() => router.push(ROUTES.PATIENT(patientId))}
+          onClick={() => router.push(ROUTES.PATIENT_DASHBOARD(patientId))}
         >
           <ArrowLeft className="mr-2 size-4" /> Back to Patient
         </Button>

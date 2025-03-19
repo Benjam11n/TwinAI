@@ -16,10 +16,11 @@ import { toast } from 'sonner';
 import { createDTSession } from '@/lib/actions/dtsession.action';
 import { IPatientDoc } from '@/database';
 import { ROUTES } from '@/constants/routes';
+import { Card } from '../ui/card';
 
 const ReturnButton = ({ patientId }: { patientId: string }) => (
   <Link
-    href={ROUTES.PATIENT(patientId)}
+    href={ROUTES.PATIENT_DASHBOARD(patientId)}
     className="mb-6 inline-flex items-center rounded-lg px-4 py-2 text-sm font-medium transition-colors"
   >
     <Button>
@@ -147,15 +148,15 @@ const RiskAnalysisDashboard = ({ patient }: { patient: IPatientDoc }) => {
     return (
       <div className="p-8">
         <ReturnButton patientId={patient._id as string} />
-        <div className="flex flex-col items-center rounded-lg border border-red-200 bg-red-50 p-8 text-center">
+        <Card className="flex flex-col items-center rounded-lg p-8 text-center">
           <AlertTriangle className="mb-4 size-16 text-red-500" />
           <h2 className="mb-2 text-xl font-semibold">Analysis Error</h2>
           <p className="mb-4 text-red-600">{error}</p>
-          <p className="text-gray-700">
+          <p>
             There was a problem analyzing your conversation. Please try again
             later or contact support if this issue persists.
           </p>
-        </div>
+        </Card>
       </div>
     );
   }
