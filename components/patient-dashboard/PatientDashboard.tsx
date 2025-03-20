@@ -49,7 +49,6 @@ export default function PatientDashboard({
             {name}&apos;s Dashboard
           </h1>
         </header>
-
         <main className="flex-1 overflow-auto p-6">
           <div className="flex flex-col space-y-6">
             {/* Session Cards */}
@@ -57,7 +56,6 @@ export default function PatientDashboard({
               <LiveSessionCard patient={patient || null} />
               <DigitalTwinCard patient={patient} />
             </div>
-
             {/* Analytics and Treatment Section */}
             <div className="grid gap-6 md:grid-cols-3">
               <MoodAnalysisCard />
@@ -67,25 +65,21 @@ export default function PatientDashboard({
               />
               <RecentSessionsCard pastSessions={pastSessions} />
             </div>
-
             {/* Knowledge Base Section */}
             <Tabs defaultValue="manual" className="space-y-4">
               <TabsList className="grid w-full grid-cols-2">
                 <TabsTrigger value="manual">Manual Entry</TabsTrigger>
                 <TabsTrigger value="documents">Document Upload</TabsTrigger>
               </TabsList>
-
               <TabsContent value="manual">
                 <ManualKnowledgeEntryForm onEntryAdded={addManualEntry} />
               </TabsContent>
-
               <TabsContent value="documents">
                 <DocumentUploader
                   onDocumentsAdded={addDocuments}
                   onInitializeRAG={initializeRAG}
                 />
               </TabsContent>
-
               <KnowledgeBaseEntries
                 entries={knowledgeBaseEntries}
                 onClearAll={clearRAG}

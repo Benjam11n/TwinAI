@@ -62,7 +62,6 @@ export default function ClientSidebar({
       {/* Overlay when mobile menu is open */}
       {isOpen && (
         <button
-          type="button"
           className="fixed inset-0 z-20 bg-black/50 md:hidden"
           onClick={close}
           aria-label="Close mobile menu"

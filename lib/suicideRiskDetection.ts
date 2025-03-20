@@ -1,16 +1,33 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Risk } from '@/types';
 import * as ort from 'onnxruntime-web';
 
-// Cache the model and vocab to avoid reloading
+interface ModelConfig {
+  max_len: number;
+  model_type: string;
+  vocab_size: number;
+  version: string;
+  created_date: string;
+}
+
 let session: ort.InferenceSession | null = null;
 let vocab: Record<string, number> | null = null;
-let config: any | null = null;
+let config: ModelConfig | null = null;
+
+function getRiskLevel(score: number): string {
+  if (score > 0.8) {
+    return 'high';
+  } else if (score > 0.4) {
+    return 'medium';
+  }
+
+  return 'low';
+}
 
 export async function loadModel() {
   if (session && vocab && config) {
     return true;
   }
+
   try {
     const modelPath = '/models/suicide_detection_model.onnx';
     const vocabResponse = await fetch('/models/pytorch_vocab.json');
@@ -20,14 +37,9 @@ export async function loadModel() {
     config = await configResponse.json();
 
     // Ensure max_length exists
-    if (!config.max_length && !config.max_len) {
+    if (!config || !config.max_len) {
       console.error('Model config missing max_length or max_len property');
       return false;
-    }
-
-    // Standardize the config to have max_len
-    if (!config.max_len) {
-      config.max_len = config.max_length;
     }
 
     session = await ort.InferenceSession.create(modelPath);
@@ -47,13 +59,11 @@ export async function predictRisk(text: string): Promise<Risk> {
   }
 
   // Make sure max_len is defined
-  const maxLen = config.max_len || 100; // Fallback to 100 if undefined
+  const maxLen = config?.max_len || 100; // Fallback to 100 if undefined
 
   // Tokenize text
   const words = text.toLowerCase().split(/\s+/);
-  const indices = words
-    .slice(0, maxLen)
-    .map((word) => (vocab && vocab[word] !== undefined ? vocab[word] : 0));
+  const indices = words.slice(0, maxLen).map((word) => vocab?.[word] ?? 0);
 
   while (indices.length < maxLen) {
     indices.push(0);
@@ -69,7 +79,7 @@ export async function predictRisk(text: string): Promise<Risk> {
   const feeds = { input: inputTensor };
   const results = await session?.run(feeds);
 
-  if (!results || !results.output || !results.output.data) {
+  if (!results?.output?.data) {
     throw new Error('Model returned no results');
   }
 
@@ -78,8 +88,10 @@ export async function predictRisk(text: string): Promise<Risk> {
     throw new Error('Invalid score type');
   }
 
+  const riskLevel = getRiskLevel(score);
+
   return {
     score,
-    riskLevel: score > 0.8 ? 'high' : score > 0.4 ? 'medium' : 'low',
+    riskLevel: riskLevel,
   };
 }

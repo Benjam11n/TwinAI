@@ -108,8 +108,6 @@ export async function getPatientSessions(
     schema: GetPatientSessionSchema,
   });
 
-  console.log('test', params);
-
   if (validationResult instanceof Error) {
     return handleError(validationResult) as ErrorResponse;
   }
