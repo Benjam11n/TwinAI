@@ -20,6 +20,16 @@ export const moodHistory = [
   { date: '2024-03-04', score: 31 },
 ];
 
+function getMoodText(latestMood: number): string {
+  if (latestMood > 60) {
+    return 'Patient shows positive mood indicators with good engagement.';
+  } else if (latestMood > 40) {
+    return 'Patient shows moderate mood with some concerns present.';
+  }
+
+  return 'Patient displays significant mood issues requiring attention.';
+}
+
 export function MoodAnalysisCard() {
   const latestMood = moodHistory[0].score;
   const previousMood = moodHistory[1].score;
@@ -58,11 +68,7 @@ export function MoodAnalysisCard() {
 
           <div className="rounded-md bg-muted/50 p-3">
             <p className="text-sm text-muted-foreground">
-              {latestMood > 60
-                ? 'Patient shows positive mood indicators with good engagement.'
-                : latestMood > 40
-                  ? 'Patient shows moderate mood with some concerns present.'
-                  : 'Patient displays significant mood issues requiring attention.'}
+              {getMoodText(latestMood)}
             </p>
           </div>
 

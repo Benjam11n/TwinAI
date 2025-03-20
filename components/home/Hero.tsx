@@ -33,7 +33,7 @@ export default function Hero() {
               className="group relative flex items-center overflow-hidden rounded-full px-8 py-6 text-lg font-medium shadow-lg transition-all duration-300"
               onClick={() => router.push(ROUTES.DASHBOARD)}
             >
-              Explore TwinAI
+              <span>Explore TwinAI</span>
               <span className="arrow-animation ml-2 flex size-6 items-center justify-center rounded-full">
                 <ArrowUpRight className="transition-all" size={16} />
               </span>

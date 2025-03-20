@@ -1,44 +1,51 @@
-'use client';
-
 import { Brain } from 'lucide-react';
 
 const Loading = () => {
+  const animationRings = [
+    { id: 'ring-small', size: 80, delay: 0, duration: 3 },
+    { id: 'ring-medium', size: 120, delay: 0.3, duration: 3.5 },
+    { id: 'ring-large', size: 160, delay: 0.6, duration: 4 },
+  ];
+
+  const dots = [
+    { id: 'dot-1', delay: 0 },
+    { id: 'dot-2', delay: 0.2 },
+    { id: 'dot-3', delay: 0.4 },
+  ];
+
   return (
     <div className="flex h-screen w-full flex-col items-center justify-center bg-gradient-to-b from-background/50 to-background">
       <div className="flex flex-col items-center gap-8">
         <div className="relative">
           <div className="absolute -inset-12 flex items-center justify-center opacity-30">
-            {[...Array(3)].map((_, i) => (
+            {animationRings.map((ring) => (
               <div
-                key={`ping-animation-${i}`}
+                key={ring.id}
                 className="absolute animate-ping rounded-full border-2 border-primary"
                 style={{
-                  width: `${(i + 2) * 40}px`,
-                  height: `${(i + 2) * 40}px`,
-                  animationDelay: `${i * 0.3}s`,
-                  animationDuration: `${3 + i * 0.5}s`,
+                  width: `${ring.size}px`,
+                  height: `${ring.size}px`,
+                  animationDelay: `${ring.delay}s`,
+                  animationDuration: `${ring.duration}s`,
                 }}
               />
             ))}
           </div>
-
           <div className="relative z-10 p-4">
             <Brain className="size-16 animate-pulse text-primary" />
           </div>
         </div>
-
         <div className="text-center">
           <h2 className="text-2xl font-semibold">TwinAI</h2>
           <p className="mt-2 text-muted-foreground">
             Preparing your therapy session
           </p>
-
           <div className="mt-4 flex justify-center gap-1">
-            {[0, 1, 2].map((i) => (
+            {dots.map((dot) => (
               <div
-                key={i}
+                key={dot.id}
                 className="size-2 animate-bounce rounded-full bg-primary"
-                style={{ animationDelay: `${i * 0.2}s` }}
+                style={{ animationDelay: `${dot.delay}s` }}
               />
             ))}
           </div>

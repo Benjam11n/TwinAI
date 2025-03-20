@@ -62,7 +62,7 @@ export const AccountSchema = z.object({
     .regex(/[a-z]/, {
       message: 'Password must contain at least one lowercase letter.',
     })
-    .regex(/[0-9]/, { message: 'Password must contain at least one number.' })
+    .regex(/\d/, { message: 'Password must contain at least one number.' })
     .regex(/[^a-zA-Z0-9]/, {
       message: 'Password must contain at least one special character.',
     })

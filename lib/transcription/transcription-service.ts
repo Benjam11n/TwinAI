@@ -48,15 +48,15 @@ export class TranscriptionService {
         transcription.includes('EMPTY_AUDIO') ||
         transcription.trim() === '' ||
         // Repetitive single letters with spaces, hyphens, or periods
-        /^(\s*[A-Za-z](\s+|\-+|\.+))+[A-Za-z]?$/.test(transcription) ||
+        /^(\s*[A-Za-z](\s+|-+|\.+))+[A-Za-z]?$/.test(transcription) ||
         // Specific patterns with P
-        /P[\s\-]+P[\s\-]+P/.test(transcription) ||
+        /P[\s-]+P[\s-]+P/.test(transcription) ||
         // Repeated consonants (more than 3)
         /([bcdfghjklmnpqrstvwxyz])\1{3,}/i.test(transcription) ||
         // Patterns like "Ppppp" or other repeated single consonants
         /\b[bcdfghjklmnpqrstvwxyz]{4,}\b/i.test(transcription) ||
         // Check for "I guess" followed by nonsense (common pattern)
-        /I guess[\s\.,]+([A-Za-z](\s+|\.+|\-+)){2,}$/.test(transcription)
+        /I guess[\s.,]+([A-Za-z](\s+|\.+|-+)){2,}$/.test(transcription)
       ) {
         return '';
       }
