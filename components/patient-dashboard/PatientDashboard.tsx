@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useLiveAPIContext } from '@/contexts/LiveAPIContext';
 import { LiveSessionCard } from './LiveSessionCard';
@@ -12,6 +12,7 @@ import { ManualKnowledgeEntryForm } from './ManualKnowledgeEntry';
 import { DocumentUploader } from './DocumentUploader';
 import { KnowledgeBaseEntries } from './KnowledgeBaseEntries';
 import { IPatientDoc, ISessionDoc, ITreatmentPlanDoc } from '@/database';
+import { useTherapySessionStore } from '@/store/use-therapy-session-store';
 
 interface PatientDashboardProps {
   patient: IPatientDoc;
@@ -24,20 +25,14 @@ export default function PatientDashboard({
   treatmentPlans,
   pastSessions,
 }: Readonly<PatientDashboardProps>) {
-  const {
-    addDocuments,
-    initializeRAG,
-    addManualEntry,
-    knowledgeBaseEntries,
-    clearRAG,
-  } = useLiveAPIContext();
+  const { addManualEntry } = useLiveAPIContext();
+  const { setPatient } = useTherapySessionStore();
 
-  const [isInitialized, setIsInitialized] = useState(false);
-
-  const handleInitialize = async () => {
-    await initializeRAG();
-    setIsInitialized(true);
-  };
+  useEffect(() => {
+    if (patient) {
+      setPatient(patient);
+    }
+  }, [patient, setPatient]);
 
   const { name } = patient;
 
@@ -75,17 +70,9 @@ export default function PatientDashboard({
                 <ManualKnowledgeEntryForm onEntryAdded={addManualEntry} />
               </TabsContent>
               <TabsContent value="documents">
-                <DocumentUploader
-                  onDocumentsAdded={addDocuments}
-                  onInitializeRAG={initializeRAG}
-                />
+                <DocumentUploader />
               </TabsContent>
-              <KnowledgeBaseEntries
-                entries={knowledgeBaseEntries}
-                onClearAll={clearRAG}
-                onInitialize={handleInitialize}
-                isInitialized={isInitialized}
-              />
+              <KnowledgeBaseEntries />
             </Tabs>
           </div>
         </main>

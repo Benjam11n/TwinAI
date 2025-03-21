@@ -1,225 +1,176 @@
+'use client';
+
 import {
-  isModelTurn,
-  isServerContentMessage,
-  isTurnComplete,
-  LiveConfig,
-} from '@/types/multimodal-live-types';
-import { pcmToWav } from './audio.utils';
-import {
-  MultimodalLiveAPIClientConnection,
   MultimodalLiveClient,
+  MultimodalLiveAPIClientConnection,
 } from './multimodal-live-client';
-import { TranscriptionService } from '../transcription/transcription-service';
-import { blobToJSON } from '../utils';
-import { ConversationHistoryEntry } from '@/types';
-import { RAGDocument, RAGService } from '../rag/rag-service';
+import { RAGDocument } from '@/lib/rag/rag-service';
+import {
+  addPatientRAGDocuments,
+  checkRAGInitialization,
+  clearRAG,
+  clearRAGForPatient,
+  getRAGDocumentsForPatient,
+  initializeRAGWithDocuments,
+  queryRAGForPatient,
+} from '@/lib/actions/rag-actions';
 
 export class RAGMultimodalLiveClient extends MultimodalLiveClient {
-  private readonly transcriptionService: TranscriptionService;
-  private readonly ragService: RAGService;
-  private accumulatedPcmData: string[] = [];
-  private readonly conversationHistory: ConversationHistoryEntry[] = [];
-  private ragInitialized: boolean = false;
-  private documents: RAGDocument[] = [];
+  private hasInitializedRAG = false;
+  private currentPatientId: string | null = null;
 
-  constructor(config: MultimodalLiveAPIClientConnection) {
-    super(config);
-    this.transcriptionService = new TranscriptionService(config.apiKey);
-    this.ragService = new RAGService(config.apiKey);
+  constructor(connection: MultimodalLiveAPIClientConnection) {
+    super(connection);
   }
 
   /**
-   * Add documents to the RAG system
+   * Set current patient context
    */
-  async addDocuments(documents: RAGDocument[]): Promise<void> {
-    this.documents = [...this.documents, ...documents];
-    this.ragInitialized = false;
-    console.log(
-      `Added ${documents.length} documents to RAG. Total: ${this.documents.length}`
-    );
+  setPatientContext(patientId: string) {
+    this.currentPatientId = patientId;
+    console.log(`[RAG] Set patient context to ${patientId}`);
   }
 
   /**
-   * Initialize RAG with current documents
+   * Add documents to the RAG system for the current patient
    */
-  async initializeRAG(): Promise<void> {
-    if (this.documents.length === 0) {
-      console.warn('No documents provided for RAG initialization');
-      return;
-    }
-
-    try {
-      const chunkCount = await this.ragService.initialize(this.documents);
-      this.ragInitialized = true;
-      console.log(
-        `RAG initialized with ${chunkCount} chunks from ${this.documents.length} documents`
+  async addDocuments(documents: RAGDocument[]) {
+    if (!this.currentPatientId) {
+      console.warn(
+        '[RAG] No patient context set, documents will not be associated with a patient'
       );
-    } catch (error) {
-      console.error('RAG initialization failed:', error);
-      throw error;
+      // Fall back to general RAG action if you want
+      // Or throw an error if patient context is required
     }
+
+    console.log(`[RAG] Adding ${documents.length} documents to RAG`);
+    const result = await addPatientRAGDocuments(
+      documents,
+      this.currentPatientId || 'unknown-patient'
+    );
+
+    if (!result.success) {
+      console.error('Failed to add documents:', result.error);
+      throw new Error(result.error);
+    }
+
+    this.hasInitializedRAG = true;
+    return result;
   }
 
   /**
-   * Connect with RAG capabilities
+   * Query the RAG system for the current patient context
    */
-  async connect(config: LiveConfig): Promise<boolean> {
-    // If RAG not initialized and we have documents, initialize it
-    if (!this.ragInitialized && this.documents.length > 0) {
+  async queryRAG(query: string, maxResults = 3) {
+    if (!this.hasInitializedRAG) {
+      console.warn('[RAG] RAG not initialized, initializing now...');
       await this.initializeRAG();
     }
 
-    return super.connect(config);
-  }
-
-  /**
-   * Send message with RAG-enhanced prompt when appropriate
-   */
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  async send(parts: any[]): Promise<void> {
-    // Check if this is a text message that could benefit from RAG
-    const textParts = parts.filter((p) => p.text);
-
-    // If we have initialized RAG and this contains text, enhance with context
-    if (this.ragInitialized && textParts.length > 0) {
-      const userQuery = textParts[0].text;
-
-      try {
-        // Get context for the user's message
-        const enhancedPrompt = await this.ragService.generatePromptWithContext(
-          userQuery,
-          userQuery,
-          3 // Get top 3 most relevant chunks
-        );
-
-        // Replace the original text with the RAG-enhanced prompt
-        const enhancedParts = [...parts];
-        enhancedParts.forEach((part) => {
-          if (part.text) {
-            part.text = enhancedPrompt;
-          }
-        });
-
-        // Log that we're using RAG
-        console.log('Sending message with RAG enhancement');
-
-        // Send the enhanced message
-        return super.send(enhancedParts);
-      } catch (error) {
-        console.error('Error enhancing message with RAG:', error);
-        // Fall back to regular sending if RAG fails
-        return super.send(parts);
-      }
+    if (!this.currentPatientId) {
+      console.warn(
+        '[RAG] No patient context set, querying without patient filter'
+      );
+      // Fall back to general query or handle as appropriate
     }
 
-    // If RAG not initialized or no text parts, send normally
-    return super.send(parts);
-  }
+    console.log(
+      `[RAG] Querying RAG for patient ${this.currentPatientId}: "${query}"`
+    );
+    const result = await queryRAGForPatient(
+      query,
+      this.currentPatientId || 'unknown-patient',
+      maxResults
+    );
 
-  /**
-   * Handle user message with RAG enhancement
-   */
-  async handleUserMessage(message: string): Promise<void> {
-    if (this.ragInitialized) {
-      try {
-        // Enhance the user message with relevant context
-        const enhancedMessage = await this.ragService.generatePromptWithContext(
-          message,
-          message
-        );
-
-        // Send the enhanced message
-        return this.send([{ text: enhancedMessage }]);
-      } catch (error) {
-        console.error('Error enhancing user message with RAG:', error);
-        // Fall back to regular sending if RAG fails
-        return this.send([{ text: message }]);
-      }
+    if (!result.success) {
+      console.error('RAG query failed:', result.error);
+      throw new Error(result.error);
     }
 
-    // If RAG not initialized, process normally
-    return this.send([{ text: message }]);
+    return result.context;
   }
 
-  /**
-   * Process blob messages from the server
-   */
-  protected async receive(blob: Blob): Promise<void> {
-    // First call the parent's receive method
-    await super.receive(blob);
-
-    // Parse the blob to get the message
-    const response = await blobToJSON(blob);
-
-    if (isServerContentMessage(response)) {
-      const { serverContent } = response;
-
-      // Handle audio data collection
-      if (isModelTurn(serverContent)) {
-        const audioParts = serverContent.modelTurn.parts.filter(
-          (p) => p.inlineData && p.inlineData.mimeType.startsWith('audio/pcm')
-        );
-
-        // Accumulate PCM data
-        audioParts.forEach((part) => {
-          if (part.inlineData?.data) {
-            this.accumulatedPcmData.push(part.inlineData.data);
-          }
-        });
-      }
-
-      // When turn is complete, process accumulated audio for transcription
-      if (isTurnComplete(serverContent) && this.accumulatedPcmData.length > 0) {
-        this.emit('isTranscribing', true);
-
-        try {
-          const fullPcmData = this.accumulatedPcmData.join('');
-          const wavData = await pcmToWav(fullPcmData, 24000);
-          const transcription = await this.transcriptionService.transcribeAudio(
-            wavData,
-            'audio/wav'
-          );
-
-          // Add to conversation history
-          this.conversationHistory.push({
-            role: 'twin',
-            content: transcription,
-            timestamp: Date.now(),
-          });
-
-          // If RAG is initialized, enhance future responses with context
-          if (this.ragInitialized) {
-            // Store the transcription in context for future reference
-            await this.ragService.query(transcription, 0); // Just to index it, not using results
-          }
-
-          // Emit the aiTranscription event
-          this.emit('aiTranscription', transcription);
-          this.emit('conversationUpdate', this.conversationHistory);
-          this.log('client.transcription', `Transcription completed`);
-
-          // Clear accumulated data
-          this.accumulatedPcmData = [];
-        } catch (error) {
-          console.error('Transcription error:', error);
-        } finally {
-          this.emit('isTranscribing', false);
-        }
-      }
+  async initializeRAG(documents?: RAGDocument[]) {
+    if (!documents || documents.length === 0) {
+      console.error('Cannot initialize RAG: No documents provided');
+      throw new Error('No documents provided for RAG initialization');
     }
-  }
 
-  /**
-   * Clear all RAG data
-   */
-  async clearRAG(): Promise<void> {
     try {
-      this.documents = [];
-      this.ragInitialized = false;
-      console.log('RAG data cleared successfully');
+      // Call your server action to initialize RAG with the provided documents
+      const result = await initializeRAGWithDocuments(documents);
+      if (!result.success) {
+        throw new Error(result.error);
+      }
+      this.hasInitializedRAG = true;
+      return result;
     } catch (error) {
-      console.error('Failed to clear RAG data:', error);
+      console.error('Error initializing RAG:', error);
       throw error;
     }
+  }
+
+  /**
+   * Fetch entries for a specific patient
+   */
+  async getEntriesForPatient(patientId: string): Promise<RAGDocument[]> {
+    try {
+      // Call your server action to get patient-specific entries
+      const result = await getRAGDocumentsForPatient(patientId);
+      if (result.success) {
+        return result.documents;
+      } else {
+        console.error('Failed to fetch entries:', result.error);
+        return [];
+      }
+    } catch (error) {
+      console.error('Error fetching patient entries:', error);
+      return [];
+    }
+  }
+
+  /**
+   * Get initialization status for a patient
+   */
+  async getRAGInitializationStatus(
+    patientId: string
+  ): Promise<{ initialized: boolean }> {
+    try {
+      // Call your server action to check initialization status
+      const result = await checkRAGInitialization(patientId);
+      return { initialized: result.initialized };
+    } catch (error) {
+      console.error('Error checking RAG initialization:', error);
+      return { initialized: false };
+    }
+  }
+
+  /**
+   * Clear RAG for a specific patient
+   */
+  async clearRAGForPatient(patientId: string) {
+    try {
+      // Call your server action to clear patient-specific entries
+      const result = await clearRAGForPatient(patientId);
+      if (!result.success) {
+        throw new Error(result.error);
+      }
+      this.hasInitializedRAG = false;
+      return result;
+    } catch (error) {
+      console.error('Error clearing RAG for patient:', error);
+      throw error;
+    }
+  }
+
+  /**
+   * Clear the RAG system
+   */
+  async clearRAG() {
+    console.log('Clearing RAG');
+    const result = await clearRAG();
+    this.hasInitializedRAG = false;
+    return result;
   }
 }

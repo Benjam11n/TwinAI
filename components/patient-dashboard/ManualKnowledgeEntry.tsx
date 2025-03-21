@@ -1,4 +1,5 @@
 'use client';
+
 import React, { useState } from 'react';
 import {
   Card,
@@ -19,9 +20,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-import { PlusCircle, AlertCircle, Check } from 'lucide-react';
+import { PlusCircle } from 'lucide-react';
 import { ManualKnowledgeEntry } from '@/hooks/use-live-api-with-rag';
+import { toast } from 'sonner';
 
 type ManualKnowledgeEntryFormProps = {
   onEntryAdded: (entry: ManualKnowledgeEntry) => Promise<void>;
@@ -42,25 +43,21 @@ export function ManualKnowledgeEntryForm({
   const [content, setContent] = useState('');
   const [category, setCategory] = useState(categories[0]);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const [success, setSuccess] = useState<string | null>(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (!title.trim()) {
-      setError('Please enter a title');
+      toast.error('Please enter a title');
       return;
     }
 
     if (!content.trim()) {
-      setError('Please enter content');
+      toast.error('Please enter content');
       return;
     }
 
     setIsSubmitting(true);
-    setError(null);
-    setSuccess(null);
 
     try {
       const entry: ManualKnowledgeEntry = {
@@ -74,9 +71,9 @@ export function ManualKnowledgeEntryForm({
 
       setTitle('');
       setContent('');
-      setSuccess('Knowledge base entry added successfully');
+      toast.success('Knowledge base entry added successfully');
     } catch (err) {
-      setError(
+      toast.error(
         `Error adding entry: ${err instanceof Error ? err.message : String(err)}`
       );
     } finally {
@@ -104,7 +101,6 @@ export function ManualKnowledgeEntryForm({
               disabled={isSubmitting}
             />
           </div>
-
           <div className="space-y-2">
             <Label htmlFor="category">Category</Label>
             <Select
@@ -124,7 +120,6 @@ export function ManualKnowledgeEntryForm({
               </SelectContent>
             </Select>
           </div>
-
           <div className="space-y-2">
             <Label htmlFor="content">Content</Label>
             <Textarea
@@ -137,25 +132,6 @@ export function ManualKnowledgeEntryForm({
               className="resize-none"
             />
           </div>
-
-          {error && (
-            <Alert variant="destructive">
-              <AlertCircle className="size-4" />
-              <AlertTitle>Error</AlertTitle>
-              <AlertDescription>{error}</AlertDescription>
-            </Alert>
-          )}
-
-          {success && (
-            <Alert
-              variant="default"
-              className="bg-green-50 text-green-800 dark:bg-green-900/20 dark:text-green-400"
-            >
-              <Check className="size-4" />
-              <AlertTitle>Success</AlertTitle>
-              <AlertDescription>{success}</AlertDescription>
-            </Alert>
-          )}
         </form>
       </CardContent>
       <CardFooter>

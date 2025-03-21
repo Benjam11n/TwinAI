@@ -17,8 +17,8 @@
  */
 
 import { audioContext } from '../utils';
-import AudioRecordingWorklet from '../worklets/audio-processing';
-import VolMeterWorket from '../worklets/vol-meter';
+import AudioRecordingWorklet from './worklets/audio-processing';
+import VolMeterWorket from './worklets/vol-meter';
 
 import EventEmitter from 'eventemitter3';
 import { createWorketFromSrc } from './audioworklet-registry';
