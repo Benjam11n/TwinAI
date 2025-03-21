@@ -45,3 +45,5 @@ export const FEATURES = [
       'Practice difficult therapeutic scenarios and crisis interventions in a risk-free environment before applying techniques with real patients.',
   },
 ];
+
+export const GITHUB = 'https://github.com/Benjam11n/TwinAI';

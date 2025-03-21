@@ -1,3 +1,4 @@
+import { Disclaimer } from '@/components/Disclaimer';
 import { NavBar } from '@/components/ui/nav-bar';
 
 export default function RootLayout({
@@ -11,6 +12,7 @@ export default function RootLayout({
         <div className="container mx-auto mt-16 sm:px-6 lg:px-8">
           <NavBar />
           {children}
+          <Disclaimer />
         </div>
       </main>
     </div>

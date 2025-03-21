@@ -1,5 +1,7 @@
-import { Github, Linkedin, Twitter } from 'lucide-react';
+import { Github } from 'lucide-react';
 import { Logo } from '../ui/Logo';
+import Link from 'next/link';
+import { GITHUB } from '@/constants';
 
 export default function Footer() {
   return (
@@ -40,27 +42,15 @@ export default function Footer() {
             <div className="space-y-4">
               <h3 className="font-semibold">Connect</h3>
               <div className="flex gap-4">
-                <a
-                  href="#"
+                <Link
+                  href={GITHUB}
                   className="text-muted-foreground transition-colors hover:text-primary"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   aria-label="Github"
                 >
                   <Github className="size-5" />
-                </a>
-                <a
-                  href="#"
-                  className="text-muted-foreground transition-colors hover:text-primary"
-                  aria-label="LinkedIn"
-                >
-                  <Linkedin className="size-5" />
-                </a>
-                <a
-                  href="#"
-                  className="text-muted-foreground transition-colors hover:text-primary"
-                  aria-label="Twitter"
-                >
-                  <Twitter className="size-5" />
-                </a>
+                </Link>
               </div>
             </div>
           </div>
