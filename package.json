@@ -13,7 +13,12 @@
   "dependencies": {
     "@faker-js/faker": "^9.6.0",
     "@google/generative-ai": "^0.22.0",
+    "@huggingface/inference": "^3.6.1",
+    "@langchain/community": "^0.3.36",
+    "@langchain/core": "^0.3.42",
     "@langchain/google-genai": "^0.1.10",
+    "@langchain/pinecone": "^0.2.0",
+    "@pinecone-database/pinecone": "^5.1.1",
     "@radix-ui/react-accordion": "^1.2.3",
     "@radix-ui/react-label": "^2.1.2",
     "@radix-ui/react-progress": "^1.1.2",

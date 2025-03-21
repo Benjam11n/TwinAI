@@ -15,15 +15,14 @@ import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
 import { UploadCloud, FileText, X, Check, AlertCircle } from 'lucide-react';
 import { RAGDocument } from '@/lib/rag/rag-service';
+import { addRAGDocuments, initializeRAG } from '@/lib/actions/rag-actions';
 
 type DocumentUploaderProps = {
-  onDocumentsAdded: (documents: RAGDocument[]) => Promise<void>;
-  onInitializeRAG: () => Promise<void>;
+  onSuccess?: () => void;
 };
 
 export const DocumentUploader: React.FC<DocumentUploaderProps> = ({
-  onDocumentsAdded,
-  onInitializeRAG,
+  onSuccess,
 }) => {
   const [files, setFiles] = useState<File[]>([]);
   const [documents, setDocuments] = useState<RAGDocument[]>([]);
@@ -81,10 +80,16 @@ export const DocumentUploader: React.FC<DocumentUploaderProps> = ({
 
       setDocuments((prev) => [...prev, ...newDocuments]);
 
-      await onDocumentsAdded(newDocuments);
+      // Use server action to add documents
+      const result = await addRAGDocuments(newDocuments);
 
-      setSuccess(`${newDocuments.length} documents processed successfully`);
-      setFiles([]);
+      if (result.success) {
+        setSuccess(`${newDocuments.length} documents processed successfully`);
+        setFiles([]);
+        if (onSuccess) onSuccess();
+      } else {
+        setError(result.error || 'Unknown error occurred');
+      }
     } catch (err) {
       setError(
         `Error processing files: ${err instanceof Error ? err.message : String(err)}`
@@ -94,7 +99,7 @@ export const DocumentUploader: React.FC<DocumentUploaderProps> = ({
     }
   };
 
-  const initializeRAG = async () => {
+  const handleInitializeRAG = async () => {
     if (documents.length === 0) {
       setError('No documents to initialize RAG with');
       return;
@@ -105,8 +110,15 @@ export const DocumentUploader: React.FC<DocumentUploaderProps> = ({
     setSuccess(null);
 
     try {
-      await onInitializeRAG();
-      setSuccess('RAG initialized successfully');
+      // Use server action to initialize RAG
+      const result = await initializeRAG();
+
+      if (result.success) {
+        setSuccess('RAG initialized successfully');
+        if (onSuccess) onSuccess();
+      } else {
+        setError(result.error || 'Unknown error occurred');
+      }
     } catch (err) {
       setError(
         `Error initializing RAG: ${err instanceof Error ? err.message : String(err)}`
@@ -209,7 +221,7 @@ export const DocumentUploader: React.FC<DocumentUploaderProps> = ({
       <CardFooter>
         <Button
           className="w-full"
-          onClick={initializeRAG}
+          onClick={handleInitializeRAG}
           disabled={isInitializing || documents.length === 0}
         >
           {isInitializing ? (
