@@ -13,23 +13,17 @@ import {
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
-import { UploadCloud, FileText, X, Check, AlertCircle } from 'lucide-react';
+import { UploadCloud, FileText, X } from 'lucide-react';
 import { RAGDocument } from '@/lib/rag/rag-service';
-import { addRAGDocuments, initializeRAG } from '@/lib/actions/rag-actions';
+import { useLiveAPIContext } from '@/contexts/LiveAPIContext';
+import { toast } from 'sonner';
 
-type DocumentUploaderProps = {
-  onSuccess?: () => void;
-};
-
-export const DocumentUploader: React.FC<DocumentUploaderProps> = ({
-  onSuccess,
-}) => {
+export const DocumentUploader = () => {
   const [files, setFiles] = useState<File[]>([]);
   const [documents, setDocuments] = useState<RAGDocument[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isInitializing, setIsInitializing] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const [success, setSuccess] = useState<string | null>(null);
+  const { initializeRAG, addDocuments } = useLiveAPIContext();
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const fileList = e.target.files;
@@ -40,13 +34,11 @@ export const DocumentUploader: React.FC<DocumentUploaderProps> = ({
 
   const processFiles = async () => {
     if (files.length === 0) {
-      setError('Please select at least one file');
+      toast.error('Please select at least one file');
       return;
     }
 
     setIsLoading(true);
-    setError(null);
-    setSuccess(null);
 
     try {
       const newDocuments: RAGDocument[] = [];
@@ -73,25 +65,27 @@ export const DocumentUploader: React.FC<DocumentUploaderProps> = ({
       }
 
       if (newDocuments.length === 0) {
-        setError('No supported files found. Please upload text files.');
+        toast.error('No supported files found. Please upload text files.');
         setIsLoading(false);
         return;
       }
 
       setDocuments((prev) => [...prev, ...newDocuments]);
 
-      // Use server action to add documents
-      const result = await addRAGDocuments(newDocuments);
-
-      if (result.success) {
-        setSuccess(`${newDocuments.length} documents processed successfully`);
+      // Add documents - handle void return type
+      try {
+        await addDocuments(newDocuments);
+        toast.success(
+          `${newDocuments.length} documents processed successfully`
+        );
         setFiles([]);
-        if (onSuccess) onSuccess();
-      } else {
-        setError(result.error || 'Unknown error occurred');
+      } catch (err) {
+        toast.error(
+          `Failed to add documents: ${err instanceof Error ? err.message : String(err)}`
+        );
       }
     } catch (err) {
-      setError(
+      toast.error(
         `Error processing files: ${err instanceof Error ? err.message : String(err)}`
       );
     } finally {
@@ -101,26 +95,17 @@ export const DocumentUploader: React.FC<DocumentUploaderProps> = ({
 
   const handleInitializeRAG = async () => {
     if (documents.length === 0) {
-      setError('No documents to initialize RAG with');
+      toast.error('No documents to initialize RAG with');
       return;
     }
 
     setIsInitializing(true);
-    setError(null);
-    setSuccess(null);
 
     try {
-      // Use server action to initialize RAG
-      const result = await initializeRAG();
-
-      if (result.success) {
-        setSuccess('RAG initialized successfully');
-        if (onSuccess) onSuccess();
-      } else {
-        setError(result.error || 'Unknown error occurred');
-      }
+      await initializeRAG();
+      toast.success('RAG initialized successfully');
     } catch (err) {
-      setError(
+      toast.error(
         `Error initializing RAG: ${err instanceof Error ? err.message : String(err)}`
       );
     } finally {
@@ -130,6 +115,7 @@ export const DocumentUploader: React.FC<DocumentUploaderProps> = ({
 
   const removeDocument = (index: number) => {
     setDocuments((prev) => prev.filter((_, i) => i !== index));
+    toast.info('Document removed');
   };
 
   return (
@@ -165,20 +151,6 @@ export const DocumentUploader: React.FC<DocumentUploaderProps> = ({
               Supported formats: .txt, .md (PDF support coming soon)
             </p>
           </div>
-
-          {error && (
-            <div className="flex items-center gap-2 rounded bg-red-50 p-2 text-red-600 dark:bg-red-900/20 dark:text-red-400">
-              <AlertCircle className="size-4" />
-              <span className="text-sm">{error}</span>
-            </div>
-          )}
-
-          {success && (
-            <div className="flex items-center gap-2 rounded bg-primary/10 p-2 text-primary dark:bg-green-900/20 dark:text-green-400">
-              <Check className="size-4" />
-              <span className="text-sm">{success}</span>
-            </div>
-          )}
         </div>
 
         {documents.length > 0 && (

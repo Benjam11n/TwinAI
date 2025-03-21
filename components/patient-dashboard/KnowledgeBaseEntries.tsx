@@ -7,50 +7,56 @@ import {
   CardTitle,
 } from '../ui/card';
 import { Button } from '../ui/button';
+import { useLiveAPIContext } from '@/contexts/LiveAPIContext';
+import { toast } from 'sonner';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from '@/components/ui/alert-dialog';
 
-type KnowledgeBaseEntriesProps = {
-  entries: Array<{
-    content: string;
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    metadata?: Record<string, any>;
-  }>;
-  onClearAll: () => Promise<void>;
-  onInitialize: () => Promise<void>;
-  isInitialized: boolean;
-};
-
-export function KnowledgeBaseEntries({
-  entries,
-  onClearAll,
-  onInitialize,
-  isInitialized,
-}: Readonly<KnowledgeBaseEntriesProps>) {
+export function KnowledgeBaseEntries() {
+  const { knowledgeBaseEntries, clearRAG, initializeRAG } = useLiveAPIContext();
   const [isClearing, setIsClearing] = useState(false);
   const [isInitializing, setIsInitializing] = useState(false);
+  const [isInitialized, setIsInitialized] = useState(false);
+  const [dialogOpen, setDialogOpen] = useState(false);
+
+  const entries = knowledgeBaseEntries;
 
   const handleClearAll = async () => {
-    if (
-      confirm(
-        'Are you sure you want to clear all knowledge base entries? This action cannot be undone.'
-      )
-    ) {
-      setIsClearing(true);
-      try {
-        await onClearAll();
-      } catch (error) {
-        console.error('Error clearing knowledge base:', error);
-      } finally {
-        setIsClearing(false);
-      }
+    setIsClearing(true);
+    try {
+      await clearRAG();
+      toast.success('Knowledge base cleared successfully');
+    } catch (error) {
+      console.error('Error clearing knowledge base:', error);
+      toast.error(
+        `Failed to clear knowledge base: ${error instanceof Error ? error.message : String(error)}`
+      );
+    } finally {
+      setIsClearing(false);
+      setDialogOpen(false);
     }
   };
 
   const handleInitialize = async () => {
     setIsInitializing(true);
     try {
-      await onInitialize();
+      await initializeRAG();
+      setIsInitialized(true);
+      toast.success('Knowledge base initialized successfully');
     } catch (error) {
       console.error('Error initializing knowledge base:', error);
+      toast.error(
+        `Failed to initialize knowledge base: ${error instanceof Error ? error.message : String(error)}`
+      );
     } finally {
       setIsInitializing(false);
     }
@@ -76,14 +82,33 @@ export function KnowledgeBaseEntries({
           </CardDescription>
         </div>
         <div className="flex space-x-2">
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={handleClearAll}
-            disabled={isClearing || entries.length === 0}
-          >
-            {isClearing ? 'Clearing...' : 'Clear All'}
-          </Button>
+          <AlertDialog open={dialogOpen} onOpenChange={setDialogOpen}>
+            <AlertDialogTrigger asChild>
+              <Button
+                variant="outline"
+                size="sm"
+                disabled={isClearing || entries.length === 0}
+              >
+                {isClearing ? 'Clearing...' : 'Clear All'}
+              </Button>
+            </AlertDialogTrigger>
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                <AlertDialogDescription>
+                  This will permanently delete all knowledge base entries. This
+                  action cannot be undone.
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                <AlertDialogAction onClick={handleClearAll}>
+                  Continue
+                </AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
+
           <Button
             variant={isInitialized ? 'secondary' : 'default'}
             size="sm"
