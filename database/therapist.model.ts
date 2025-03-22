@@ -20,8 +20,6 @@ const TherapistSchema = new Schema<ITherapistDoc>(
   { timestamps: true }
 );
 
-TherapistSchema.index({ email: 1 });
-
 TherapistSchema.pre('save', function (next) {
   if (this.isModified('email')) {
     this.email = this.email.toLowerCase();
