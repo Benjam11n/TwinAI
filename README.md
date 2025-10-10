@@ -1,5 +1,10 @@
 # TwinAI: AI-Powered Digital Twins for Mental Health Therapy
 
+## 🏆 Recognition & Achievement
+
+**TwinAI was selected as a Finalist in Deep Learning Week 2025** — ranked **Top 12 out of 700+ teams** nationwide!  
+This recognition highlights the project’s technical innovation in AI-driven mental health support and its potential real-world impact.
+
 ## Project Overview
 
 TwinAI is an innovative mental health platform that uses AI-powered digital twins to revolutionize therapy practice, assessment, and treatment planning. By creating virtual representations of patients' psychological states, therapists can simulate interventions, track mood patterns, and develop personalized treatment plans in a safe, controlled environment.
