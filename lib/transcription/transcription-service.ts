@@ -10,10 +10,7 @@ export class TranscriptionService {
     this.model = genAI.getGenerativeModel({ model: MODEL_NAME });
   }
 
-  async transcribeAudio(
-    audioBase64: string,
-    mimeType: string = 'audio/wav'
-  ): Promise<string> {
+  async transcribeAudio(audioBase64: string, mimeType: string = 'audio/wav'): Promise<string> {
     try {
       const result = await this.model.generateContent([
         {
@@ -32,10 +29,7 @@ export class TranscriptionService {
 
       const transcription = result.response.text();
 
-      if (
-        transcription.includes('EMPTY_AUDIO') ||
-        transcription.trim() === ''
-      ) {
+      if (transcription.includes('EMPTY_AUDIO') || transcription.trim() === '') {
         return '';
       }
 

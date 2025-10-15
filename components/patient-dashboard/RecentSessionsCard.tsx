@@ -3,11 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { ISessionDoc } from '@/database';
 
-export function RecentSessionsCard({
-  pastSessions,
-}: {
-  pastSessions: ISessionDoc[] | undefined;
-}) {
+export function RecentSessionsCard({ pastSessions }: { pastSessions: ISessionDoc[] | undefined }) {
   return (
     <Card>
       <CardHeader className="pb-3">
@@ -20,17 +16,12 @@ export function RecentSessionsCard({
         <div className="space-y-4">
           {pastSessions &&
             pastSessions.map((session) => (
-              <div
-                key={session.id}
-                className="flex flex-col space-y-2 rounded-md border p-3"
-              >
+              <div key={session.id} className="flex flex-col space-y-2 rounded-md border p-3">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center">
                     <FileText className="mr-2 size-4 text-muted-foreground" />
                     <span className="font-medium">
-                      {session?.date
-                        ? new Date(session.date).toLocaleDateString()
-                        : ''}
+                      {session?.date ? new Date(session.date).toLocaleDateString() : ''}
                     </span>
                   </div>
                 </div>

@@ -13,22 +13,15 @@ import { createSession } from '@/lib/actions/session.action';
 import { ROUTES } from '@/constants/routes';
 import { IPatientDoc } from '@/database';
 
-export default function LiveTherapySession({
-  patient,
-}: {
-  patient: IPatientDoc;
-}) {
+export default function LiveTherapySession({ patient }: { patient: IPatientDoc }) {
   const router = useRouter();
   const [sessionActive, setSessionActive] = useState(false);
   const [patientNotes, setPatientNotes] = useState('');
   const [sessionDuration, setSessionDuration] = useState(0);
-  const [timerInterval, setTimerInterval] = useState<NodeJS.Timeout | null>(
-    null
-  );
+  const [timerInterval, setTimerInterval] = useState<NodeJS.Timeout | null>(null);
   const [isSaving, setIsSaving] = useState(false);
 
-  const { transcription: therapyTranscription, setTranscription } =
-    useTherapySessionStore();
+  const { transcription: therapyTranscription, setTranscription } = useTherapySessionStore();
 
   const {
     startTranscription,
@@ -205,16 +198,12 @@ export default function LiveTherapySession({
 
           <div className="space-y-4">
             <div>
-              <h3 className="text-sm font-medium text-muted-foreground">
-                Patient
-              </h3>
+              <h3 className="text-sm font-medium text-muted-foreground">Patient</h3>
               <p className="text-lg">{patient?.name || 'Sarah Johnson'}</p>
             </div>
 
             <div>
-              <h3 className="text-sm font-medium text-muted-foreground">
-                Condition Profile
-              </h3>
+              <h3 className="text-sm font-medium text-muted-foreground">Condition Profile</h3>
               <div className="mt-1 flex flex-wrap gap-2">
                 {patient?.conditions?.map((condition, index) => (
                   <span
@@ -234,9 +223,7 @@ export default function LiveTherapySession({
             </div>
 
             <div>
-              <h3 className="text-sm font-medium text-muted-foreground">
-                Session Duration
-              </h3>
+              <h3 className="text-sm font-medium text-muted-foreground">Session Duration</h3>
               <div className="flex items-center gap-2">
                 <div
                   className={`size-2 rounded-full ${sessionActive ? 'animate-pulse bg-green-500' : 'bg-gray-300'}`}
@@ -277,17 +264,13 @@ export default function LiveTherapySession({
           {isTranscribing && (
             <div className="mb-4 flex items-center gap-2">
               <div className="size-3 animate-pulse rounded-full bg-blue-500"></div>
-              <p className="text-sm text-muted-foreground">
-                Processing audio...
-              </p>
+              <p className="text-sm text-muted-foreground">Processing audio...</p>
             </div>
           )}
 
           <div className="mb-4 flex items-center rounded-lg border bg-muted/30 p-4">
             {transcription ? (
-              <pre className="whitespace-pre-wrap font-sans text-sm">
-                {transcription}
-              </pre>
+              <pre className="whitespace-pre-wrap font-sans text-sm">{transcription}</pre>
             ) : (
               <p className="text-center text-muted-foreground">
                 {sessionActive
@@ -298,9 +281,7 @@ export default function LiveTherapySession({
           </div>
 
           <div className="space-y-2">
-            <h3 className="text-sm font-medium text-muted-foreground">
-              Therapist Notes
-            </h3>
+            <h3 className="text-sm font-medium text-muted-foreground">Therapist Notes</h3>
             <Textarea
               className="h-60 w-full rounded-md border bg-background p-2"
               placeholder="Add your session notes here..."

@@ -48,8 +48,8 @@ export function LiveSessionCard({ patient }: { patient: IPatientDoc }) {
               </div>
               <h3 className="mb-1 font-medium">Voice-Enabled Session</h3>
               <p className="text-sm text-muted-foreground">
-                Start recording and transcribing your therapy conversation. All
-                sessions are securely saved for later review.
+                Start recording and transcribing your therapy conversation. All sessions are
+                securely saved for later review.
               </p>
             </div>
           </div>

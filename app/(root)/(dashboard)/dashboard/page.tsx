@@ -32,12 +32,8 @@ function transformEvents(googleEvents: GoogleEvent[]): TransformedEvent[] {
     return {
       id: evt.id,
       title: evt.summary || '(No Title)',
-      start: evt.start.dateTime
-        ? new Date(evt.start.dateTime)
-        : new Date(evt.start.date || ''),
-      end: evt.end.dateTime
-        ? new Date(evt.end.dateTime)
-        : new Date(evt.end.date || ''),
+      start: evt.start.dateTime ? new Date(evt.start.dateTime) : new Date(evt.start.date || ''),
+      end: evt.end.dateTime ? new Date(evt.end.dateTime) : new Date(evt.end.date || ''),
     };
   });
 }
@@ -73,9 +69,7 @@ export default function CalendarPage() {
         <main className="flex-1 overflow-auto p-4 lg:p-6">
           <div className="flex flex-col space-y-4">
             <div className="flex items-center justify-between">
-              <h1 className="text-2xl font-bold tracking-tight">
-                Google Calendar
-              </h1>
+              <h1 className="text-2xl font-bold tracking-tight">Google Calendar</h1>
               <div className="flex items-center gap-2">
                 <button className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground shadow hover:bg-primary/90">
                   Sync Calendar
@@ -108,8 +102,7 @@ export default function CalendarPage() {
                         <li key={evt.id} className="">
                           <strong>{evt.title}</strong> <br />
                           <span className="text-xs">
-                            {evt.start.toLocaleString()} -{' '}
-                            {evt.end.toLocaleString()}
+                            {evt.start.toLocaleString()} - {evt.end.toLocaleString()}
                           </span>
                         </li>
                       ))}

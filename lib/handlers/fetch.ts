@@ -11,13 +11,9 @@ function isError(error: unknown): error is Error {
 
 export async function fetchHandler<T>(
   url: string,
-  options: FetchOptions = {}
+  options: FetchOptions = {},
 ): Promise<ActionResponse<T>> {
-  const {
-    timeout = 5000,
-    headers: customHeaders = {},
-    ...restOptions
-  } = options;
+  const { timeout = 5000, headers: customHeaders = {}, ...restOptions } = options;
 
   const controller = new AbortController();
   const id = setTimeout(() => controller.abort(), timeout);

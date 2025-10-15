@@ -2,18 +2,10 @@ import { z } from 'zod';
 
 export const CreateTreatmentPlanSchema = z.object({
   title: z.string().min(1, { message: 'Title is required.' }),
-  suitable: z
-    .array(z.string())
-    .min(1, { message: 'At least one suitable condition is required.' }),
-  description: z
-    .string()
-    .min(10, { message: 'Description must be at least 10 characters long.' }),
-  outcomes: z
-    .string()
-    .min(10, { message: 'Outcomes must be at least 10 characters long.' }),
-  sessions: z
-    .array(z.string())
-    .min(1, { message: 'At least one session is required.' }),
+  suitable: z.array(z.string()).min(1, { message: 'At least one suitable condition is required.' }),
+  description: z.string().min(10, { message: 'Description must be at least 10 characters long.' }),
+  outcomes: z.string().min(10, { message: 'Outcomes must be at least 10 characters long.' }),
+  sessions: z.array(z.string()).min(1, { message: 'At least one session is required.' }),
 });
 
 export const GetTreatmentPlanSchema = z.object({
@@ -32,10 +24,7 @@ export const CreateSessionSchema = z.object({
     .optional()
     .default(() => new Date()),
   patientNotes: z.string().optional().default(''),
-  conversationHistory: z
-    .array(ConversationHistoryEntrySchema)
-    .optional()
-    .default([]),
+  conversationHistory: z.array(ConversationHistoryEntrySchema).optional().default([]),
   mood: z
     .number()
     .min(0, { message: 'Mood cannot be negative.' })
@@ -68,24 +57,16 @@ export const AccountSchema = z.object({
     })
     .optional(),
   provider: z.string().min(1, { message: 'Provider is required.' }),
-  providerAccountId: z
-    .string()
-    .min(1, { message: 'Provider Account ID is required.' }),
+  providerAccountId: z.string().min(1, { message: 'Provider Account ID is required.' }),
 });
 
 export const SignInWithOAuthSchema = z.object({
   provider: z.enum(['google', 'github']),
-  providerAccountId: z
-    .string()
-    .min(1, { message: 'Provider Account ID is required.' }),
+  providerAccountId: z.string().min(1, { message: 'Provider Account ID is required.' }),
   user: z.object({
     name: z.string().min(1, { message: 'Name is required.' }),
-    username: z
-      .string()
-      .min(3, { message: 'Username must be at least 3 characters long.' }),
-    email: z
-      .string()
-      .email({ message: 'Please provide a valid email address.' }),
+    username: z.string().min(3, { message: 'Username must be at least 3 characters long.' }),
+    email: z.string().email({ message: 'Please provide a valid email address.' }),
     image: z.string().url('Invalid image URL').optional(),
   }),
 });
@@ -109,10 +90,7 @@ export const CreateDTSessionSchema = z.object({
     .optional()
     .default(() => new Date()),
   patientNotes: z.string().optional().default(''),
-  conversationHistory: z
-    .array(DTConversationHistoryEntrySchema)
-    .optional()
-    .default([]),
+  conversationHistory: z.array(DTConversationHistoryEntrySchema).optional().default([]),
   risk: z
     .number()
     .min(0, { message: 'Risk cannot be negative.' })

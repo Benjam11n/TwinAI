@@ -13,9 +13,7 @@ interface TherapySessionState {
   // Actions
   setPatient: (patient: TherapySessionState['patient']) => void;
   setTranscription: (transcription: ChatMessage[]) => void;
-  setConversationHistory: (
-    conversationHistory: ConversationHistoryEntry[]
-  ) => void;
+  setConversationHistory: (conversationHistory: ConversationHistoryEntry[]) => void;
   setIsTranscribing: (isTranscribing: boolean) => void;
   setPatientNotes: (patientNotes: string) => void;
   resetSession: () => void;

@@ -5,14 +5,10 @@ import action from '../handlers/action';
 
 import mongoose from 'mongoose';
 import Session, { ISessionDoc } from '@/database/session.model';
-import {
-  CreateSessionSchema,
-  GetPatientSessionSchema,
-  GetSessionSchema,
-} from '../validations';
+import { CreateSessionSchema, GetPatientSessionSchema, GetSessionSchema } from '../validations';
 
 export async function createSession(
-  params: CreateSessionParams
+  params: CreateSessionParams,
 ): Promise<ActionResponse<ISessionDoc>> {
   const validationResult = await action({
     params,
@@ -23,8 +19,7 @@ export async function createSession(
     return handleError(validationResult) as ErrorResponse;
   }
 
-  const { patientId, date, patientNotes, conversationHistory, mood } =
-    validationResult.params!;
+  const { patientId, date, patientNotes, conversationHistory, mood } = validationResult.params!;
   const session = await mongoose.startSession();
   session.startTransaction();
 
@@ -33,7 +28,7 @@ export async function createSession(
       [{ patientId, date, patientNotes, conversationHistory, mood }],
       {
         session,
-      }
+      },
     );
 
     if (!treatmentSession) {
@@ -55,9 +50,7 @@ export async function createSession(
   }
 }
 
-export async function getSession(
-  params: GetSessionParams
-): Promise<ActionResponse<ISessionDoc>> {
+export async function getSession(params: GetSessionParams): Promise<ActionResponse<ISessionDoc>> {
   const validationResult = await action({
     params,
     schema: GetSessionSchema,
@@ -97,7 +90,7 @@ export async function getSessions(): Promise<ActionResponse<ISessionDoc[]>> {
 }
 
 export async function getPatientSessions(
-  params: GetPatientSessionParams
+  params: GetPatientSessionParams,
 ): Promise<ActionResponse<ISessionDoc[]>> {
   const validationResult = await action({
     params,

@@ -9,7 +9,7 @@ const formatResponse = (
   responseType: ResponseType,
   status: number,
   message: string,
-  errors?: Record<string, string[]> | undefined
+  errors?: Record<string, string[]> | undefined,
 ) => {
   const responseContent = {
     success: false,
@@ -23,24 +23,19 @@ const formatResponse = (
 
 const handleError = (error: unknown, responseType: ResponseType = 'server') => {
   if (error instanceof RequestError) {
-    return formatResponse(
-      responseType,
-      error.statusCode,
-      error.message,
-      error.errors
-    );
+    return formatResponse(responseType, error.statusCode, error.message, error.errors);
   }
 
   if (error instanceof ZodError) {
     const validationError = new ValidationError(
-      error.flatten().fieldErrors as Record<string, string[]>
+      error.flatten().fieldErrors as Record<string, string[]>,
     );
 
     return formatResponse(
       responseType,
       validationError.statusCode,
       validationError.message,
-      validationError.errors
+      validationError.errors,
     );
   }
 

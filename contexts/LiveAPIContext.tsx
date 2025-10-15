@@ -16,15 +16,10 @@
 
 'use client';
 
-import {
-  useLiveAPIWithRAG,
-  UseLiveAPIWithRAGResults,
-} from '@/hooks/use-live-api-with-rag';
+import { useLiveAPIWithRAG, UseLiveAPIWithRAGResults } from '@/hooks/use-live-api-with-rag';
 import { createContext, FC, ReactNode, useContext } from 'react';
 
-const LiveAPIContext = createContext<UseLiveAPIWithRAGResults | undefined>(
-  undefined
-);
+const LiveAPIContext = createContext<UseLiveAPIWithRAGResults | undefined>(undefined);
 
 export type LiveAPIProviderProps = {
   children: ReactNode;
@@ -32,18 +27,10 @@ export type LiveAPIProviderProps = {
   apiKey: string;
 };
 
-export const LiveAPIProvider: FC<LiveAPIProviderProps> = ({
-  url,
-  apiKey,
-  children,
-}) => {
+export const LiveAPIProvider: FC<LiveAPIProviderProps> = ({ url, apiKey, children }) => {
   const liveAPI = useLiveAPIWithRAG({ url, apiKey });
 
-  return (
-    <LiveAPIContext.Provider value={liveAPI}>
-      {children}
-    </LiveAPIContext.Provider>
-  );
+  return <LiveAPIContext.Provider value={liveAPI}>{children}</LiveAPIContext.Provider>;
 };
 
 export const useLiveAPIContext = () => {

@@ -7,10 +7,7 @@ import {
   LiveConfig,
 } from '@/types/multimodal-live-types';
 import { pcmToWav } from './audio.utils';
-import {
-  MultimodalLiveAPIClientConnection,
-  MultimodalLiveClient,
-} from './multimodal-live-client';
+import { MultimodalLiveAPIClientConnection, MultimodalLiveClient } from './multimodal-live-client';
 import { TranscriptionService } from '../transcription/transcription-service';
 import { blobToJSON } from '../utils';
 import { ConversationHistoryEntry } from '@/types';
@@ -36,9 +33,7 @@ export class RAGMultimodalLiveClient extends MultimodalLiveClient {
   async addDocuments(documents: RAGDocument[]): Promise<void> {
     this.documents = [...this.documents, ...documents];
     this.ragInitialized = false;
-    console.log(
-      `Added ${documents.length} documents to RAG. Total: ${this.documents.length}`
-    );
+    console.log(`Added ${documents.length} documents to RAG. Total: ${this.documents.length}`);
   }
 
   /**
@@ -54,7 +49,7 @@ export class RAGMultimodalLiveClient extends MultimodalLiveClient {
       const chunkCount = await this.ragService.initialize(this.documents);
       this.ragInitialized = true;
       console.log(
-        `RAG initialized with ${chunkCount} chunks from ${this.documents.length} documents`
+        `RAG initialized with ${chunkCount} chunks from ${this.documents.length} documents`,
       );
     } catch (error) {
       console.error('RAG initialization failed:', error);
@@ -91,7 +86,7 @@ export class RAGMultimodalLiveClient extends MultimodalLiveClient {
         const enhancedPrompt = await this.ragService.generatePromptWithContext(
           userQuery,
           userQuery,
-          3 // Get top 3 most relevant chunks
+          3, // Get top 3 most relevant chunks
         );
 
         // Replace the original text with the RAG-enhanced prompt
@@ -125,10 +120,7 @@ export class RAGMultimodalLiveClient extends MultimodalLiveClient {
     if (this.ragInitialized) {
       try {
         // Enhance the user message with relevant context
-        const enhancedMessage = await this.ragService.generatePromptWithContext(
-          message,
-          message
-        );
+        const enhancedMessage = await this.ragService.generatePromptWithContext(message, message);
 
         // Send the enhanced message
         return this.send([{ text: enhancedMessage }]);
@@ -159,7 +151,7 @@ export class RAGMultimodalLiveClient extends MultimodalLiveClient {
       // Handle audio data collection
       if (isModelTurn(serverContent)) {
         const audioParts = serverContent.modelTurn.parts.filter(
-          (p) => p.inlineData && p.inlineData.mimeType.startsWith('audio/pcm')
+          (p) => p.inlineData && p.inlineData.mimeType.startsWith('audio/pcm'),
         );
 
         // Accumulate PCM data
@@ -179,7 +171,7 @@ export class RAGMultimodalLiveClient extends MultimodalLiveClient {
           const wavData = await pcmToWav(fullPcmData, 24000);
           const transcription = await this.transcriptionService.transcribeAudio(
             wavData,
-            'audio/wav'
+            'audio/wav',
           );
 
           // Add to conversation history

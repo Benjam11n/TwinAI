@@ -31,9 +31,7 @@ export type GetAudioContextOptions = AudioContextOptions & {
 
 const map: Map<string, AudioContext> = new Map();
 
-export const audioContext: (
-  options?: GetAudioContextOptions
-) => Promise<AudioContext> = (() => {
+export const audioContext: (options?: GetAudioContextOptions) => Promise<AudioContext> = (() => {
   let ctx: AudioContext | null = null;
   const didInteract = new Promise((res) => {
     const interactionHandler = () => {
@@ -97,9 +95,7 @@ export function base64ToArrayBuffer(base64: string) {
   return bytes.buffer;
 }
 
-export async function analyzeConversationRisks(
-  history: ConversationHistoryEntry[]
-) {
+export async function analyzeConversationRisks(history: ConversationHistoryEntry[]) {
   // Ensure model is loaded
   await loadModel();
 
@@ -117,9 +113,8 @@ export async function analyzeConversationRisks(
 
   // Find highest risk message
   const highestRiskEntry = results.reduce(
-    (highest, current) =>
-      current.risk.score > highest.risk.score ? current : highest,
-    { risk: { score: 0, riskLevel: 'none' } }
+    (highest, current) => (current.risk.score > highest.risk.score ? current : highest),
+    { risk: { score: 0, riskLevel: 'none' } },
   );
 
   return {

@@ -1,7 +1,4 @@
-export function pcmToWav(
-  pcmData: string,
-  sampleRate: number = 24000
-): Promise<string> {
+export function pcmToWav(pcmData: string, sampleRate: number = 24000): Promise<string> {
   return new Promise((resolve, reject) => {
     try {
       const binaryString = atob(pcmData);

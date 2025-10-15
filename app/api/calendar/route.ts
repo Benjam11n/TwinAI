@@ -10,7 +10,7 @@ export async function GET() {
       process.env.SERVICE_ACCOUNT_EMAIL,
       undefined,
       (process.env.SERVICE_ACCOUNT_PRIVATE_KEY || '').replace(/\\n/g, '\n'),
-      scopes
+      scopes,
     );
 
     // 2. Create the calendar instance
@@ -29,9 +29,6 @@ export async function GET() {
     return NextResponse.json({ events: events.data.items || [] });
   } catch (error) {
     console.error(error);
-    return NextResponse.json(
-      { error: 'Failed to fetch calendar events.' },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: 'Failed to fetch calendar events.' }, { status: 500 });
   }
 }

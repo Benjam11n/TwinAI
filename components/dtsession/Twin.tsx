@@ -18,16 +18,9 @@ export default function Twin({ patient }: { patient: IPatientDoc }) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [videoStream, setVideoStream] = useState<MediaStream | null>(null);
   const messagesRef = useRef<HTMLDivElement>(null);
-  const {
-    client,
-    connected,
-    connect,
-    disconnect,
-    aiTranscription,
-    isModelTurn,
-  } = useLiveAPIContext();
-  const { conversationHistory, setConversationHistory } =
-    useTherapySessionStore();
+  const { client, connected, connect, disconnect, aiTranscription, isModelTurn } =
+    useLiveAPIContext();
+  const { conversationHistory, setConversationHistory } = useTherapySessionStore();
   const { log } = useLoggerStore();
 
   useEffect(() => {
@@ -62,11 +55,7 @@ export default function Twin({ patient }: { patient: IPatientDoc }) {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
           >
-            <motion.div
-              initial={{ scale: 0.5 }}
-              animate={{ scale: 1 }}
-              exit={{ scale: 0.5 }}
-            >
+            <motion.div initial={{ scale: 0.5 }} animate={{ scale: 1 }} exit={{ scale: 0.5 }}>
               <Button
                 size="lg"
                 className="flex items-center gap-2"
@@ -81,12 +70,9 @@ export default function Twin({ patient }: { patient: IPatientDoc }) {
       </AnimatePresence>
 
       <video
-        className={cn(
-          'rounded-2xl max-w-xs w-1/5 absolute top-4 right-0 shadow-md',
-          {
-            hidden: !videoRef.current || !videoStream,
-          }
-        )}
+        className={cn('absolute right-0 top-4 w-1/5 max-w-xs rounded-2xl shadow-md', {
+          hidden: !videoRef.current || !videoStream,
+        })}
         ref={videoRef}
         autoPlay
         playsInline

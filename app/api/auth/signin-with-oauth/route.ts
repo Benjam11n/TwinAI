@@ -40,7 +40,7 @@ export async function POST(request: Request) {
     if (!existingUser) {
       [existingUser] = await Therapist.create(
         [{ name, username: slugifiedUsername, email, image }],
-        { session }
+        { session },
       );
     } else {
       const updatedData: { name?: string; image?: string } = {};
@@ -49,10 +49,9 @@ export async function POST(request: Request) {
       if (existingUser.image !== image) updatedData.image = image;
 
       if (Object.keys(updatedData).length > 0) {
-        await Therapist.updateOne(
-          { _id: existingUser._id },
-          { $set: updatedData }
-        ).session(session);
+        await Therapist.updateOne({ _id: existingUser._id }, { $set: updatedData }).session(
+          session,
+        );
       }
     }
     const existingAccount = await Account.findOne({
@@ -72,7 +71,7 @@ export async function POST(request: Request) {
             providerAccountId,
           },
         ],
-        { session }
+        { session },
       );
     }
 

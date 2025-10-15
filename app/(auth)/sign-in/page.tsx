@@ -19,10 +19,7 @@ const AuthForm = () => {
       });
     } catch (error) {
       toast.error('Sign-in Failed', {
-        description:
-          error instanceof Error
-            ? error.message
-            : 'An error occurred during sign-in.',
+        description: error instanceof Error ? error.message : 'An error occurred during sign-in.',
       });
     } finally {
       setIsLoading(false);
@@ -35,18 +32,11 @@ const AuthForm = () => {
         <Logo className="size-20" />
         <div className="text-center">
           <h2 className="text-3xl font-bold text-gray-900">
-            Welcome to{' '}
-            <span className="inline-block text-3xl font-bold text-lime-600">
-              Twin
-            </span>
-            <span className="inline-block text-3xl font-bold text-stone-500">
-              AI
-            </span>
+            Welcome to <span className="inline-block text-3xl font-bold text-lime-600">Twin</span>
+            <span className="inline-block text-3xl font-bold text-stone-500">AI</span>
           </h2>
           <div></div>
-          <p className="mt-2 text-gray-600">
-            Sign in to access your therapist dashboard
-          </p>
+          <p className="mt-2 text-gray-600">Sign in to access your therapist dashboard</p>
         </div>
       </div>
 
@@ -77,9 +67,7 @@ const AuthForm = () => {
       </div>
 
       <div className="mt-6 text-center text-xs text-gray-500">
-        <p>
-          By signing in, you agree to our Terms of Service and Privacy Policy.
-        </p>
+        <p>By signing in, you agree to our Terms of Service and Privacy Policy.</p>
       </div>
     </div>
   );

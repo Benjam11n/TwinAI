@@ -142,16 +142,10 @@ export class MultimodalLiveClient extends EventEmitter<MultimodalLiveClientEvent
             const prelude = 'ERROR]';
             const preludeIndex = reason.indexOf(prelude);
             if (preludeIndex > 0) {
-              reason = reason.slice(
-                preludeIndex + prelude.length + 1,
-                Infinity
-              );
+              reason = reason.slice(preludeIndex + prelude.length + 1, Infinity);
             }
           }
-          this.log(
-            `server.${ev.type}`,
-            `disconnected ${reason ? `with reason: ${reason}` : ``}`
-          );
+          this.log(`server.${ev.type}`, `disconnected ${reason ? `with reason: ${reason}` : ``}`);
           this.emit('close', ev);
         });
         resolve(true);
@@ -172,9 +166,7 @@ export class MultimodalLiveClient extends EventEmitter<MultimodalLiveClientEvent
   }
 
   protected async receive(blob: Blob) {
-    const response: LiveIncomingMessage = (await blobToJSON(
-      blob
-    )) as LiveIncomingMessage;
+    const response: LiveIncomingMessage = (await blobToJSON(blob)) as LiveIncomingMessage;
 
     if (isToolCallMessage(response)) {
       this.log('server.toolCall', response);
@@ -217,7 +209,7 @@ export class MultimodalLiveClient extends EventEmitter<MultimodalLiveClientEvent
 
         // when its audio that is returned for modelTurn
         const audioParts = parts.filter(
-          (p) => p.inlineData && p.inlineData.mimeType.startsWith('audio/pcm')
+          (p) => p.inlineData && p.inlineData.mimeType.startsWith('audio/pcm'),
         );
         const base64s = audioParts.map((p) => p.inlineData?.data);
 
@@ -266,13 +258,7 @@ export class MultimodalLiveClient extends EventEmitter<MultimodalLiveClientEvent
       }
     }
     const message =
-      hasAudio && hasVideo
-        ? 'audio + video'
-        : hasAudio
-          ? 'audio'
-          : hasVideo
-            ? 'video'
-            : 'unknown';
+      hasAudio && hasVideo ? 'audio + video' : hasAudio ? 'audio' : hasVideo ? 'video' : 'unknown';
 
     const data: RealtimeInputMessage = {
       realtimeInput: {

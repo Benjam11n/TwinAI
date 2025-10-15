@@ -1,11 +1,4 @@
-import {
-  BarChart,
-  Braces,
-  Brain,
-  Shield,
-  UserCheck,
-  Workflow,
-} from 'lucide-react';
+import { BarChart, Braces, Brain, Shield, UserCheck, Workflow } from 'lucide-react';
 
 export const FEATURES = [
   {

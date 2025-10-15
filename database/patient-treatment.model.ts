@@ -41,7 +41,7 @@ const PatientTreatmentSchema = new Schema<IPatientTreatmentDoc>(
     },
     notes: { type: String },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 const PatientTreatment =

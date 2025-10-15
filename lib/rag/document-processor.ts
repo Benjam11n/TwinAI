@@ -10,7 +10,7 @@ export class DocumentProcessor {
    */
   static async splitDocument(
     text: string,
-    metadata: Record<string, any> = {}
+    metadata: Record<string, any> = {},
   ): Promise<{ content: string; metadata: Record<string, any> }[]> {
     const splitter = new RecursiveCharacterTextSplitter({
       chunkSize: 1000,
@@ -32,7 +32,7 @@ export class DocumentProcessor {
    * Process multiple documents
    */
   static async processDocuments(
-    documents: { content: string; metadata?: Record<string, any> }[]
+    documents: { content: string; metadata?: Record<string, any> }[],
   ): Promise<{ content: string; metadata: Record<string, any> }[]> {
     const allChunks: { content: string; metadata: Record<string, any> }[] = [];
 

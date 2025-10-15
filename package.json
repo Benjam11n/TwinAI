@@ -7,6 +7,12 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
+    "format": "prettier --write .",
+    "type-check": "tsc --noEmit",
+    "analyze": "NODE_OPTIONS='--max-old-space-size=8192' ANALYZE=true next build",
+    "bump-deps": "pnpm dlx npm-check-updates --deep -u -x react-day-picker",
+    "bump-ui": "pnpm dlx shadcn@latest add --all",
+    "clean": "git clean -xdf node_modules",
     "seed": "ts-node --project tsconfig.scripts.json scripts/seed.ts"
   },
   "dependencies": {

@@ -54,11 +54,7 @@ export const DocumentUploader: React.FC<DocumentUploaderProps> = ({
 
       for (const file of files) {
         // Only process text files for simplicity
-        if (
-          file.type === 'text/plain' ||
-          file.name.endsWith('.txt') ||
-          file.name.endsWith('.md')
-        ) {
+        if (file.type === 'text/plain' || file.name.endsWith('.txt') || file.name.endsWith('.md')) {
           const text = await file.text();
           newDocuments.push({
             content: text,
@@ -86,9 +82,7 @@ export const DocumentUploader: React.FC<DocumentUploaderProps> = ({
       setSuccess(`${newDocuments.length} documents processed successfully`);
       setFiles([]);
     } catch (err) {
-      setError(
-        `Error processing files: ${err instanceof Error ? err.message : String(err)}`
-      );
+      setError(`Error processing files: ${err instanceof Error ? err.message : String(err)}`);
     } finally {
       setIsLoading(false);
     }
@@ -108,9 +102,7 @@ export const DocumentUploader: React.FC<DocumentUploaderProps> = ({
       await onInitializeRAG();
       setSuccess('RAG initialized successfully');
     } catch (err) {
-      setError(
-        `Error initializing RAG: ${err instanceof Error ? err.message : String(err)}`
-      );
+      setError(`Error initializing RAG: ${err instanceof Error ? err.message : String(err)}`);
     } finally {
       setIsInitializing(false);
     }
@@ -142,10 +134,7 @@ export const DocumentUploader: React.FC<DocumentUploaderProps> = ({
                 className="flex-1"
                 disabled={isLoading}
               />
-              <Button
-                onClick={processFiles}
-                disabled={isLoading || files.length === 0}
-              >
+              <Button onClick={processFiles} disabled={isLoading || files.length === 0}>
                 {isLoading ? 'Processing...' : 'Process'}
               </Button>
             </div>
@@ -175,9 +164,7 @@ export const DocumentUploader: React.FC<DocumentUploaderProps> = ({
             <div className="space-y-2">
               <div className="flex items-center justify-between">
                 <h3 className="text-sm font-medium">Available Documents</h3>
-                <span className="text-xs text-muted-foreground">
-                  {documents.length} documents
-                </span>
+                <span className="text-xs text-muted-foreground">{documents.length} documents</span>
               </div>
               <div className="max-h-36 space-y-2 overflow-y-auto">
                 {documents.map((doc, index) => (

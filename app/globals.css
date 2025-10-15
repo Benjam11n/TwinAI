@@ -58,11 +58,11 @@
 }
 
 .glass-panel {
-  @apply bg-card/90 backdrop-blur-md border border-border/20 rounded-lg shadow-lg;
+  @apply rounded-lg border border-border/20 bg-card/90 shadow-lg backdrop-blur-md;
 }
 
 .feature-card-hover {
-  @apply transition-all duration-300 hover:scale-105 hover:shadow-xl hover:bg-card/95;
+  @apply transition-all duration-300 hover:scale-105 hover:bg-card/95 hover:shadow-xl;
 }
 
 @keyframes gradient {

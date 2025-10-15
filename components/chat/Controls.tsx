@@ -24,15 +24,7 @@ import { UseMediaStreamResult } from '@/hooks/use-media-stream-mux';
 import { useScreenCapture } from '@/hooks/use-screen-capture';
 import { useWebcam } from '@/hooks/use-webcam';
 import { AudioRecorder } from '@/lib/gemini/audio-recorder';
-import {
-  Camera,
-  CameraOff,
-  LogOut,
-  Mic,
-  MicOff,
-  Monitor,
-  MonitorOff,
-} from 'lucide-react';
+import { Camera, CameraOff, LogOut, Mic, MicOff, Monitor, MonitorOff } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { RefObject, useEffect, useRef, useState } from 'react';
 
@@ -94,8 +86,7 @@ export default function Controls({
 }: ControlsProps) {
   const router = useRouter();
   const videoStreams = [useWebcam(), useScreenCapture()];
-  const [activeVideoStream, setActiveVideoStream] =
-    useState<MediaStream | null>(null);
+  const [activeVideoStream, setActiveVideoStream] = useState<MediaStream | null>(null);
   const [webcam, screenCapture] = videoStreams;
   const [inVolume, setInVolume] = useState(0);
   const [audioRecorder] = useState(() => new AudioRecorder());
@@ -114,7 +105,7 @@ export default function Controls({
   useEffect(() => {
     document.documentElement.style.setProperty(
       '--volume',
-      `${Math.max(5, Math.min(inVolume * 200, 8))}px`
+      `${Math.max(5, Math.min(inVolume * 200, 8))}px`,
     );
   }, [inVolume]);
 
@@ -205,11 +196,7 @@ export default function Controls({
         onClick={() => setMuted(!muted)}
         disabled={!connected}
       >
-        {muted ? (
-          <MicOff className="size-5 animate-pulse" />
-        ) : (
-          <Mic className="size-5" />
-        )}
+        {muted ? <MicOff className="size-5 animate-pulse" /> : <Mic className="size-5" />}
       </Button>
       {supportsVideo && (
         <>

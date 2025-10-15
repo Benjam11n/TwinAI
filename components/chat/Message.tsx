@@ -15,10 +15,10 @@ export function Message({ role, content, isLatest }: MessageProps) {
     <motion.div
       className={cn(
         'w-[80%]',
-        'border rounded-lg',
+        'rounded-lg border',
         role === 'therapist'
-          ? 'ml-auto bg-primary/10 border-primary/20'
-          : 'mr-auto bg-secondary/70 border-secondary/20'
+          ? 'ml-auto border-primary/20 bg-primary/10'
+          : 'mr-auto border-secondary/20 bg-secondary/70',
       )}
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}

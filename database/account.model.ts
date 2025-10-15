@@ -24,7 +24,7 @@ const AccountSchema = new Schema<IAccountDoc>(
     },
     providerAccountId: { type: String, required: true },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 const Account = models?.Account || model<IAccountDoc>('Account', AccountSchema);

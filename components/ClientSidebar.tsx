@@ -15,7 +15,7 @@ export default function ClientSidebar({ patients }: ClientSidebarProps) {
   const [searchQuery, setSearchQuery] = useState('');
 
   const filteredPatients = patients.filter((patient) =>
-    patient.name.toLowerCase().includes(searchQuery.toLowerCase())
+    patient.name.toLowerCase().includes(searchQuery.toLowerCase()),
   );
 
   return (
@@ -44,9 +44,7 @@ export default function ClientSidebar({ patients }: ClientSidebarProps) {
             filteredPatients.map((patient) => (
               <div
                 key={patient._id as string}
-                onClick={() =>
-                  router.push(ROUTES.PATIENT(patient._id as string))
-                }
+                onClick={() => router.push(ROUTES.PATIENT(patient._id as string))}
                 className="cursor-pointer rounded-lg px-3 py-2 text-gray-900 hover:bg-primary/20 dark:text-gray-100 dark:hover:bg-primary/60"
               >
                 {patient.name}

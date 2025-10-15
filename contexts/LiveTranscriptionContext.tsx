@@ -1,12 +1,6 @@
 'use client';
 
-import React, {
-  createContext,
-  useContext,
-  useState,
-  useRef,
-  useEffect,
-} from 'react';
+import React, { createContext, useContext, useState, useRef, useEffect } from 'react';
 import { TranscriptionService } from '@/lib/transcription/transcription-service';
 
 interface TranscriptionContextType {
@@ -23,24 +17,17 @@ interface TranscriptionProviderProps {
   apiKey: string;
 }
 
-const TranscriptionContext = createContext<
-  TranscriptionContextType | undefined
->(undefined);
+const TranscriptionContext = createContext<TranscriptionContextType | undefined>(undefined);
 
 export const useTranscription = () => {
   const context = useContext(TranscriptionContext);
   if (context === undefined) {
-    throw new Error(
-      'useTranscription must be used within a TranscriptionProvider'
-    );
+    throw new Error('useTranscription must be used within a TranscriptionProvider');
   }
   return context;
 };
 
-export const TranscriptionProvider = ({
-  children,
-  apiKey,
-}: TranscriptionProviderProps) => {
+export const TranscriptionProvider = ({ children, apiKey }: TranscriptionProviderProps) => {
   const [isRecording, setIsRecording] = useState(false);
   const [isTranscribing, setIsTranscribing] = useState(false);
   const [transcription, setTranscription] = useState('');
@@ -84,7 +71,7 @@ export const TranscriptionProvider = ({
 
       const result = await transcriptionServiceRef.current.transcribeAudio(
         base64Audio,
-        audioData.type
+        audioData.type,
       );
 
       return result || '';
@@ -124,9 +111,7 @@ export const TranscriptionProvider = ({
     if (!isRecording || !mediaRecorderRef.current) return;
 
     mediaRecorderRef.current.stop();
-    mediaRecorderRef.current.stream
-      .getTracks()
-      .forEach((track) => track.stop());
+    mediaRecorderRef.current.stream.getTracks().forEach((track) => track.stop());
 
     // Wait for the final ondataavailable event to fire
     await new Promise<void>((resolve) => {
@@ -161,9 +146,7 @@ export const TranscriptionProvider = ({
     return () => {
       if (isRecording && mediaRecorderRef.current) {
         mediaRecorderRef.current.stop();
-        mediaRecorderRef.current.stream
-          .getTracks()
-          .forEach((track) => track.stop());
+        mediaRecorderRef.current.stream.getTracks().forEach((track) => track.stop());
       }
     };
   }, [isRecording]);
@@ -177,9 +160,5 @@ export const TranscriptionProvider = ({
     clearTranscription,
   };
 
-  return (
-    <TranscriptionContext.Provider value={value}>
-      {children}
-    </TranscriptionContext.Provider>
-  );
+  return <TranscriptionContext.Provider value={value}>{children}</TranscriptionContext.Provider>;
 };

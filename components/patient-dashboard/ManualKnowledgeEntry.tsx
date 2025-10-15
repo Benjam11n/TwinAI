@@ -77,9 +77,7 @@ export function ManualKnowledgeEntryForm({
       setContent('');
       setSuccess('Knowledge base entry added successfully');
     } catch (err) {
-      setError(
-        `Error adding entry: ${err instanceof Error ? err.message : String(err)}`
-      );
+      setError(`Error adding entry: ${err instanceof Error ? err.message : String(err)}`);
     } finally {
       setIsSubmitting(false);
     }
@@ -108,11 +106,7 @@ export function ManualKnowledgeEntryForm({
 
           <div className="space-y-2">
             <Label htmlFor="category">Category</Label>
-            <Select
-              value={category}
-              onValueChange={setCategory}
-              disabled={isSubmitting}
-            >
+            <Select value={category} onValueChange={setCategory} disabled={isSubmitting}>
               <SelectTrigger>
                 <SelectValue placeholder="Select a category" />
               </SelectTrigger>
@@ -160,12 +154,7 @@ export function ManualKnowledgeEntryForm({
         </form>
       </CardContent>
       <CardFooter>
-        <Button
-          type="submit"
-          className="w-full"
-          onClick={handleSubmit}
-          disabled={isSubmitting}
-        >
+        <Button type="submit" className="w-full" onClick={handleSubmit} disabled={isSubmitting}>
           {isSubmitting ? (
             'Adding...'
           ) : (

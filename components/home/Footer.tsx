@@ -13,8 +13,8 @@ export default function Footer() {
                 <span className="text-lg font-semibold">TwinAI</span>
               </div>
               <p className="text-sm text-muted-foreground">
-                Empowering therapists with AI-powered patient digital twins for
-                clinical skill development.
+                Empowering therapists with AI-powered patient digital twins for clinical skill
+                development.
               </p>
             </div>
             <div className="space-y-4">

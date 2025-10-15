@@ -32,7 +32,7 @@ const ConversationHistoryEntrySchema = new Schema(
       default: () => Date.now(),
     },
   },
-  { _id: false }
+  { _id: false },
 );
 
 const DTSessionSchema = new Schema<IDTSessionDoc>(
@@ -55,11 +55,10 @@ const DTSessionSchema = new Schema<IDTSessionDoc>(
       max: 100,
     },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 DTSessionSchema.index({ patientId: 1, date: -1 });
 
-const DTSession =
-  models?.DTSession || model<IDTSessionDoc>('DTSession', DTSessionSchema);
+const DTSession = models?.DTSession || model<IDTSessionDoc>('DTSession', DTSessionSchema);
 export default DTSession;

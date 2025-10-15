@@ -20,19 +20,13 @@ export class RAGVectorStore {
   /**
    * Initialize the vector store with documents
    */
-  async initializeStore(
-    documents: { content: string; metadata?: Record<string, any> }[]
-  ) {
+  async initializeStore(documents: { content: string; metadata?: Record<string, any> }[]) {
     // Convert to LangChain Document format
     const docs = documents.map(
-      (doc) =>
-        new Document({ pageContent: doc.content, metadata: doc.metadata || {} })
+      (doc) => new Document({ pageContent: doc.content, metadata: doc.metadata || {} }),
     );
 
-    this.vectorStore = await MemoryVectorStore.fromDocuments(
-      docs,
-      this.embeddingModel
-    );
+    this.vectorStore = await MemoryVectorStore.fromDocuments(docs, this.embeddingModel);
     return this.vectorStore;
   }
 
@@ -41,9 +35,7 @@ export class RAGVectorStore {
    */
   async search(query: string, k = 3): Promise<Document[]> {
     if (!this.vectorStore) {
-      throw new Error(
-        'Vector store not initialized. Call initializeStore first.'
-      );
+      throw new Error('Vector store not initialized. Call initializeStore first.');
     }
 
     const results = await this.vectorStore.similaritySearch(query, k);

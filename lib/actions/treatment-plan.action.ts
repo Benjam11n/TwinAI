@@ -1,18 +1,13 @@
 'use server';
 
-import TreatmentPlan, {
-  ITreatmentPlanDoc,
-} from '@/database/treatment-plan.model';
+import TreatmentPlan, { ITreatmentPlanDoc } from '@/database/treatment-plan.model';
 import handleError from '../handlers/error';
 import action from '../handlers/action';
-import {
-  CreateTreatmentPlanSchema,
-  GetTreatmentPlanSchema,
-} from '../validations';
+import { CreateTreatmentPlanSchema, GetTreatmentPlanSchema } from '../validations';
 import mongoose from 'mongoose';
 
 export async function createTreatmentPlan(
-  params: CreateTreatmentPlanParams
+  params: CreateTreatmentPlanParams,
 ): Promise<ActionResponse<ITreatmentPlanDoc>> {
   const validationResult = await action({
     params,
@@ -23,8 +18,7 @@ export async function createTreatmentPlan(
     return handleError(validationResult) as ErrorResponse;
   }
 
-  const { title, suitable, description, outcomes, sessions } =
-    validationResult.params!;
+  const { title, suitable, description, outcomes, sessions } = validationResult.params!;
   const session = await mongoose.startSession();
   session.startTransaction();
 
@@ -33,7 +27,7 @@ export async function createTreatmentPlan(
       [{ title, suitable, description, outcomes, sessions }],
       {
         session,
-      }
+      },
     );
 
     if (!treatmentPlan) {
@@ -56,7 +50,7 @@ export async function createTreatmentPlan(
 }
 
 export async function getTreatmentPlan(
-  params: GetTreatmentPlanParams
+  params: GetTreatmentPlanParams,
 ): Promise<ActionResponse<ITreatmentPlanDoc>> {
   const validationResult = await action({
     params,
@@ -82,9 +76,7 @@ export async function getTreatmentPlan(
   }
 }
 
-export async function getTreatmentPlans(): Promise<
-  ActionResponse<ITreatmentPlanDoc[]>
-> {
+export async function getTreatmentPlans(): Promise<ActionResponse<ITreatmentPlanDoc[]>> {
   try {
     const treatmentPlans = await TreatmentPlan.find();
 

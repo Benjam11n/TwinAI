@@ -21,9 +21,7 @@ export async function getPatients(): Promise<ActionResponse<IPatientDoc[]>> {
     return handleError(error) as ErrorResponse;
   }
 }
-export async function getPatient(
-  params: GetPatientParams
-): Promise<ActionResponse<IPatientDoc>> {
+export async function getPatient(params: GetPatientParams): Promise<ActionResponse<IPatientDoc>> {
   const validationResult = await action({
     params,
     schema: GetPatientSchema,

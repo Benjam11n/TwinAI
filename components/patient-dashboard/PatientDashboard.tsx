@@ -22,13 +22,8 @@ export default function PatientDashboard({
   treatmentPlans: ITreatmentPlanDoc[] | undefined;
   pastSessions: ISessionDoc[] | undefined;
 }) {
-  const {
-    addDocuments,
-    initializeRAG,
-    addManualEntry,
-    knowledgeBaseEntries,
-    clearRAG,
-  } = useLiveAPIContext();
+  const { addDocuments, initializeRAG, addManualEntry, knowledgeBaseEntries, clearRAG } =
+    useLiveAPIContext();
 
   const [isInitialized, setIsInitialized] = useState(false);
 
@@ -43,9 +38,7 @@ export default function PatientDashboard({
     <div className="flex min-h-screen">
       <div className="flex flex-1 flex-col">
         <header className="flex h-14 items-center justify-between border-b px-6">
-          <h1 className="text-3xl font-semibold tracking-tight">
-            {name}&apos;s Dashboard
-          </h1>
+          <h1 className="text-3xl font-semibold tracking-tight">{name}&apos;s Dashboard</h1>
         </header>
 
         <main className="flex-1 overflow-auto p-6">
@@ -53,20 +46,14 @@ export default function PatientDashboard({
             {/* Analytics and Treatment Section */}
             <div className="grid gap-6 md:grid-cols-3">
               <MoodAnalysisCard />
-              <TreatmentPlansCard
-                patient={patient}
-                treatmentPlans={treatmentPlans}
-              />
+              <TreatmentPlansCard patient={patient} treatmentPlans={treatmentPlans} />
               <RecentSessionsCard pastSessions={pastSessions} />
             </div>
 
             {/* Session Cards */}
             <div className="grid gap-6 md:grid-cols-2">
               <LiveSessionCard patient={patient || null} />
-              <DigitalTwinCard
-                patientName={name}
-                patientId={patient._id as string}
-              />
+              <DigitalTwinCard patientName={name} patientId={patient._id as string} />
             </div>
 
             {/* Knowledge Base Section */}
@@ -81,10 +68,7 @@ export default function PatientDashboard({
               </TabsContent>
 
               <TabsContent value="documents">
-                <DocumentUploader
-                  onDocumentsAdded={addDocuments}
-                  onInitializeRAG={initializeRAG}
-                />
+                <DocumentUploader onDocumentsAdded={addDocuments} onInitializeRAG={initializeRAG} />
               </TabsContent>
 
               <KnowledgeBaseEntries

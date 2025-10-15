@@ -31,19 +31,11 @@ export function NavBar() {
     >
       <nav className="container flex h-16 items-center px-4">
         <div className="flex gap-6 lg:gap-10">
-          <Link
-            href={ROUTES.DASHBOARD}
-            prefetch
-            className="flex items-center space-x-2"
-          >
+          <Link href={ROUTES.DASHBOARD} prefetch className="flex items-center space-x-2">
             <Logo className="size-10" />
             <div>
-              <span className="inline-block text-2xl font-bold text-lime-600">
-                Twin
-              </span>
-              <span className="inline-block text-2xl font-bold text-stone-500">
-                AI
-              </span>
+              <span className="inline-block text-2xl font-bold text-lime-600">Twin</span>
+              <span className="inline-block text-2xl font-bold text-stone-500">AI</span>
             </div>
           </Link>
         </div>

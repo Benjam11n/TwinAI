@@ -17,7 +17,7 @@ const TherapistSchema = new Schema<ITherapistDoc>(
     image: { type: String },
     bio: { type: String },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 TherapistSchema.index({ email: 1 });
@@ -29,7 +29,6 @@ TherapistSchema.pre('save', function (next) {
   next();
 });
 
-const Therapist =
-  models?.Therapist || model<ITherapistDoc>('Therapist', TherapistSchema);
+const Therapist = models?.Therapist || model<ITherapistDoc>('Therapist', TherapistSchema);
 
 export default Therapist;

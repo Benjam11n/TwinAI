@@ -4,13 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { useTherapySessionStore } from '@/store/use-therapy-session-store';
 import { analyzeConversationRisks } from '@/lib/utils';
 import Link from 'next/link';
-import {
-  ArrowLeft,
-  FileWarning,
-  Hourglass,
-  AlertTriangle,
-  Save,
-} from 'lucide-react';
+import { ArrowLeft, FileWarning, Hourglass, AlertTriangle, Save } from 'lucide-react';
 import { Button } from './ui/button';
 import { toast } from 'sonner';
 import { createDTSession } from '@/lib/actions/dtsession.action';
@@ -98,17 +92,11 @@ const RiskAnalysisDashboard = ({ patient }: { patient: IPatientDoc }) => {
       if (result.success) {
         toast.success('Risk analysis saved to database successfully');
       } else {
-        throw new Error(
-          typeof result.error === 'string'
-            ? result.error
-            : 'Failed to save session'
-        );
+        throw new Error(typeof result.error === 'string' ? result.error : 'Failed to save session');
       }
     } catch (error) {
       console.error('Error saving analysis to database:', error);
-      toast.error(
-        error instanceof Error ? error.message : 'Failed to save analysis'
-      );
+      toast.error(error instanceof Error ? error.message : 'Failed to save analysis');
     } finally {
       setIsSaving(false);
     }
@@ -134,8 +122,7 @@ const RiskAnalysisDashboard = ({ patient }: { patient: IPatientDoc }) => {
           <Hourglass className="mb-4 size-16 animate-pulse" />
           <h2 className="mb-2 text-xl font-semibold">Analyzing Conversation</h2>
           <p className="max-w-md text-gray-600">
-            We&apos;re processing your conversation history to identify
-            potential risk patterns.
+            We&apos;re processing your conversation history to identify potential risk patterns.
           </p>
         </div>
       </div>
@@ -151,8 +138,8 @@ const RiskAnalysisDashboard = ({ patient }: { patient: IPatientDoc }) => {
           <h2 className="mb-2 text-xl font-semibold">Analysis Error</h2>
           <p className="mb-4 text-red-600">{error}</p>
           <p className="text-gray-700">
-            There was a problem analyzing your conversation. Please try again
-            later or contact support if this issue persists.
+            There was a problem analyzing your conversation. Please try again later or contact
+            support if this issue persists.
           </p>
         </div>
       </div>
@@ -179,10 +166,7 @@ const RiskAnalysisDashboard = ({ patient }: { patient: IPatientDoc }) => {
           <p className="mb-4 text-gray-600">
             There isn&apos;t any conversation history to analyze yet.
           </p>
-          <Link
-            href="/therapy-session"
-            className="rounded px-4 py-2 text-white transition-colors"
-          >
+          <Link href="/therapy-session" className="rounded px-4 py-2 text-white transition-colors">
             <Button>Start a New Session</Button>
           </Link>
         </div>
@@ -190,11 +174,7 @@ const RiskAnalysisDashboard = ({ patient }: { patient: IPatientDoc }) => {
     );
   }
 
-  if (
-    !riskAnalysis ||
-    !riskAnalysis.results ||
-    riskAnalysis.results.length === 0
-  ) {
+  if (!riskAnalysis || !riskAnalysis.results || riskAnalysis.results.length === 0) {
     return (
       <div className="p-8">
         <div className="mb-6 flex items-center justify-between">
@@ -212,9 +192,8 @@ const RiskAnalysisDashboard = ({ patient }: { patient: IPatientDoc }) => {
           <FileWarning className="mb-4 size-16 text-gray-400" />
           <h2 className="mb-2 text-xl font-semibold">No Analysis Results</h2>
           <p className="mb-4 text-gray-600">
-            We couldn&apos;t generate any risk analysis from the current
-            conversation. This typically happens when conversations are very
-            short or contain only system messages.
+            We couldn&apos;t generate any risk analysis from the current conversation. This
+            typically happens when conversations are very short or contain only system messages.
           </p>
         </div>
       </div>
@@ -254,17 +233,12 @@ const RiskAnalysisDashboard = ({ patient }: { patient: IPatientDoc }) => {
             const nextMessage =
               index < conversationHistory.length - 1
                 ? conversationHistory[
-                    conversationHistory.findIndex(
-                      (m) => m.timestamp === result.message.timestamp
-                    ) + 1
+                    conversationHistory.findIndex((m) => m.timestamp === result.message.timestamp) +
+                      1
                   ]
                 : null;
 
-            if (
-              result.message.role === 'twin' &&
-              nextMessage &&
-              nextMessage.role === 'therapist'
-            ) {
+            if (result.message.role === 'twin' && nextMessage && nextMessage.role === 'therapist') {
               return (
                 <div
                   key={result.message.timestamp}
@@ -302,8 +276,7 @@ const RiskAnalysisDashboard = ({ patient }: { patient: IPatientDoc }) => {
       <div className="mb-8">
         <h2 className="mb-4 text-xl font-semibold">High Risk Dialogs</h2>
         <div className="rounded-lg border bg-white p-4 shadow-sm">
-          {riskAnalysis.results.filter((r) => r.risk.riskLevel === 'high')
-            .length > 0 ? (
+          {riskAnalysis.results.filter((r) => r.risk.riskLevel === 'high').length > 0 ? (
             riskAnalysis.results
               .filter((r) => r.risk.riskLevel === 'high')
               .map((result) => (
@@ -311,18 +284,14 @@ const RiskAnalysisDashboard = ({ patient }: { patient: IPatientDoc }) => {
                   key={result.message.timestamp}
                   className="mb-3 rounded-md border border-red-200 bg-red-50 p-3"
                 >
-                  <p className="mb-1 font-medium">
-                    User: &quot;{result.message.content}&quot;
-                  </p>
+                  <p className="mb-1 font-medium">User: &quot;{result.message.content}&quot;</p>
                   <p className="text-sm text-red-700">
                     Risk Score: {(result.risk.score * 100).toFixed(1)}%
                   </p>
                 </div>
               ))
           ) : (
-            <p className="p-3 text-gray-600">
-              No high risk dialogs detected in this conversation.
-            </p>
+            <p className="p-3 text-gray-600">No high risk dialogs detected in this conversation.</p>
           )}
         </div>
       </div>

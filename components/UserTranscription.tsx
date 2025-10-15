@@ -9,16 +9,10 @@ interface UserTranscriptionProps {
 }
 
 const UserTranscription = ({ isModelTurn }: UserTranscriptionProps) => {
-  const {
-    startTranscription,
-    stopTranscription,
-    isRecording,
-    transcription,
-    isTranscribing,
-  } = useTranscription();
+  const { startTranscription, stopTranscription, isRecording, transcription, isTranscribing } =
+    useTranscription();
 
-  const { conversationHistory, setConversationHistory } =
-    useTherapySessionStore();
+  const { conversationHistory, setConversationHistory } = useTherapySessionStore();
 
   useEffect(() => {
     if (transcription) {

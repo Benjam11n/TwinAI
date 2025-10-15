@@ -57,18 +57,15 @@ export default function Hero() {
                   <span className="rounded bg-muted-foreground/40 px-2 py-1 text-sm">
                     Depression
                   </span>
-                  <span className="rounded bg-muted-foreground/20 px-2 py-1 text-sm">
-                    Anxiety
-                  </span>
+                  <span className="rounded bg-muted-foreground/20 px-2 py-1 text-sm">Anxiety</span>
                 </div>
               </div>
               <div className="col-span-2">
                 <h3 className="mb-2 font-medium">Therapy Session Scenario</h3>
                 <div className="light:border-gray-200 rounded-md border p-3">
                   <p>
-                    Patient expresses feeling overwhelmed by work
-                    responsibilities and reports difficulty sleeping for the
-                    past 3 weeks.
+                    Patient expresses feeling overwhelmed by work responsibilities and reports
+                    difficulty sleeping for the past 3 weeks.
                   </p>
                 </div>
               </div>
@@ -85,26 +82,23 @@ export default function Hero() {
               <div className="space-y-3">
                 <div className="rounded-lg bg-gray-50 p-3">
                   <p className="text-sm text-gray-700">
-                    <span className="font-medium">Patient:</span> I&apos;ve been
-                    feeling really stressed lately. I can&apos;t seem to get a
-                    good night&apos;s sleep and it&apos;s affecting my work...
+                    <span className="font-medium">Patient:</span> I&apos;ve been feeling really
+                    stressed lately. I can&apos;t seem to get a good night&apos;s sleep and
+                    it&apos;s affecting my work...
                   </p>
                 </div>
                 <div className="rounded-lg bg-primary/30 p-3">
                   <p className="text-sm">
-                    <span className="font-medium">You (Therapist):</span> I
-                    understand that must be difficult. Could you tell me more
-                    about when these sleep issues began and what was happening
-                    in your life at that time?
+                    <span className="font-medium">You (Therapist):</span> I understand that must be
+                    difficult. Could you tell me more about when these sleep issues began and what
+                    was happening in your life at that time?
                   </p>
                 </div>
                 <div className="flex items-center gap-2">
                   <div className="size-2 rounded-full bg-gray-300"></div>
                   <div className="size-2 rounded-full bg-gray-300"></div>
                   <div className="size-2 rounded-full bg-gray-300"></div>
-                  <span className="text-xs">
-                    AI analyzing therapeutic approach
-                  </span>
+                  <span className="text-xs">AI analyzing therapeutic approach</span>
                 </div>
               </div>
             </div>

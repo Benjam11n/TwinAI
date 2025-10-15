@@ -42,14 +42,9 @@ export function useLiveAPIWithRAG({
   apiKey,
 }: MultimodalLiveAPIClientConnection): UseLiveAPIWithRAGResults {
   const { patient } = useTherapySessionStore();
-  const [knowledgeBaseEntries, setKnowledgeBaseEntries] = useState<
-    RAGDocument[]
-  >([]);
+  const [knowledgeBaseEntries, setKnowledgeBaseEntries] = useState<RAGDocument[]>([]);
 
-  const client = useMemo(
-    () => new RAGMultimodalLiveClient({ url, apiKey }),
-    [url, apiKey]
-  );
+  const client = useMemo(() => new RAGMultimodalLiveClient({ url, apiKey }), [url, apiKey]);
 
   const audioStreamerRef = useRef<AudioStreamer | null>(null);
   const [connected, setConnected] = useState(false);
@@ -83,8 +78,7 @@ export function useLiveAPIWithRAG({
       setConnected(false);
     };
     const stopAudioStreamer = () => audioStreamerRef.current?.stop();
-    const onAudio = (data: ArrayBuffer) =>
-      audioStreamerRef.current?.addPCM16(new Uint8Array(data));
+    const onAudio = (data: ArrayBuffer) => audioStreamerRef.current?.addPCM16(new Uint8Array(data));
     const onAiTranscription = (text: string) => {
       setAiTranscription(text);
     };
@@ -132,9 +126,7 @@ export function useLiveAPIWithRAG({
     // Sort sessions by date in descending order (most recent first)
     sessions =
       sessions &&
-      sessions
-        .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
-        .slice(0, 3); // Keep only the latest three sessions
+      sessions.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()).slice(0, 3); // Keep only the latest three sessions
 
     // Format past sessions for the prompt
     const pastSessionsText =
@@ -147,8 +139,7 @@ export function useLiveAPIWithRAG({
 
               const conversationHistory = session.conversationHistory
                 .map(
-                  (entry) =>
-                    `[${new Date(entry.timestamp).toLocaleString()}] : ${entry.content}`
+                  (entry) => `[${new Date(entry.timestamp).toLocaleString()}] : ${entry.content}`,
                 )
                 .join('\n');
 
@@ -191,7 +182,7 @@ export function useLiveAPIWithRAG({
       await client.addDocuments(documents);
       setKnowledgeBaseEntries((prev) => [...prev, ...documents]);
     },
-    [client]
+    [client],
   );
 
   /**
@@ -213,7 +204,7 @@ export function useLiveAPIWithRAG({
       setKnowledgeBaseEntries((prev) => [...prev, document]);
       console.log(`Added manual entry: ${entry.title}`);
     },
-    [client]
+    [client],
   );
 
   /**
@@ -235,7 +226,7 @@ export function useLiveAPIWithRAG({
       setKnowledgeBaseEntries((prev) => [...prev, ...documents]);
       console.log(`Added ${documents.length} manual entries`);
     },
-    [client]
+    [client],
   );
 
   const initializeRAG = useCallback(async () => {

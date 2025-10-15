@@ -15,26 +15,20 @@ function Feature() {
                 AI-Powered training for therapists
               </h2>
               <p className="max-w-xl text-left text-lg leading-relaxed tracking-tight text-muted-foreground lg:max-w-lg">
-                Master therapeutic techniques through practice with diverse AI
-                patient profiles.
+                Master therapeutic techniques through practice with diverse AI patient profiles.
               </p>
             </div>
           </div>
           <div className="grid gap-8 sm:grid-cols-1 lg:grid-cols-3">
             {FEATURES.map((feature, index) => (
-              <div
-                key={index}
-                className="glass-panel feature-card-hover space-y-4 p-8"
-              >
+              <div key={index} className="glass-panel feature-card-hover space-y-4 p-8">
                 <div className="flex flex-row items-center gap-2 space-x-2">
                   <div className="rounded-2xl bg-primary/10 p-4">
                     <feature.icon className="size-7 text-primary" />
                   </div>
                   <h3 className="text-2xl font-semibold">{feature.title}</h3>
                 </div>
-                <p className="leading-relaxed text-muted-foreground">
-                  {feature.description}
-                </p>
+                <p className="leading-relaxed text-muted-foreground">{feature.description}</p>
               </div>
             ))}
           </div>

@@ -35,13 +35,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body
-        className={`
-          ${montserrat.variable}
-          font-sans
-          antialiased
-        `}
-      >
+      <body className={` ${montserrat.variable} font-sans antialiased`}>
         <LiveAPIProvider url={uri} apiKey={API_KEY}>
           <TranscriptionProvider apiKey={API_KEY}>
             <ThemeProvider

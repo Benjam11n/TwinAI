@@ -60,11 +60,10 @@ export async function predictRisk(text: string): Promise<Risk> {
   }
 
   // Create tensor
-  const inputTensor = new ort.Tensor(
-    'int64',
-    new BigInt64Array(indices.map((i) => BigInt(i))),
-    [1, maxLen]
-  );
+  const inputTensor = new ort.Tensor('int64', new BigInt64Array(indices.map((i) => BigInt(i))), [
+    1,
+    maxLen,
+  ]);
 
   const feeds = { input: inputTensor };
   const results = await session?.run(feeds);

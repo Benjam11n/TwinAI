@@ -85,7 +85,7 @@ async function seedPatients() {
       // Get random conditions without duplicates
       const patientConditions = faker.helpers.arrayElements(
         Object.values(PatientCondition),
-        numConditions
+        numConditions,
       );
 
       // Assign to a random therapist
@@ -207,11 +207,7 @@ async function seedTreatmentPlans() {
       },
       {
         title: 'Dialectical Behavior Therapy (DBT) Skills Training',
-        suitable: [
-          PatientCondition.DEPRESSION,
-          PatientCondition.ANXIETY,
-          PatientCondition.OTHER,
-        ],
+        suitable: [PatientCondition.DEPRESSION, PatientCondition.ANXIETY, PatientCondition.OTHER],
         description:
           'A comprehensive cognitive-behavioral treatment that focuses on building four key skill sets: mindfulness, distress tolerance, emotion regulation, and interpersonal effectiveness.',
         outcomes:
@@ -253,18 +249,13 @@ async function seedTreatmentPlans() {
     ];
 
     // Insert treatment plans
-    const createdTreatmentPlans =
-      await TreatmentPlan.insertMany(treatmentPlans);
-    console.log(
-      `Successfully seeded ${createdTreatmentPlans.length} treatment plans`
-    );
+    const createdTreatmentPlans = await TreatmentPlan.insertMany(treatmentPlans);
+    console.log(`Successfully seeded ${createdTreatmentPlans.length} treatment plans`);
 
     // Print the created treatment plans
     console.log('Created treatment plans:');
     createdTreatmentPlans.forEach((plan, index) => {
-      console.log(
-        `${index + 1}. ${plan.title} (Suitable for: ${plan.suitable.join(', ')})`
-      );
+      console.log(`${index + 1}. ${plan.title} (Suitable for: ${plan.suitable.join(', ')})`);
     });
 
     return createdTreatmentPlans;

@@ -1,11 +1,5 @@
 import { FileText, Check, Eye } from 'lucide-react';
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-  CardDescription,
-} from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import {
   Accordion,
   AccordionContent,
@@ -23,7 +17,7 @@ export function TreatmentPlansCard({
   treatmentPlans: ITreatmentPlanDoc[] | undefined;
 }) {
   const recommendedPlans = treatmentPlans?.filter((plan) =>
-    plan.suitable.some((condition) => patient.conditions.includes(condition))
+    plan.suitable.some((condition) => patient.conditions.includes(condition)),
   );
 
   return (
@@ -47,13 +41,9 @@ export function TreatmentPlansCard({
                 </AccordionTrigger>
                 <AccordionContent>
                   <div className="space-y-3 pt-2">
-                    <p className="text-sm text-muted-foreground">
-                      {plan.description}
-                    </p>
+                    <p className="text-sm text-muted-foreground">{plan.description}</p>
                     <div className="rounded-md bg-muted/30 p-3">
-                      <h4 className="mb-2 text-sm font-medium">
-                        Key Sessions:
-                      </h4>
+                      <h4 className="mb-2 text-sm font-medium">Key Sessions:</h4>
                       <ul className="space-y-1">
                         {plan.sessions.map((session, index) => (
                           <li key={index} className="flex items-start text-sm">
@@ -64,12 +54,8 @@ export function TreatmentPlansCard({
                       </ul>
                     </div>
                     <div className="pt-2">
-                      <h4 className="mb-1 text-sm font-medium">
-                        Expected Outcomes:
-                      </h4>
-                      <p className="text-sm text-muted-foreground">
-                        {plan.outcomes}
-                      </p>
+                      <h4 className="mb-1 text-sm font-medium">Expected Outcomes:</h4>
+                      <p className="text-sm text-muted-foreground">{plan.outcomes}</p>
                     </div>
                     <Button variant="outline" size="sm" className="mt-2 w-full">
                       <Eye className="mr-2 size-4" />
@@ -83,8 +69,7 @@ export function TreatmentPlansCard({
         ) : (
           <div className="flex flex-col items-center justify-center py-6 text-center">
             <p className="text-sm text-muted-foreground">
-              No specific treatment plans found for the patient&apos;s
-              conditions.
+              No specific treatment plans found for the patient&apos;s conditions.
             </p>
             <Button variant="outline" size="sm" className="mt-4">
               Create Custom Plan

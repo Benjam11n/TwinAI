@@ -32,7 +32,7 @@ const PatientSchema = new Schema<IPatientDoc>(
       },
     ],
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 const Patient = models?.Patient || model<IPatientDoc>('Patient', PatientSchema);

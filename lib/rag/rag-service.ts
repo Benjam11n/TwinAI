@@ -49,7 +49,7 @@ export class RAGService {
   async generatePromptWithContext(
     query: string,
     basePrompt: string,
-    maxResults = 3
+    maxResults = 3,
   ): Promise<string> {
     const context = await this.query(query, maxResults);
 

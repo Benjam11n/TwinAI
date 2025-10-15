@@ -22,9 +22,7 @@ export function MoodAnalysisCard() {
         <div className="space-y-4">
           <div>
             <div className="flex items-center justify-between">
-              <span className="text-sm text-muted-foreground">
-                Current Mood Level
-              </span>
+              <span className="text-sm text-muted-foreground">Current Mood Level</span>
               <span className="text-sm font-medium">{latestMood}%</span>
             </div>
             <Progress value={latestMood} className="mt-2 h-2" />
@@ -33,9 +31,7 @@ export function MoodAnalysisCard() {
           <div className="flex items-center justify-between text-sm">
             <span className="text-muted-foreground">Trend</span>
             <span className={isImproving ? 'text-primary' : 'text-red-600'}>
-              <TrendingUp
-                className={`mr-1 inline size-4 ${isImproving ? '' : 'rotate-180'}`}
-              />
+              <TrendingUp className={`mr-1 inline size-4 ${isImproving ? '' : 'rotate-180'}`} />
               {Math.abs(change)}% {isImproving ? 'improvement' : 'decline'}
             </span>
           </div>
@@ -50,11 +46,7 @@ export function MoodAnalysisCard() {
             </p>
           </div>
 
-          <Button
-            variant="outline"
-            className="w-full justify-between"
-            size="sm"
-          >
+          <Button variant="outline" className="w-full justify-between" size="sm">
             View Detailed Analysis
             <ChevronRight className="size-4" />
           </Button>

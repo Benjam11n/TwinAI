@@ -8,7 +8,7 @@ import { CreateDTSessionSchema, GetDTSessionSchema } from '../validations';
 import DTSession, { IDTSessionDoc } from '@/database/dtsession.model';
 
 export async function createDTSession(
-  params: CreateDTSessionParams
+  params: CreateDTSessionParams,
 ): Promise<ActionResponse<IDTSessionDoc>> {
   const validationResult = await action({
     params,
@@ -19,8 +19,7 @@ export async function createDTSession(
     return handleError(validationResult) as ErrorResponse;
   }
 
-  const { patientId, date, conversationHistory, risk } =
-    validationResult.params!;
+  const { patientId, date, conversationHistory, risk } = validationResult.params!;
   const session = await mongoose.startSession();
   session.startTransaction();
 
@@ -29,7 +28,7 @@ export async function createDTSession(
       [{ patientId, date, conversationHistory, risk }],
       {
         session,
-      }
+      },
     );
 
     if (!treatmentSession) {
@@ -52,7 +51,7 @@ export async function createDTSession(
 }
 
 export async function getSession(
-  params: GetSDTessionParams
+  params: GetSDTessionParams,
 ): Promise<ActionResponse<IDTSessionDoc>> {
   const validationResult = await action({
     params,
@@ -78,9 +77,7 @@ export async function getSession(
   }
 }
 
-export async function getDTSessions(): Promise<
-  ActionResponse<IDTSessionDoc[]>
-> {
+export async function getDTSessions(): Promise<ActionResponse<IDTSessionDoc[]>> {
   try {
     const sessions = await DTSession.find();
 

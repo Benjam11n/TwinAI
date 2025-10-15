@@ -25,11 +25,10 @@ const TreatmentPlanSchema = new Schema<ITreatmentPlanDoc>(
     outcomes: { type: String, required: true },
     sessions: [{ type: String, required: true }],
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 const TreatmentPlan =
-  models?.TreatmentPlan ||
-  model<ITreatmentPlanDoc>('TreatmentPlan', TreatmentPlanSchema);
+  models?.TreatmentPlan || model<ITreatmentPlanDoc>('TreatmentPlan', TreatmentPlanSchema);
 
 export default TreatmentPlan;

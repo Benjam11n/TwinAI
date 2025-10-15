@@ -1,11 +1,5 @@
 import { useState } from 'react';
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '../ui/card';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../ui/card';
 import { Button } from '../ui/button';
 
 type KnowledgeBaseEntriesProps = {
@@ -31,7 +25,7 @@ export function KnowledgeBaseEntries({
   const handleClearAll = async () => {
     if (
       confirm(
-        'Are you sure you want to clear all knowledge base entries? This action cannot be undone.'
+        'Are you sure you want to clear all knowledge base entries? This action cannot be undone.',
       )
     ) {
       setIsClearing(true);
@@ -71,9 +65,7 @@ export function KnowledgeBaseEntries({
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
         <div>
           <CardTitle>Knowledge Base Entries</CardTitle>
-          <CardDescription>
-            {entries.length} entries in the knowledge base
-          </CardDescription>
+          <CardDescription>{entries.length} entries in the knowledge base</CardDescription>
         </div>
         <div className="flex space-x-2">
           <Button
@@ -90,11 +82,7 @@ export function KnowledgeBaseEntries({
             onClick={handleInitialize}
             disabled={isInitializing || entries.length === 0}
           >
-            {isInitializing
-              ? 'Initializing...'
-              : isInitialized
-                ? 'Reindex'
-                : 'Initialize'}
+            {isInitializing ? 'Initializing...' : isInitialized ? 'Reindex' : 'Initialize'}
           </Button>
         </div>
       </CardHeader>
@@ -105,36 +93,26 @@ export function KnowledgeBaseEntries({
           </div>
         ) : (
           <div className="space-y-4">
-            {Object.entries(entriesByCategory).map(
-              ([category, categoryEntries]) => (
-                <div key={category} className="space-y-2">
-                  <h3 className="text-sm font-medium">{category}</h3>
-                  <div className="max-h-56 space-y-2 overflow-y-auto pr-2">
-                    {categoryEntries.map((entry, index) => (
-                      <div
-                        key={index}
-                        className="rounded-md border p-3 text-sm"
-                      >
-                        <div className="mb-1 font-medium">
-                          {entry.metadata?.title || `Entry ${index + 1}`}
-                        </div>
-                        <div className="line-clamp-2 text-muted-foreground">
-                          {entry.content}
-                        </div>
-                        {entry.metadata?.timestamp && (
-                          <div className="mt-2 text-xs text-muted-foreground">
-                            Added:{' '}
-                            {new Date(
-                              entry.metadata.timestamp
-                            ).toLocaleString()}
-                          </div>
-                        )}
+            {Object.entries(entriesByCategory).map(([category, categoryEntries]) => (
+              <div key={category} className="space-y-2">
+                <h3 className="text-sm font-medium">{category}</h3>
+                <div className="max-h-56 space-y-2 overflow-y-auto pr-2">
+                  {categoryEntries.map((entry, index) => (
+                    <div key={index} className="rounded-md border p-3 text-sm">
+                      <div className="mb-1 font-medium">
+                        {entry.metadata?.title || `Entry ${index + 1}`}
                       </div>
-                    ))}
-                  </div>
+                      <div className="line-clamp-2 text-muted-foreground">{entry.content}</div>
+                      {entry.metadata?.timestamp && (
+                        <div className="mt-2 text-xs text-muted-foreground">
+                          Added: {new Date(entry.metadata.timestamp).toLocaleString()}
+                        </div>
+                      )}
+                    </div>
+                  ))}
                 </div>
-              )
-            )}
+              </div>
+            ))}
           </div>
         )}
       </CardContent>

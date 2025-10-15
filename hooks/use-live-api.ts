@@ -37,14 +37,8 @@ export type UseLiveAPIResults = {
   // These were likely removed because you're not using these features
 };
 
-export function useLiveAPI({
-  url,
-  apiKey,
-}: MultimodalLiveAPIClientConnection): UseLiveAPIResults {
-  const client = useMemo(
-    () => new MultimodalLiveClient({ url, apiKey }),
-    [url, apiKey]
-  );
+export function useLiveAPI({ url, apiKey }: MultimodalLiveAPIClientConnection): UseLiveAPIResults {
+  const client = useMemo(() => new MultimodalLiveClient({ url, apiKey }), [url, apiKey]);
   const audioStreamerRef = useRef<AudioStreamer | null>(null);
   const [connected, setConnected] = useState(false);
   const [config, setConfig] = useState<LiveConfig>({
@@ -74,23 +68,16 @@ export function useLiveAPI({
       setConnected(false);
     };
     const stopAudioStreamer = () => audioStreamerRef.current?.stop();
-    const onAudio = (data: ArrayBuffer) =>
-      audioStreamerRef.current?.addPCM16(new Uint8Array(data));
+    const onAudio = (data: ArrayBuffer) => audioStreamerRef.current?.addPCM16(new Uint8Array(data));
 
     // Removed event handlers for transcription and model turn events
     // since they're not needed in your implementation
 
-    client
-      .on('close', onClose)
-      .on('interrupted', stopAudioStreamer)
-      .on('audio', onAudio);
+    client.on('close', onClose).on('interrupted', stopAudioStreamer).on('audio', onAudio);
     // Removed .on event handlers for isTranscribing, aiTranscription, and isModelTurn
 
     return () => {
-      client
-        .off('close', onClose)
-        .off('interrupted', stopAudioStreamer)
-        .off('audio', onAudio);
+      client.off('close', onClose).off('interrupted', stopAudioStreamer).off('audio', onAudio);
       // Removed corresponding .off event handlers
     };
   }, [client]);

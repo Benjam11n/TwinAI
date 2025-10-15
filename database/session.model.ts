@@ -27,7 +27,7 @@ const ConversationHistoryEntrySchema = new Schema(
       default: () => Date.now(),
     },
   },
-  { _id: false }
+  { _id: false },
 );
 
 const SessionSchema = new Schema<ISessionDoc>(
@@ -54,7 +54,7 @@ const SessionSchema = new Schema<ISessionDoc>(
       max: 100,
     },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 SessionSchema.index({ patientId: 1, date: -1 });
