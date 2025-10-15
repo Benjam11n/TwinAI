@@ -157,8 +157,8 @@ importers:
         specifier: ^3.0.6
         version: 3.0.6
       '@types/lodash':
-        specifier: ^4.17.15
-        version: 4.17.16
+        specifier: ^4.17.20
+        version: 4.17.20
       '@types/node':
         specifier: ^20.17.22
         version: 20.17.22
@@ -1244,8 +1244,8 @@ packages:
   '@types/json5@0.0.29':
     resolution: {integrity: sha512-dRLjCWHYg4oaA77cxO64oO+7JwCwnIzkZPdrrC71jQmQtlhM556pwKo5bUzqvZndkVbeFLIIi+9TC40JNF5hNQ==}
 
-  '@types/lodash@4.17.16':
-    resolution: {integrity: sha512-HX7Em5NYQAXKW+1T+FiuG27NGwzJfCX3s1GjOa7ujxZa52kjJLOr4FUxT+giF6Tgxv1e+/czV/iTtBw27WTU9g==}
+  '@types/lodash@4.17.20':
+    resolution: {integrity: sha512-H3MHACvFUEiujabxhaI/ImO6gUrd8oOurg7LQtS7mbwIXA/cUqWrvBsaeJ23aZEPk1TAYkurjfMbSELfoCXlGA==}
 
   '@types/mongoose@5.11.97':
     resolution: {integrity: sha512-cqwOVYT3qXyLiGw7ueU2kX9noE8DPGRY6z8eUxudhXY8NZ7DMKYAxyZkLSevGfhCX3dO/AoX5/SO9lAzfjon0Q==}
@@ -4405,7 +4405,7 @@ snapshots:
 
   '@types/json5@0.0.29': {}
 
-  '@types/lodash@4.17.16': {}
+  '@types/lodash@4.17.20': {}
 
   '@types/mongoose@5.11.97':
     dependencies:
